@@ -57,9 +57,9 @@ Handlebars.registerHelper('withLookup', function(obj, value, options) {
 $(document).ready(function () {
   var select = $('#query');
 
-  Object.keys(queries).sort().forEach(function (url) {
-    select.append($('<option>').attr('label', url).attr('value', url));
-  });
+  select.html(Handlebars.templates.options({
+    options: Object.keys(queries).sort().map(function (item) { return [item,item] })
+  }));
 
   select.on('change', changeQuery);
 
