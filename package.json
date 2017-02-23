@@ -1,0 +1,19 @@
+{
+  "name": "panlex-api-explorer",
+  "version": "1.0.0",
+  "description": "PanLex API Explorer",
+  "main": "index.js",
+  "scripts": {
+    "compile": "handlebars templates/*.handlebars -f templates.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kamholz/panlex-api-explorer.git"
+  },
+  "dependencies": {
+    "handlebars": "^4.0.6"
+  }
+}

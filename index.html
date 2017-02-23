@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PanLex API explorer</title>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.min.js"></script>
+<script src="templates.js"></script>
+<script type='text/javascript'>
+var endpoint = 'https://api.panlex.org/v2';
+
+var global = {
+  reqParams: {
+    after:    { },
+    cache:    { },
+    echo:     { },
+    include:  { },
+    indent:   { },
+    limit:    { },
+    offset:   { },
+    sort:     { }
+  },
+  resParams: {
+  }
+};
+
+var queries = {
+  '/langvar': {
+    desc: 'language variety query',
+    reqParams: {
+      expr_txt:     { type: 'text[]', desc: 'array of expression texts. Restricts results to language varieties containing a matching expression' },
+      id:           { type: 'posint[]', desc: 'array of language variety IDs' },
+      uid:          { type: 'uid[]', desc: 'array of language variety uniform identifiers' },
+      include:      { type: 'text[]', options: ['denotation_count', 'expr_count', 'langvar_char', 'langvar_cldr_char'] }
+    },
+    resParams: {
+      id:           { type: 'posint', desc: 'language variety ID number' },
+      uid:          { type: 'uid', desc: 'language variety’s uniform identifier' },
+      langvar_char: { type: 'codepoint_range[]', desc: 'array of code point ranges', include: 'langvar_char' }
+    }
+  },
+  '/langvar/count': { query: '/langvar' },
+  '/langvar/:langvar': { query: '/langvar' },
+  '/source': {},
+  '/expr': {},
+  '/denotation': {},
+  '/meaning': {},
+  '/definition': {}
+};
+
+Handlebars.registerHelper('withLookup', function(obj, value, options) {
+  return options.fn(obj[value]);
+});
+
+$(document).ready(function () {
+  var select = $('#query');
+
+  Object.keys(queries).sort().forEach(function (url) {
+    select.append($('<option>').attr('label', url).attr('value', url));
+  });
+
+  select.on('change', changeQuery);
+
+  var hash = window.location.hash.replace(/^#/, '');
+  if (hash.length) select.val(hash);
+
+  select.trigger('change');
+});
+
+function changeQuery(e) {
+  var url = e.target.value;
+  var info = queries[url];
+  window.location.hash = url;
+
+  $('#summary').html(info.desc || '');
+
+  var reqParams = $('#reqParams').empty();
+
+  if (info.reqParams) {
+    reqParams.append(Handlebars.templates.reqParam({ params: Object.keys(info.reqParams).sort(), info: info.reqParams }));
+  }
+  else {
+    reqParams.append('no parameters');
+  }
+
+  var resParams = $('#resParams').empty();
+
+  if (info.resParams) {
+    resParams.append(Handlebars.templates.resParam({ params: Object.keys(info.resParams).sort(), info: info.resParams }));
+  }
+  else {
+    resParams.append('no parameters');
+  }
+}
+</script>
+<style type='text/css'>
+label {
+  display: block;
+  margin: 1.5ex 0;
+}
+label span {
+  margin-right: 1ex;
+}
+</style>
+</head>
+<body>
+<h1>PanLex API Explorer</h1>
+<form>
+<label>
+Query:
+<select id='query' name='query'>
+</select>
+</label>
+</form>
+<div>
+<h2>Summary</h2>
+<div id='summary'>
+</div>
+<h2>Request parameters</h2>
+<form id='reqParams'></form>
+</div>
+<div>
+<h2>Response fields</h2>
+<div id='resParams'></div>
+</div>
+</body>
+</html>
