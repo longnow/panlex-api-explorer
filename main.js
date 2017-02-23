@@ -75,21 +75,21 @@ function changeQuery(e) {
 
   $('#summary').html(info.desc || '');
 
-  var reqParams = $('#reqParams').empty();
+  var reqParams = $('#reqParams');
 
   if (info.reqParams) {
-    reqParams.append(Handlebars.templates.reqParam({ params: Object.keys(info.reqParams).sort(), info: info.reqParams }));
+    reqParams.html(Handlebars.templates.reqParam({ params: Object.keys(info.reqParams).sort(), info: info.reqParams }));
   }
   else {
-    reqParams.append('no parameters');
+    reqParams.html('no parameters');
   }
 
-  var resParams = $('#resParams').empty();
+  var resParams = $('#resParams');
 
   if (info.resParams) {
-    resParams.append(Handlebars.templates.resParam({ params: Object.keys(info.resParams).sort(), info: info.resParams }));
+    resParams.html(Handlebars.templates.resParam({ params: Object.keys(info.resParams).sort(), info: info.resParams }));
   }
   else {
-    resParams.append('no parameters');
+    resParams.html('no parameters');
   }
 }
