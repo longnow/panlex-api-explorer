@@ -16,13 +16,13 @@ var globalParams = {
 };
 
 var urlParams = {
-  'definition':   { },
-  'denotation':   { },
-  'expr':         { },
-  'exprtxt':      { },
-  'langvar':      { },
-  'meaning':      { },
-  'source':       { }
+  definition:   { },
+  denotation:   { },
+  expr:         { },
+  exprtxt:      { },
+  langvar:      { },
+  meaning:      { },
+  source:       { }
 };
 
 var queries = {
