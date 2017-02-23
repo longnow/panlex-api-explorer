@@ -26,6 +26,17 @@ var urlParams = {
 };
 
 var queries = {
+  '/definition': {},
+  '/definition/<definition_id>': {},
+  '/definition/count': {},
+  '/denotation': {},
+  '/denotation/<denotation_id>': {},
+  '/denotation/count': {},
+  '/expr': {},
+  '/expr/<expr_id>': {},
+  '/expr/<langvar_id>/<expr_txt>': {},
+  '/expr/count': {},
+  '/expr/index': {},
   '/langvar': {
     desc: 'language variety query',
     reqParams: {
@@ -40,13 +51,17 @@ var queries = {
       langvar_char: { type: 'codepoint_range[]', desc: 'array of code point ranges', include: 'langvar_char' }
     }
   },
+  '/langvar/<langvar_id|uid>': { query: '/langvar' },
   '/langvar/count': { query: '/langvar' },
-  '/langvar/:langvar': { query: '/langvar' },
-  '/source': {},
-  '/expr': {},
-  '/denotation': {},
   '/meaning': {},
-  '/definition': {}
+  '/meaning/<meaning_id>': {},
+  '/meaning/count': {},
+  '/norm/definition/<langvar_id|uid>': {},
+  '/norm/expr/<langvar_id|uid>': {},
+  '/source': {},
+  '/source/<source_id|source_label>': {},
+  '/source/count': {},
+  '/txt_degr': {}
 };
 
 Handlebars.registerHelper('withLookup', function(obj, value, options) {
