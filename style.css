@@ -1,0 +1,7 @@
+label {
+  display: block;
+  margin: 1.5ex 0;
+}
+label span {
+  margin-right: 1ex;
+}
