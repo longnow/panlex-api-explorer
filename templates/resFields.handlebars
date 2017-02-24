@@ -12,7 +12,7 @@
 
 <h3>Object</h3>
 <table>
-<tr><th class="name">name</th><th class="type">type</th><th class="desc">description</th></tr>
+<tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
 {{#eachSorted fields}}
   {{#unless attr.root}}
     {{> resItem}}
@@ -27,7 +27,7 @@
     <span>{{{attr.desc}}}</span>
     {{#if attr.fields}}
       <table>
-        <tr><th class="name">name</th><th class="type">type</th><th class="desc">description</th></tr>
+        <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
         {{#eachSorted attr.fields}}
           <tr><td class="name">{{name}}</td><td class="type">{{attr.type}}</td><td class="desc">{{attr.desc}}</td></tr>
         {{/eachSorted}}
@@ -43,7 +43,7 @@
 
 <h3>Root</h3>
 <table>
-<tr><th class="name">name</th><th class="type">type</th><th class="desc">description</th></tr>
+<tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
 {{#eachSorted fields}}
   {{#if attr.root}}
     {{> resItem}}
