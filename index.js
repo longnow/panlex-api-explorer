@@ -158,28 +158,43 @@ var queryDefaults = {
 
 var queries = {
   '/definition': {
-    type: 'result'
+    type: 'result',
+    desc: 'definition query'
   },
+
   '/definition/<definition>': {
-    type: 'single'
+    type: 'single',
+    desc: 'single definition query'
   },
+
   '/definition/count': {
-    type: 'count'
+    type: 'count',
+    desc: 'definition count query'
   },
+
   '/denotation': {
-    type: 'result'
+    type: 'result',
+    desc: 'denotation query'
   },
+
   '/denotation/<denotation>': {
-    type: 'single'
+    type: 'single',
+    desc: 'single denotation query'
   },
+
   '/denotation/count': {
-    type: 'count'
+    type: 'count',
+    desc: 'denotation count query'
   },
+
   '/expr': {
-    type: 'result'
+    type: 'result',
+    desc: 'expression or translation query'
   },
+
   '/expr/<expr>': {
     type: 'single',
+    desc: 'single expression query (with ID)',
     reqParams: {
       include: {
         type: 'string[]',
@@ -187,15 +202,21 @@ var queries = {
       }
     }
   },
+
   '/expr/<langvar>/<exprtxt>': {
-
+    type: 'single',
+    desc: 'single expression query (with language variety and text)'
   },
+
   '/expr/count': {
-    type: 'count'
+    type: 'count',
+    desc: 'expression count query'
   },
-  '/expr/index': {
 
+  '/expr/index': {
+    desc: 'expression index query'
   },
+
   '/langvar': {
     type: 'result',
     desc: 'language variety query',
@@ -317,8 +338,10 @@ var queries = {
       }
     }
   },
+
   '/langvar/<langvar>': {
     type: 'single',
+    desc: 'single language variety query',
     reqParams: {
       include: {
         type: 'string[]',
@@ -326,35 +349,52 @@ var queries = {
       }
     }
   },
+
   '/langvar/count': {
-    type: 'count'
+    type: 'count',
+    desc: 'language variety count query'
   },
+
   '/meaning': {
-    type: 'result'
+    type: 'result',
+    desc: 'meaning query'
   },
+
   '/meaning/<meaning>': {
     type: 'single',
+    desc: 'single meaning variety query'
   },
+
   '/meaning/count': {
-    type: 'count'
+    type: 'count',
+    desc: 'meaning count query'
   },
+
   '/norm/definition/<langvar>': {
-
+    desc: 'definition normalization query'
   },
+
   '/norm/expr/<langvar>': {
-
+    desc: 'expression normalization query'
   },
+
   '/source': {
-    type: 'result'
+    type: 'result',
+    desc: 'source query'
   },
-  '/source/<source>': {
-    type: 'single'
-  },
-  '/source/count': {
-    type: 'count'
-  },
-  '/txt_degr': {
 
+  '/source/<source>': {
+    type: 'single',
+    desc: 'single source query'
+  },
+
+  '/source/count': {
+    type: 'count',
+    desc: 'source count query'
+  },
+
+  '/txt_degr': {
+    desc: 'text degradation query'
   }
 };
 
@@ -432,29 +472,14 @@ function changeQuery(e) {
   var info = queries[url];
   window.location.hash = url;
 
-  $('#summary').html(info.desc || '');
+  $('#description').html(Handlebars.templates.description({ desc: info.desc }));
+  $('#reqParams').html(Handlebars.templates.reqParams({ params: info.reqParams }));
 
-  var reqParams = $('#reqParams');
-
-  if (info.reqParams) {
-    reqParams.html(Handlebars.templates.reqParams({ params: info.reqParams }));
-  }
-  else {
-    reqParams.html('no parameters');
+  var types;
+  if (info.resTypes) {
+    types = {};
+    info.resTypes.forEach(function (type) { types[type] = objectTypes[type] });
   }
 
-  var resFields = $('#resFields');
-
-  if (info.resFields) {
-    var types;
-    if (info.resTypes) {
-      types = {};
-      info.resTypes.forEach(function (type) { types[type] = objectTypes[type] });
-    }
-
-    resFields.html(Handlebars.templates.resFields({ fields: info.resFields, types: types }));
-  }
-  else {
-    resFields.html('no parameters');
-  }
+  $('#resFields').html(Handlebars.templates.resFields({ fields: info.resFields, types: types }));
 }

@@ -10,43 +10,47 @@
 </tr>
 {{/inline}}
 
-<h3>Object</h3>
-<table>
-<tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
-{{#eachSorted fields}}
-  {{#unless attr.root}}
-    {{> resItem}}
-  {{/unless}}
-{{/eachSorted}}
-</table>
-
-{{#if types}}
-  {{#eachSorted types}}
-    <h3>{{attr.name}}</h3>
-    <div class="typeDescription">
-    <span>{{{attr.desc}}}</span>
-    {{#if attr.fields}}
-      <table>
-        <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
-        {{#eachSorted attr.fields}}
-          <tr><td class="name">{{name}}</td><td class="type">{{attr.type}}</td><td class="desc">{{attr.desc}}</td></tr>
-        {{/eachSorted}}
-      </table>
-    {{else}}
-      {{#if attr.example}}
-        <p><em>Example:</em> {{{attr.example}}}</p>
-      {{/if}}
-    {{/if}}
-    </div>
+{{#if params}}
+  <h3>Object</h3>
+  <table>
+  <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
+  {{#eachSorted fields}}
+    {{#unless attr.root}}
+      {{> resItem}}
+    {{/unless}}
   {{/eachSorted}}
-{{/if}}
+  </table>
 
-<h3>Root</h3>
-<table>
-<tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
-{{#eachSorted fields}}
-  {{#if attr.root}}
-    {{> resItem}}
+  {{#if types}}
+    {{#eachSorted types}}
+      <h3>{{attr.name}}</h3>
+      <div class="typeDescription">
+      <span>{{{attr.desc}}}</span>
+      {{#if attr.fields}}
+        <table>
+          <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
+          {{#eachSorted attr.fields}}
+            <tr><td class="name">{{name}}</td><td class="type">{{attr.type}}</td><td class="desc">{{attr.desc}}</td></tr>
+          {{/eachSorted}}
+        </table>
+      {{else}}
+        {{#if attr.example}}
+          <p><em>Example:</em> {{{attr.example}}}</p>
+        {{/if}}
+      {{/if}}
+      </div>
+    {{/eachSorted}}
   {{/if}}
-{{/eachSorted}}
-</table>
+
+  <h3>Root</h3>
+  <table>
+  <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
+  {{#eachSorted fields}}
+    {{#if attr.root}}
+      {{> resItem}}
+    {{/if}}
+  {{/eachSorted}}
+  </table>
+{{else}}
+<span class="notfound">no parameters</span>
+{{/if}}

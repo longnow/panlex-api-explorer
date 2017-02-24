@@ -7,21 +7,25 @@
 </tr>
 {{/inline}}
 
-<table>
-<tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
-{{#eachSorted params}}
-  {{#unless attr.global}}
-    {{> reqItem}}
-  {{/unless}}
-{{/eachSorted}}
-</table>
+{{#if params}}
+  <table>
+  <tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
+  {{#eachSorted params}}
+    {{#unless attr.global}}
+      {{> reqItem}}
+    {{/unless}}
+  {{/eachSorted}}
+  </table>
 
-<h3>Global</h3>
-<table>
-<tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
-{{#eachSorted params}}
-  {{#if attr.global}}
-    {{> reqItem}}
-  {{/if}}
-{{/eachSorted}}
-</table>
+  <h3>Global</h3>
+  <table>
+  <tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
+  {{#eachSorted params}}
+    {{#if attr.global}}
+      {{> reqItem}}
+    {{/if}}
+  {{/eachSorted}}
+  </table>
+{{else}}
+  <span class="notfound">no parameters</span>
+{{/if}}
