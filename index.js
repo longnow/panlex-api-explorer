@@ -1,26 +1,17 @@
 var endpoint = 'https://api.panlex.org/v2';
 
 var urlParams = {
-  definition: {
-    type: 'integer'
+  id: {
+    desc: 'numeric object ID'
   },
-  denotation: {
-    type: 'integer'
+  'id|label': {
+    desc: 'numeric source ID or label'
   },
-  expr: {
-    type: 'integer'
+  'id|uid': {
+    desc: 'numeric language variety ID or UID (<code>aaa-000</code>)'
   },
-  exprtxt: {
-    type: 'string'
-  },
-  langvar: {
-    type: 'integer|uid'
-  },
-  meaning: {
-    type: 'integer'
-  },
-  source: {
-    type: 'integer|source_label'
+  text: {
+    desc: 'expression text'
   }
 };
 
@@ -452,7 +443,7 @@ function initHelpers() {
   });
 
   Handlebars.registerHelper('urlToId', function (url) {
-    return url.replace(/[/<>]/g, '');
+    return url.replace(/[/<>\|]/g, '');
   });
 }
 
@@ -471,8 +462,6 @@ $(document).ready(function () {
   if (!queryLink) queryLink = $('#queryLink-langvar');
   queryLink.trigger('click');
 
-  $('#submit').on('click', submitRequest);
-
   $('#content').show();
 });
 
@@ -483,11 +472,20 @@ function clickQuery(e) {
 }
 
 function setQuery(url) {
-  currentUrl = url;
   var info = queries[url];
 
   $('#description').html(Handlebars.templates.description({ desc: info.desc }));
-  $('#reqParams').html(Handlebars.templates.reqParams({ params: info.reqParams }));
+
+  var reqUrlParams = url.match(/<[^>]+>/g);
+  if (reqUrlParams) {
+    reqUrlParams = reqUrlParams.map(function (item) {
+      var param = item.replace(/[<>]/g, '');
+      return { name: param, attr: urlParams[param] };
+    });
+  }
+
+  $('#reqParams').html(Handlebars.templates.reqParams({ params: info.reqParams, urlParams: reqUrlParams }));
+  $('#submit').on('click', submitRequest);
 
   var types;
   if (info.resTypes) {
@@ -496,38 +494,62 @@ function setQuery(url) {
   }
 
   $('#resFields').html(Handlebars.templates.resFields({ fields: info.resFields, types: types }));
+
+  currentUrl = url.replace(/\/<.+$/, '');
 }
 
 function submitRequest(e) {
   var p = getReqParams();
   if (!p) return;
 
-  $.post({
+  var options = {
     url: endpoint+currentUrl,
-    data: JSON.stringify(p),
     dataType: 'json'
-  }).done(function (data) {
-  }).fail(function (data) {
-  });
+  };
+
+  if (p.url.length) {
+    options.method = 'GET';
+    options.url += '/' + p.url.join('/');
+  }
+  else {
+    options.method = 'POST';
+    options.data = JSON.stringify(p.body);
+  }
+
+  $.ajax(options)
+    .done(function (data) {})
+    .fail(function (data) {});
 }
 
 function getReqParams() {
-  var p = {};
+  var p = { body: {}, url: [] };
   var error;
 
   $('#reqParams input').each(function () {
     var val = this.value.trim();
 
-    if (val.length) {
+    var match = this.name.match(/^url_(\d)$/);
+
+    if (match) {
+      if (val.length) {
+        p.url[match[1]] = val;
+      }
+      else setError(this);
+    }
+    else if (val.length) {
       try {
         val = JSON.parse(val);
-        p[this.name] = val;
+        p.body[this.name] = val;
       } catch (e) {
-        error = true;
-        $(this).addClass('error').one('change', function (e) { $(this).removeClass('error') });
+        setError(this);
       }
     }
   });
 
   return error ? null : p;
+
+  function setError(elt) {
+    error = true;
+    $(elt).addClass('error').one('change', function (e) { $(elt).removeClass('error') });
+  }
 }
