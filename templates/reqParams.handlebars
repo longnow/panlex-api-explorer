@@ -10,7 +10,7 @@
 <h2>Request parameters</h2>
 {{#if params}}
   <table>
-  <tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
+  <tr><th class="name">name</th><th class="type">type</th><th class="input">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted params}}
     {{#unless attr.global}}
       {{> reqItem}}
@@ -20,7 +20,7 @@
 
   <h3>Global</h3>
   <table>
-  <tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
+  <tr><th class="name">name</th><th class="type">type</th><th class="input">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted params}}
     {{#if attr.global}}
       {{> reqItem}}
