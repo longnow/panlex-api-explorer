@@ -456,21 +456,23 @@ function initHelpers() {
   });
 }
 
+var currentUrl;
+
 $(document).ready(function () {
   $('#queryList').html(Handlebars.templates.queryList({ queries: queries }));
   $('.queryLink').on('click', clickQuery);
 
   var queryLink;
-
   var hash = window.location.hash.replace(/^#/, '');
   if (hash.length && hash.match(/^[a-z]+$/)) {
     var elt = $('#queryLink-'+hash);
     if (elt.length) queryLink = elt;
   }
-
   if (!queryLink) queryLink = $('#queryLink-langvar');
-
   queryLink.trigger('click');
+
+  $('#submit').on('click', submitRequest);
+
   $('#content').show();
 });
 
@@ -481,6 +483,7 @@ function clickQuery(e) {
 }
 
 function setQuery(url) {
+  currentUrl = url;
   var info = queries[url];
 
   $('#description').html(Handlebars.templates.description({ desc: info.desc }));
@@ -493,6 +496,19 @@ function setQuery(url) {
   }
 
   $('#resFields').html(Handlebars.templates.resFields({ fields: info.resFields, types: types }));
+}
+
+function submitRequest(e) {
+  var p = getReqParams();
+  if (!p) return;
+
+  $.post({
+    url: endpoint+currentUrl,
+    data: JSON.stringify(p),
+    dataType: 'json'
+  }).done(function (data) {
+  }).fail(function (data) {
+  });
 }
 
 function getReqParams() {
