@@ -1,7 +1,21 @@
+body {
+    margin: 1.5em;
+}
 label {
   display: block;
   margin: 1.5ex 0;
+  width: 30em;
 }
 label span {
-  margin-right: 1ex;
+  margin-right: 0.5ex;
+}
+.param {
+  display: inline-block;
+  width: 9em;
+  margin: 1ex 1ex 1ex 0;
+  font-family: monospace;
+}
+.desc {
+    display: inline-block;
+    width: 20em;
 }
