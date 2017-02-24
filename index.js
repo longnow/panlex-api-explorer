@@ -27,7 +27,7 @@ var urlParams = {
 var objectTypes = {
   cldr_char: {
     name: 'CLDR character',
-    desc: 'Represents an <a href="http://cldr.unicode.org/translation/characters#TOC-Exemplar-Characters">exemplar character</a> for a language variety, as defined by the Unicode Common Locale Data Repository.',
+    desc: 'Object representing an <a href="http://cldr.unicode.org/translation/characters#TOC-Exemplar-Characters">exemplar character</a> for a language variety, as defined by the Unicode Common Locale Data Repository.',
     fields: {
       category: {
         type: 'string',
