@@ -1,7 +1,12 @@
 {{#*inline "reqItem"}}
-<label><span class="param">{{name}}</span><input type="text" name="{{name}}"></label>
+<tr>
+<td class="name">{{name}}</td>
+<td class="input"><input type="text" name="{{name}}"></td>
+<td class="desc">{{{desc}}}</td>
+</tr>
 {{/inline}}
 
+<table>
 {{#each params}}
 {{#with (lookup ../info @this)}}
 {{#unless global}}
@@ -9,8 +14,10 @@
 {{/unless}}
 {{/with}}
 {{/each}}
+</table>
 
 <h3>Global</h3>
+<table>
 {{#each params}}
 {{#with (lookup ../info @this)}}
 {{#if global}}
@@ -18,3 +25,4 @@
 {{/if}}
 {{/with}}
 {{/each}}
+</table>

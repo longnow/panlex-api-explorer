@@ -164,32 +164,116 @@ var queries = {
         type: 'string[]',
         desc: 'array of expression texts. Restricts results to language varieties containing a matching expression'
       },
+      expr_txt_degr: {
+        type: 'string[]',
+        desc: 'array of expression texts. Restricts results to language varieties containing a matching expression in degraded form'
+      },
       id: {
         type: 'integer[]',
         desc: 'array of language variety IDs'
       },
-      uid: {
-        type: 'uid[]',
-        desc: 'array of language variety uniform identifiers'
-      },
       include: {
         type: 'string[]',
-        options: ['denotation_count', 'expr_count', 'langvar_char', 'langvar_cldr_char']
+        options: ['denotation_count', 'expr_count', 'langvar_char', 'langvar_cldr_char', 'script_expr_txt']
+      },
+      lang_code: {
+        type: 'string[]',
+        desc: 'array of three-letter ISO 639 language codes'
+      },
+      mutable: {
+        type: 'boolean',
+        desc: 'Restricts results to language varieties that are mutable (if <code>true</code>) or immutable (if <code>false</code>)'
+      },
+      name_expr: {
+        type: 'integer[]',
+        desc: 'array of language variety default name expression IDs'
+      },
+      name_expr_txt: {
+        type: 'string[]',
+        desc: 'array of language variety default name expression texts'
+      },
+      name_expr_txt_degr: {
+        type: 'string[]',
+        desc: 'array of language variety default name expression texts to be matched in their degraded form'
+      },
+      script_expr: {
+        type: 'integer[]',
+        desc: 'array of language variety <code>art-262</code> (ISO 15924) expression IDs. Restricts results to language varieties in the specified scripts'
+      },
+      script_expr_txt: {
+        type: 'string[]',
+        desc: 'array of language variety <code>art-262</code> (ISO 15924) expression texts. Restricts results to language varieties in the specified scripts'
+      },
+      trans_expr: {
+        type: 'integer[]',
+        desc: 'array of expression IDs. Restricts results to those language varieties containing a one-hop translation of one of the expressions'
+      },
+      uid: {
+        type: 'string[]',
+        desc: 'array of language variety uniform identifiers'
       }
     },
     resFields: {
+      denotation_count: {
+        type: 'integer',
+        desc: 'number of denotations in the language variety',
+        include: 'denotation_count'
+      },
+      expr_count: {
+        type: 'integer',
+        desc: 'number of expressions in the language variety',
+        include: 'expr_count'
+      },
       id: {
         type: 'integer',
         desc: 'language variety ID number'
       },
-      uid: {
-        type: 'uid',
-        desc: 'language variety’s uniform identifier'
+      lang_code: {
+        type: 'string',
+        desc: 'three-letter ISO 639 language code'
       },
       langvar_char: {
         type: 'codepoint_range[]',
         desc: 'array of code point ranges',
         include: 'langvar_char'
+      },
+      langvar_cldr_char: {
+        type: 'codepoint_range[]',
+        desc: 'array of exemplar character objects',
+        include: 'langvar_cldr_char'
+      },
+      mutable: {
+        type: 'boolean',
+        desc: 'whether the language variety is mutable'
+      },
+      name_expr: {
+        type: 'integer',
+        desc: 'language variety default name’s expression ID'
+      },
+      name_expr_txt: {
+        type: 'string',
+        desc: 'language variety default name’s expression text'
+      },
+      name_expr_txt_degr: {
+        type: 'string',
+        desc: 'language variety default name’s degraded expression text'
+      },
+      script_expr: {
+        type: 'integer',
+        desc: 'the language variety’s script, coded as the language variety <code>art-262</code> (ISO 15924) expression ID'
+      },
+      script_expr_txt: {
+        type: 'string',
+        desc: 'text of the <code>script_expr</code> expression',
+        include: 'script_expr_txt'
+      },
+      uid: {
+        type: 'string',
+        desc: 'language variety’s uniform identifier'
+      },
+      var_code: {
+        type: 'integer',
+        desc: 'numeric variety code'
       }
     }
   },

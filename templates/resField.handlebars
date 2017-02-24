@@ -1,13 +1,17 @@
 {{#*inline "resItem"}}
+<tr>
 {{#if include}}
-<div><span class="param">({{name}})</span><span class="desc">{{desc}}</span></div>
+<td class="name">({{name}})</td>
 {{else}}
-<div><span class="param">{{name}}</span><span class="desc">{{desc}}</span></div>
+<td class="name">{{name}}</td>
 {{/if}}
+<td class="desc">{{{desc}}}</td>
+</tr>
 {{/inline}}
 
 <h3>Object</h3>
 
+<table>
 {{#each params}}
 {{#with (lookup ../info @this)}}
 {{#unless root}}
@@ -15,8 +19,10 @@
 {{/unless}}
 {{/with}}
 {{/each}}
+</table>
 
 <h3>Root</h3>
+<table>
 {{#each params}}
 {{#with (lookup ../info @this)}}
 {{#if root}}
@@ -24,3 +30,4 @@
 {{/if}}
 {{/with}}
 {{/each}}
+</table>
