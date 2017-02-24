@@ -1,15 +1,27 @@
 body {
-    margin: 1.5em;
+  margin: 1.5em;
+  max-width: 1000px;
 }
 code {
   font-family: monospace;
 }
 h1, h2, h3 {
-    margin: 1.5ex 0;
+    margin: 0ex 0 1.5ex 0;
+    font-style: bold;
+}
+h1 {
+  font-size: 130%;
+  background: lightblue;
+}
+h2 {
+  font-size: 120%;
+}
+h3 {
+  font-size: 100%;
 }
 input[type="text"] {
   font-family: monospace;
-  width: 20em;
+  width: 100%;
 }
 table {
   margin: 1.5em 0;
@@ -34,7 +46,11 @@ th {
 }
 
 .desc {
-  width: 30em;
+  width: 60%;
+  font-size: 92%;
+}
+.input {
+  width: 17%;
 }
 td.name, td.type {
   font-family: monospace;
@@ -42,9 +58,35 @@ td.name, td.type {
 .notfound {
   font-style: italic;
 }
+.queryLink {
+  display: block;
+  color: blue;
+  text-decoration: none;
+  margin: 0.75ex 0.75ex 0.75ex 0;
+}
+.queryLink:hover, .queryLink.active {
+  background-color: lightblue;
+}
 .typeDescription span, .typeDescription p {
   display: inline-block;
   width: 45em;
+}
+
+#query {
+  float: left;
+  max-width: 750px;
+  margin: 0 0 2.5em 1em;
+}
+
+#queryList {
+  float: left;
+  width: 225px;
+  font-family: monospace;
+  font-size: 97%;
+}
+
+#reqParams {
+  margin-bottom: 1em;
 }
 
 #resFields td, #resFields th {

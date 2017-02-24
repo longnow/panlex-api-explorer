@@ -162,7 +162,7 @@ var queries = {
     desc: 'definition query'
   },
 
-  '/definition/<definition>': {
+  '/definition/<id>': {
     type: 'single',
     desc: 'single definition query'
   },
@@ -177,7 +177,7 @@ var queries = {
     desc: 'denotation query'
   },
 
-  '/denotation/<denotation>': {
+  '/denotation/<id>': {
     type: 'single',
     desc: 'single denotation query'
   },
@@ -192,7 +192,7 @@ var queries = {
     desc: 'expression or translation query'
   },
 
-  '/expr/<expr>': {
+  '/expr/<id>': {
     type: 'single',
     desc: 'single expression query (with ID)',
     reqParams: {
@@ -203,7 +203,7 @@ var queries = {
     }
   },
 
-  '/expr/<langvar>/<exprtxt>': {
+  '/expr/<id|uid>/<text>': {
     type: 'single',
     desc: 'single expression query (with language variety and text)'
   },
@@ -339,7 +339,7 @@ var queries = {
     }
   },
 
-  '/langvar/<langvar>': {
+  '/langvar/<id|uid>': {
     type: 'single',
     desc: 'single language variety query',
     reqParams: {
@@ -360,7 +360,7 @@ var queries = {
     desc: 'meaning query'
   },
 
-  '/meaning/<meaning>': {
+  '/meaning/<id>': {
     type: 'single',
     desc: 'single meaning variety query'
   },
@@ -370,11 +370,11 @@ var queries = {
     desc: 'meaning count query'
   },
 
-  '/norm/definition/<langvar>': {
+  '/norm/definition/<id|uid>': {
     desc: 'definition normalization query'
   },
 
-  '/norm/expr/<langvar>': {
+  '/norm/expr/<id|uid>': {
     desc: 'expression normalization query'
   },
 
@@ -383,7 +383,7 @@ var queries = {
     desc: 'source query'
   },
 
-  '/source/<source>': {
+  '/source/<id|label>': {
     type: 'single',
     desc: 'single source query'
   },
@@ -450,27 +450,38 @@ function initHelpers() {
     });
     return ret;
   });
+
+  Handlebars.registerHelper('urlToId', function (url) {
+    return url.replace(/[/<>]/g, '');
+  });
 }
 
 $(document).ready(function () {
-  var select = $('#query');
+  $('#queryList').html(Handlebars.templates.queryList({ queries: queries }));
+  $('.queryLink').on('click', clickQuery);
 
-  select.html(Handlebars.templates.options({
-    options: Object.keys(queries).sort().map(function (item) { return [item,item] })
-  }));
-
-  select.on('change', changeQuery);
+  var queryLink;
 
   var hash = window.location.hash.replace(/^#/, '');
-  if (hash.length) select.val(hash);
+  if (hash.length && hash.match(/^[a-z]+$/)) {
+    var elt = $('#queryLink-'+hash);
+    if (elt.length) queryLink = elt;
+  }
 
-  select.trigger('change');
+  if (!queryLink) queryLink = $('#queryLink-langvar');
+
+  queryLink.trigger('click');
 });
 
-function changeQuery(e) {
-  var url = e.target.value;
+function clickQuery(e) {
+  console.log(this.id);
+  $('.queryLink').removeClass('active');
+  setQuery($(this).addClass('active').data('url'));
+  window.location.hash = this.id.replace(/^queryLink-/, '');
+}
+
+function setQuery(url) {
   var info = queries[url];
-  window.location.hash = url;
 
   $('#description').html(Handlebars.templates.description({ desc: info.desc }));
   $('#reqParams').html(Handlebars.templates.reqParams({ params: info.reqParams }));
