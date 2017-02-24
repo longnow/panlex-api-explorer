@@ -73,22 +73,18 @@ td.name, td.type {
 }
 
 #query {
-  float: left;
-  max-width: 750px;
-  margin: 0 0 2.5em 1em;
+  margin-bottom: 2.5em;
+  overflow: auto;
 }
-
 #queryList {
   float: left;
-  width: 225px;
   font-family: monospace;
   font-size: 97%;
+  margin-right: 1em;
 }
-
 #reqParams {
   margin-bottom: 1em;
 }
-
 #resFields td, #resFields th {
   border: 1px solid lightgray;
 }
