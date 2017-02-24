@@ -120,7 +120,7 @@ var queries = {
   '/definition': {
     type: 'result'
   },
-  '/definition/<definition_id>': {
+  '/definition/<definition>': {
     type: 'single'
   },
   '/definition/count': {
@@ -129,7 +129,7 @@ var queries = {
   '/denotation': {
     type: 'result'
   },
-  '/denotation/<denotation_id>': {
+  '/denotation/<denotation>': {
     type: 'single'
   },
   '/denotation/count': {
@@ -138,7 +138,7 @@ var queries = {
   '/expr': {
     type: 'result'
   },
-  '/expr/<expr_id>': {
+  '/expr/<expr>': {
     type: 'single',
     reqParams: {
       include: {
@@ -147,7 +147,7 @@ var queries = {
       }
     }
   },
-  '/expr/<langvar_id>/<expr_txt>': {
+  '/expr/<langvar>/<exprtxt>': {
 
   },
   '/expr/count': {
@@ -193,7 +193,7 @@ var queries = {
       }
     }
   },
-  '/langvar/<langvar_id|uid>': {
+  '/langvar/<langvar>': {
     type: 'single',
     reqParams: {
       include: {
@@ -208,22 +208,22 @@ var queries = {
   '/meaning': {
     type: 'result'
   },
-  '/meaning/<meaning_id>': {
+  '/meaning/<meaning>': {
     type: 'single',
   },
   '/meaning/count': {
     type: 'count'
   },
-  '/norm/definition/<langvar_id|uid>': {
+  '/norm/definition/<langvar>': {
 
   },
-  '/norm/expr/<langvar_id|uid>': {
+  '/norm/expr/<langvar>': {
 
   },
   '/source': {
     type: 'result'
   },
-  '/source/<source_id|source_label>': {
+  '/source/<source>': {
     type: 'single'
   },
   '/source/count': {
