@@ -471,11 +471,10 @@ $(document).ready(function () {
   if (!queryLink) queryLink = $('#queryLink-langvar');
 
   queryLink.trigger('click');
-  $('body').show();
+  $('#content').show();
 });
 
 function clickQuery(e) {
-  console.log(this.id);
   $('.queryLink').removeClass('active');
   setQuery($(this).addClass('active').data('url'));
   window.location.hash = this.id.replace(/^queryLink-/, '');

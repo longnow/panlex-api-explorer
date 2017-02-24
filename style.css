@@ -1,7 +1,6 @@
 body {
   margin: 1.5em;
   max-width: 1000px;
-  display: none;
 }
 code {
   font-family: monospace;
@@ -76,6 +75,9 @@ td.name, td.type {
   width: 45em;
 }
 
+#content {
+  display: none;
+}
 #query {
   padding-left: 13rem;
   margin-bottom: 2.5em;
