@@ -6,8 +6,8 @@ code {
   font-family: monospace;
 }
 h1, h2, h3 {
-    margin: 0ex 0 1.5ex 0;
-    font-style: bold;
+  margin: 0 0 2ex 0;
+  font-style: bold;
 }
 h1 {
   font-size: 130%;
@@ -24,7 +24,7 @@ input[type="text"] {
   width: 100%;
 }
 table {
-  margin: 1.5em 0;
+  margin-bottom: 1.5em;
   border-collapse: collapse;
 }
 td, th {
@@ -62,7 +62,7 @@ td.name, td.type {
   display: block;
   color: blue;
   text-decoration: none;
-  margin: 0.75ex 0.75ex 0.75ex 0;
+  margin: 0 0.75ex 0.75ex 0;
 }
 .queryLink:hover, .queryLink.active {
   background-color: lightblue;
@@ -73,14 +73,16 @@ td.name, td.type {
 }
 
 #query {
+  padding-left: 13rem;
   margin-bottom: 2.5em;
-  overflow: auto;
 }
 #queryList {
-  float: left;
+  position: absolute;
+  width: 12rem;
+}
+#queryList a {
   font-family: monospace;
   font-size: 97%;
-  margin-right: 1em;
 }
 #reqParams {
   margin-bottom: 1em;
