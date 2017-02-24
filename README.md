@@ -4,6 +4,6 @@
 # to install handlebars (run once)
 $ npm install
 
-# to compile templates (run each time they change)
+# to compile templates and CSS (run each time they change)
 $ npm run compile
 ```
