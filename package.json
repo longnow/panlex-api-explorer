@@ -4,7 +4,7 @@
   "description": "PanLex API Explorer",
   "main": "index.js",
   "scripts": {
-    "compile": "handlebars templates/*.handlebars -f templates.js",
+    "compile": "handlebars templates/*.handlebars -f templates.js && stylus -c style.styl",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +14,7 @@
     "url": "https://github.com/longnow/panlex-api-explorer.git"
   },
   "dependencies": {
-    "handlebars": "^4.0.6"
+    "handlebars": "^4.0.6",
+    "stylus": "^0.54.5"
   }
 }
