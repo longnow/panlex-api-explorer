@@ -39,6 +39,10 @@ th {
 .section .desc {
   width: 30em;
 }
+.section .typeDescription span, .section .typeDescription p {
+  display: inline-block;
+  width: 45em;
+}
 #resFields td, #resFields th {
   border: 1px solid lightgray;
 }

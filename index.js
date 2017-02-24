@@ -25,6 +25,24 @@ var urlParams = {
 };
 
 var objectTypes = {
+  cldr_char: {
+    name: 'CLDR character',
+    desc: 'Represents an <a href="http://cldr.unicode.org/translation/characters#TOC-Exemplar-Characters">exemplar character</a> for a language variety, as defined by the Unicode Common Locale Data Repository.',
+    fields: {
+      category: {
+        type: 'string',
+        desc: 'character category, typically “pri” (primary/standard), “aux” (auxiliary), or “pun” (punctuation)'
+      },
+      locale: {
+        type: 'string',
+        desc: 'Unicode script locale abbreviation'
+      },
+      range: {
+        type: 'codepoint_range',
+        desc: 'a code-point range (see below)'
+      }
+    }
+  },
   codepoint_range: {
     name: 'Code-point range',
     desc: 'Two-element array representing a range of permissible Unicode characters for a language variety. The array takes the form <code>[first, last]</code>, where <code>first</code> is the numeric value of the first code-point in the range and <code>last</code> is the value of the last code-point in the range.',
@@ -260,8 +278,8 @@ var queries = {
         include: 'langvar_char'
       },
       langvar_cldr_char: {
-        type: 'codepoint_range[]',
-        desc: 'exemplar character objects',
+        type: 'cldr_char[]',
+        desc: 'CLDR character objects',
         include: 'langvar_cldr_char'
       },
       mutable: {

@@ -23,13 +23,21 @@
 {{#if types}}
   {{#eachSorted types}}
     <h3>{{attr.name}}</h3>
-    <table>
+    <div class="typeDescription">
+    <span>{{{attr.desc}}}</span>
     {{#if attr.fields}}
+      <table>
+        <tr><th class="name">name</th><th class="type">type</th><th class="desc">description</th></tr>
+        {{#eachSorted attr.fields}}
+          <tr><td class="name">{{name}}</td><td class="type">{{attr.type}}</td><td class="desc">{{attr.desc}}</td></tr>
+        {{/eachSorted}}
+      </table>
     {{else}}
-      <tr><th class="desc">description</th><th class="example">example</th></tr>
-      <tr><td>{{{attr.desc}}}</td><td>{{#if attr.example}}<em>Example:</em> {{{attr.example}}}{{/if}}</td></tr>
+      {{#if attr.example}}
+        <p><em>Example:</em> {{{attr.example}}}</p>
+      {{/if}}
     {{/if}}
-    </table>
+    </div>
   {{/eachSorted}}
 {{/if}}
 
