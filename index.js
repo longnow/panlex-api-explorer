@@ -471,6 +471,7 @@ $(document).ready(function () {
   if (!queryLink) queryLink = $('#queryLink-langvar');
 
   queryLink.trigger('click');
+  $('body').show();
 });
 
 function clickQuery(e) {
