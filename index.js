@@ -494,3 +494,24 @@ function setQuery(url) {
 
   $('#resFields').html(Handlebars.templates.resFields({ fields: info.resFields, types: types }));
 }
+
+function getReqParams() {
+  var p = {};
+  var error;
+
+  $('#reqParams input').each(function () {
+    var val = this.value.trim();
+
+    if (val.length) {
+      try {
+        val = JSON.parse(val);
+        p[this.name] = val;
+      } catch (e) {
+        error = true;
+        $(this).addClass('error').one('change', function (e) { $(this).removeClass('error') });
+      }
+    }
+  });
+
+  return error ? null : p;
+}
