@@ -319,6 +319,7 @@ var queries = {
 };
 
 initData();
+initHelpers();
 
 function initData() {
   for (var i in commonParams) {
@@ -340,6 +341,18 @@ function initData() {
     if (type && commonParams[type])
       queries[i] = $.extend(true, $.extend(true, {}, commonParams[type]), queries[i]);
   }
+}
+
+function initHelpers() {
+  Handlebars.registerHelper('eachSorted', function (context, options) {
+    var ret = '';
+
+    Object.keys(context).sort().forEach(function (key) {
+      ret += options.fn({ name: key, attr: context[key] });
+    });
+
+    return ret;
+  });
 }
 
 $(document).ready(function () {
@@ -367,7 +380,7 @@ function changeQuery(e) {
   var reqParams = $('#reqParams');
 
   if (info.reqParams) {
-    reqParams.html(Handlebars.templates.reqParam({ params: Object.keys(info.reqParams).sort(), info: info.reqParams }));
+    reqParams.html(Handlebars.templates.reqParam({ params: info.reqParams }));
   }
   else {
     reqParams.html('no parameters');
@@ -376,7 +389,7 @@ function changeQuery(e) {
   var resFields = $('#resFields');
 
   if (info.resFields) {
-    resFields.html(Handlebars.templates.resField({ params: Object.keys(info.resFields).sort(), info: info.resFields }));
+    resFields.html(Handlebars.templates.resField({ fields: info.resFields }));
   }
   else {
     resFields.html('no parameters');

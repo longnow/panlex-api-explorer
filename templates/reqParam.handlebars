@@ -2,27 +2,23 @@
 <tr>
 <td class="name">{{name}}</td>
 <td class="input"><input type="text" name="{{name}}"></td>
-<td class="desc">{{{desc}}}</td>
+<td class="desc">{{{attr.desc}}}</td>
 </tr>
 {{/inline}}
 
 <table>
-{{#each params}}
-{{#with (lookup ../info @this)}}
-{{#unless global}}
-{{> reqItem name=../this}}
+{{#eachSorted params}}
+{{#unless attr.global}}
+{{> reqItem}}
 {{/unless}}
-{{/with}}
-{{/each}}
+{{/eachSorted}}
 </table>
 
 <h3>Global</h3>
 <table>
-{{#each params}}
-{{#with (lookup ../info @this)}}
-{{#if global}}
-{{> reqItem name=../this}}
+{{#eachSorted params}}
+{{#if attr.global}}
+{{> reqItem}}
 {{/if}}
-{{/with}}
-{{/each}}
+{{/eachSorted}}
 </table>

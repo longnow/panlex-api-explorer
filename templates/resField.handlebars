@@ -1,33 +1,29 @@
 {{#*inline "resItem"}}
 <tr>
-{{#if include}}
+{{#if attr.include}}
 <td class="name">({{name}})</td>
 {{else}}
 <td class="name">{{name}}</td>
 {{/if}}
-<td class="desc">{{{desc}}}</td>
+<td class="desc">{{{attr.desc}}}</td>
 </tr>
 {{/inline}}
 
 <h3>Object</h3>
 
 <table>
-{{#each params}}
-{{#with (lookup ../info @this)}}
-{{#unless root}}
-{{> resItem name=../this}}
+{{#eachSorted fields}}
+{{#unless attr.root}}
+{{> resItem}}
 {{/unless}}
-{{/with}}
-{{/each}}
+{{/eachSorted}}
 </table>
 
 <h3>Root</h3>
 <table>
-{{#each params}}
-{{#with (lookup ../info @this)}}
-{{#if root}}
-{{> resItem name=../this}}
+{{#eachSorted fields}}
+{{#if attr.root}}
+{{> resItem}}
 {{/if}}
-{{/with}}
-{{/each}}
+{{/eachSorted}}
 </table>
