@@ -75,9 +75,6 @@ td.name, td.type {
   width: 45em;
 }
 
-#content {
-  display: none;
-}
 #query {
   padding-left: 13rem;
   margin-bottom: 2.5em;
