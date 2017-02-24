@@ -1,0 +1,27 @@
+{{#*inline "reqItem"}}
+<tr>
+<td class="name">{{name}}</td>
+<td class="type">{{attr.type}}</td>
+<td class="input"><input type="text" name="{{name}}"></td>
+<td class="desc">{{{attr.desc}}}</td>
+</tr>
+{{/inline}}
+
+<table>
+<tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
+{{#eachSorted params}}
+  {{#unless attr.global}}
+    {{> reqItem}}
+  {{/unless}}
+{{/eachSorted}}
+</table>
+
+<h3>Global</h3>
+<table>
+<tr><th class="name">name</th><th class="type">type</th><th class="input">value</th><th class="desc">description</th></tr>
+{{#eachSorted params}}
+  {{#if attr.global}}
+    {{> reqItem}}
+  {{/if}}
+{{/eachSorted}}
+</table>

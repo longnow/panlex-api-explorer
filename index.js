@@ -24,25 +24,37 @@ var urlParams = {
   }
 };
 
-var commonParams = {
+var objectTypes = {
+  codepoint_range: {
+    name: 'Code-point range',
+    desc: 'Two-element array representing a range of permissible Unicode characters for a language variety. The array takes the form <code>[first, last]</code>, where <code>first</code> is the numeric value of the first code-point in the range and <code>last</code> is the value of the last code-point in the range.',
+    example: 'For English (language variety <em>eng-000</em>), the first code point object is <code>[32, 33]</code>. This includes the range from U+0020 (SPACE) to U+0021 (EXCLAMATION MARK). Note that JSON numeric values are always decimal.'
+  }
+}
+
+var queryDefaults = {
   default: {
     reqParams: {
       cache: {
         type: 'boolean',
+        desc: 'whether to return cached responses. Defaults to <code>true</code>. Set to <code>false</code> if you want to ensure that your response contains the latest data from the database. Cached responses will be no more than 24 hours old',
         global: true
       },
       echo: {
         type: 'boolean',
+        desc: 'whether to pass the query back in the response as <code>request</code>, which is an object with the keys <code>url</code> and <code>query</code>. Defaults to <code>false</code>',
         global: true
       },
       indent: {
         type: 'boolean',
+        desc: 'whether to pretty-print the JSON response. Defaults to <code>false</code>',
         global: true
       },
     },
     resFields: {
       request: {
         type: 'object',
+        desc: 'the request query, if <code>echo</code> was on',
         root: true
       }
     }
@@ -52,6 +64,7 @@ var commonParams = {
     reqParams: {
       after: {
         type: 'scalar[]',
+        desc: 'integers or strings containing values of <code>sort</code> fields. Records will be returned that occur immediately after the indicated value(s) in the sort order. Can be used as an alternative to <code>offset</code>',
         global: true
       },
       include: {
@@ -60,32 +73,39 @@ var commonParams = {
       },
       limit: {
         type: 'integer',
+        desc: 'maximum number of records to return. Defaults to <code>resultMax</code>, i.e., the maximum',
         global: true
       },
       offset: {
         type: 'integer',
+        desc: 'how many records to omit from the beginning of the returned records. Defaults to 0; cannot be greater than 250000',
         global: true
       },
       sort: {
         type: 'string[]',
+        desc: 'fields to sort the result by. Sort strings take the format <em>&lt;field&gt;</em> or <em>&lt;field&gt; asc</em> for ascending order, <em>&lt;field&gt; desc</em> for descending order. You may also sort by <code>include</code> fields if they are present and do not return an array. If you sort by the special field <code>random</code>, the result will be returned in random order. The default is to sort by ID in ascending order.',
         global: true
       }
     },
     resFields: {
       result: {
         type: 'object[]',
+        desc: 'results. Limited to <code>resultMax</code> per query; use <code>offset</code> to get more',
         root: true
       },
       resultMax: {
         type: 'integer',
+        desc: 'maximum number of <code>result</code> objects that will be returned in a single query (currently 2000)',
         root: true
       },
       resultNum: {
         type: 'integer',
+        desc: 'number of objects returned in <code>result</code>',
         root: true
       },
       resultType: {
         type: 'string',
+        desc: 'type of objects in <code>result</code>',
         root: true
       }
     }
@@ -106,10 +126,12 @@ var commonParams = {
     resFields: {
       count: {
         type: 'integer',
+        desc: 'number of results found',
         root: true
       },
       countType: {
         type: 'string',
+        desc: 'type of objects in <code>count</code>',
         root: true
       }
     }
@@ -162,15 +184,15 @@ var queries = {
     reqParams: {
       expr_txt: {
         type: 'string[]',
-        desc: 'array of expression texts. Restricts results to language varieties containing a matching expression'
+        desc: 'expression texts. Restricts results to language varieties containing a matching expression'
       },
       expr_txt_degr: {
         type: 'string[]',
-        desc: 'array of expression texts. Restricts results to language varieties containing a matching expression in degraded form'
+        desc: 'expression texts. Restricts results to language varieties containing a matching expression in degraded form'
       },
       id: {
         type: 'integer[]',
-        desc: 'array of language variety IDs'
+        desc: 'language variety IDs'
       },
       include: {
         type: 'string[]',
@@ -178,39 +200,39 @@ var queries = {
       },
       lang_code: {
         type: 'string[]',
-        desc: 'array of three-letter ISO 639 language codes'
+        desc: 'three-letter ISO 639 language codes'
       },
       mutable: {
         type: 'boolean',
-        desc: 'Restricts results to language varieties that are mutable (if <code>true</code>) or immutable (if <code>false</code>)'
+        desc: 'restricts results to language varieties that are mutable (if <code>true</code>) or immutable (if <code>false</code>)'
       },
       name_expr: {
         type: 'integer[]',
-        desc: 'array of language variety default name expression IDs'
+        desc: 'language variety default name expression IDs'
       },
       name_expr_txt: {
         type: 'string[]',
-        desc: 'array of language variety default name expression texts'
+        desc: 'language variety default name expression texts'
       },
       name_expr_txt_degr: {
         type: 'string[]',
-        desc: 'array of language variety default name expression texts to be matched in their degraded form'
+        desc: 'language variety default name expression texts to be matched in their degraded form'
       },
       script_expr: {
         type: 'integer[]',
-        desc: 'array of language variety <code>art-262</code> (ISO 15924) expression IDs. Restricts results to language varieties in the specified scripts'
+        desc: 'language variety <code>art-262</code> (ISO 15924) expression IDs. Restricts results to language varieties in the specified scripts'
       },
       script_expr_txt: {
         type: 'string[]',
-        desc: 'array of language variety <code>art-262</code> (ISO 15924) expression texts. Restricts results to language varieties in the specified scripts'
+        desc: 'language variety <code>art-262</code> (ISO 15924) expression texts. Restricts results to language varieties in the specified scripts'
       },
       trans_expr: {
         type: 'integer[]',
-        desc: 'array of expression IDs. Restricts results to those language varieties containing a one-hop translation of one of the expressions'
+        desc: 'expression IDs. Restricts results to those language varieties containing a one-hop translation of one of the expressions'
       },
       uid: {
         type: 'string[]',
-        desc: 'array of language variety uniform identifiers'
+        desc: 'language variety uniform identifiers'
       }
     },
     resFields: {
@@ -234,12 +256,12 @@ var queries = {
       },
       langvar_char: {
         type: 'codepoint_range[]',
-        desc: 'array of code point ranges',
+        desc: 'code-point ranges',
         include: 'langvar_char'
       },
       langvar_cldr_char: {
         type: 'codepoint_range[]',
-        desc: 'array of exemplar character objects',
+        desc: 'exemplar character objects',
         include: 'langvar_cldr_char'
       },
       mutable: {
@@ -260,7 +282,7 @@ var queries = {
       },
       script_expr: {
         type: 'integer',
-        desc: 'the language variety’s script, coded as the language variety <code>art-262</code> (ISO 15924) expression ID'
+        desc: 'language variety’s script, coded as the language variety <code>art-262</code> (ISO 15924) expression ID'
       },
       script_expr_txt: {
         type: 'string',
@@ -322,35 +344,52 @@ initData();
 initHelpers();
 
 function initData() {
-  for (var i in commonParams) {
+  for (var i in queryDefaults) {
     if (i === 'default') continue;
 
-    for (var j in commonParams[i]) {
-      if (commonParams.default[j])
-        commonParams[i][j] = $.extend(true, $.extend(true, {}, commonParams.default[j]), commonParams[i][j]);
+    for (var j in queryDefaults[i]) {
+      // apply default values to query types
+      if (queryDefaults.default[j])
+        queryDefaults[i][j] = $.extend(true, $.extend(true, {}, queryDefaults.default[j]), queryDefaults[i][j]);
 
-      for (var k in commonParams[i][j]) {
-        var source = commonParams[i][j][k].inherit;
-        if (source) commonParams[i][j][k] = commonParams[source][j][k];
+      // apply inherited values
+      for (var k in queryDefaults[i][j]) {
+        var source = queryDefaults[i][j][k].inherit;
+        if (source) queryDefaults[i][j][k] = queryDefaults[source][j][k];
       }
     }
   }
 
   for (var i in queries) {
+    // apply default values to queries
     var type = queries[i].type;
-    if (type && commonParams[type])
-      queries[i] = $.extend(true, $.extend(true, {}, commonParams[type]), queries[i]);
+    if (type && queryDefaults[type])
+      queries[i] = $.extend(true, $.extend(true, {}, queryDefaults[type]), queries[i]);
+
+    // make list of response types requiring documentation
+    if (queries[i].resFields) {
+      var types = {};
+
+      for (var j in queries[i].resFields) {
+        var type = queries[i].resFields[j].type;
+        if (type) {
+          type = type.replace(/\[\]$/, '');
+          if (objectTypes[type]) types[type] = true;
+        }
+      }
+
+      types = Object.keys(types).sort();
+      if (types.length) queries[i].resTypes = types;
+    }
   }
 }
 
 function initHelpers() {
   Handlebars.registerHelper('eachSorted', function (context, options) {
     var ret = '';
-
     Object.keys(context).sort().forEach(function (key) {
       ret += options.fn({ name: key, attr: context[key] });
     });
-
     return ret;
   });
 }
@@ -380,7 +419,7 @@ function changeQuery(e) {
   var reqParams = $('#reqParams');
 
   if (info.reqParams) {
-    reqParams.html(Handlebars.templates.reqParam({ params: info.reqParams }));
+    reqParams.html(Handlebars.templates.reqParams({ params: info.reqParams }));
   }
   else {
     reqParams.html('no parameters');
@@ -389,7 +428,13 @@ function changeQuery(e) {
   var resFields = $('#resFields');
 
   if (info.resFields) {
-    resFields.html(Handlebars.templates.resField({ fields: info.resFields }));
+    var types;
+    if (info.resTypes) {
+      types = {};
+      info.resTypes.forEach(function (type) { types[type] = objectTypes[type] });
+    }
+
+    resFields.html(Handlebars.templates.resFields({ fields: info.resFields, types: types }));
   }
   else {
     resFields.html('no parameters');

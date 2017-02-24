@@ -1,0 +1,44 @@
+{{#*inline "resItem"}}
+<tr>
+{{#if attr.include}}
+  <td class="name">({{name}})</td>
+{{else}}
+  <td class="name">{{name}}</td>
+{{/if}}
+<td class="type">{{attr.type}}</td>
+<td class="desc">{{{attr.desc}}}</td>
+</tr>
+{{/inline}}
+
+<h3>Object</h3>
+<table>
+<tr><th class="name">name</th><th class="type">type</th><th class="desc">description</th></tr>
+{{#eachSorted fields}}
+  {{#unless attr.root}}
+    {{> resItem}}
+  {{/unless}}
+{{/eachSorted}}
+</table>
+
+{{#if types}}
+  {{#eachSorted types}}
+    <h3>{{attr.name}}</h3>
+    <table>
+    {{#if attr.fields}}
+    {{else}}
+      <tr><th class="desc">description</th><th class="example">example</th></tr>
+      <tr><td>{{{attr.desc}}}</td><td>{{#if attr.example}}<em>Example:</em> {{{attr.example}}}{{/if}}</td></tr>
+    {{/if}}
+    </table>
+  {{/eachSorted}}
+{{/if}}
+
+<h3>Root</h3>
+<table>
+<tr><th class="name">name</th><th class="type">type</th><th class="desc">description</th></tr>
+{{#eachSorted fields}}
+  {{#if attr.root}}
+    {{> resItem}}
+  {{/if}}
+{{/eachSorted}}
+</table>

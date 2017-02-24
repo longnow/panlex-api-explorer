@@ -11,30 +11,34 @@ input[type="text"] {
   font-family: monospace;
   width: 20em;
 }
+th {
+  font-weight: bold;
+  text-align: left;
+}
 
 .section table {
+  margin: 1.5em 0;
   border-collapse: collapse;
 }
-.section td {
+.section td, .section th {
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
-  padding: 0.75ex 1ex;
+  padding: 0.75ex 1.5ex;
   vertical-align: middle;
 }
-.section td:first-child {
+.section td:first-child, .section th:first-child {
   border-left: 1px solid lightgray;
   padding-left: 1em;
 }
-.section td:last-child {
+.section td:last-child, .section th:last-child {
   border-right: 1px solid lightgray;
 }
-.section .name {
-  width: 12em;
+.section td.name, .section td.type {
   font-family: monospace;
 }
 .section .desc {
   width: 30em;
 }
-#resFields td {
+#resFields td, #resFields th {
   border: 1px solid lightgray;
 }
