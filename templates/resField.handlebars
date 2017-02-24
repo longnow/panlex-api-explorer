@@ -1,0 +1,22 @@
+{{#*inline "resItem"}}
+<div><span class="param">{{name}}</span><span class="desc">{{desc}}</span></div>
+{{/inline}}
+
+<h3>Object</h3>
+
+{{#each params}}
+{{#with (lookup ../info @this)}}
+{{#unless root}}
+{{> resItem name=../this}}
+{{/unless}}
+{{/with}}
+{{/each}}
+
+<h3>Root</h3>
+{{#each params}}
+{{#with (lookup ../info @this)}}
+{{#if root}}
+{{> resItem name=../this}}
+{{/if}}
+{{/with}}
+{{/each}}

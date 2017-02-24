@@ -1,72 +1,262 @@
 var endpoint = 'https://api.panlex.org/v2';
 
-var globalParams = {
-  reqParams: {
-    after:    { },
-    cache:    { },
-    echo:     { },
-    include:  { },
-    indent:   { },
-    limit:    { },
-    offset:   { },
-    sort:     { }
+var urlParams = {
+  definition: {
+    type: 'integer'
   },
-  resParams: {
+  denotation: {
+    type: 'integer'
+  },
+  expr: {
+    type: 'integer'
+  },
+  exprtxt: {
+    type: 'string'
+  },
+  langvar: {
+    type: 'integer|uid'
+  },
+  meaning: {
+    type: 'integer'
+  },
+  source: {
+    type: 'integer|source_label'
   }
 };
 
-var urlParams = {
-  definition:   { },
-  denotation:   { },
-  expr:         { },
-  exprtxt:      { },
-  langvar:      { },
-  meaning:      { },
-  source:       { }
+var commonParams = {
+  default: {
+    reqParams: {
+      cache: {
+        type: 'boolean',
+        global: true
+      },
+      echo: {
+        type: 'boolean',
+        global: true
+      },
+      indent: {
+        type: 'boolean',
+        global: true
+      },
+    },
+    resFields: {
+      request: {
+        type: 'object',
+        root: true
+      }
+    }
+  },
+
+  result: {
+    reqParams: {
+      after: {
+        type: 'scalar[]',
+        global: true
+      },
+      include: {
+        type: 'string[]',
+        global: true
+      },
+      limit: {
+        type: 'integer',
+        global: true
+      },
+      offset: {
+        type: 'integer',
+        global: true
+      },
+      sort: {
+        type: 'string[]',
+        global: true
+      }
+    },
+    resFields: {
+      result: {
+        type: 'object[]',
+        root: true
+      },
+      resultMax: {
+        type: 'integer',
+        root: true
+      },
+      resultNum: {
+        type: 'integer',
+        root: true
+      },
+      resultType: {
+        type: 'string',
+        root: true
+      }
+    }
+  },
+
+  count: {
+    reqParams: {
+      after: {
+        inherit: 'result'
+      },
+      limit: {
+        inherit: 'result'
+      },
+      offset: {
+        inherit: 'result'
+      }
+    },
+    resFields: {
+      count: {
+        type: 'integer',
+        root: true
+      },
+      countType: {
+        type: 'string',
+        root: true
+      }
+    }
+  }
 };
 
 var queries = {
-  '/definition': {},
-  '/definition/<definition_id>': {},
-  '/definition/count': {},
-  '/denotation': {},
-  '/denotation/<denotation_id>': {},
-  '/denotation/count': {},
-  '/expr': {},
-  '/expr/<expr_id>': {},
-  '/expr/<langvar_id>/<expr_txt>': {},
-  '/expr/count': {},
-  '/expr/index': {},
-  '/langvar': {
-    desc: 'language variety query',
+  '/definition': {
+    type: 'result'
+  },
+  '/definition/<definition_id>': {
+    type: 'single'
+  },
+  '/definition/count': {
+    type: 'count'
+  },
+  '/denotation': {
+    type: 'result'
+  },
+  '/denotation/<denotation_id>': {
+    type: 'single'
+  },
+  '/denotation/count': {
+    type: 'count'
+  },
+  '/expr': {
+    type: 'result'
+  },
+  '/expr/<expr_id>': {
+    type: 'single',
     reqParams: {
-      expr_txt:     { type: 'text[]', desc: 'array of expression texts. Restricts results to language varieties containing a matching expression' },
-      id:           { type: 'posint[]', desc: 'array of language variety IDs' },
-      uid:          { type: 'uid[]', desc: 'array of language variety uniform identifiers' },
-      include:      { type: 'text[]', options: ['denotation_count', 'expr_count', 'langvar_char', 'langvar_cldr_char'] }
-    },
-    resParams: {
-      id:           { type: 'posint', desc: 'language variety ID number' },
-      uid:          { type: 'uid', desc: 'language variety’s uniform identifier' },
-      langvar_char: { type: 'codepoint_range[]', desc: 'array of code point ranges', include: 'langvar_char' }
+      include: {
+        type: 'string[]',
+        options: ['uid']
+      }
     }
   },
-  '/langvar/<langvar_id|uid>': { query: '/langvar' },
-  '/langvar/count': { query: '/langvar' },
-  '/meaning': {},
-  '/meaning/<meaning_id>': {},
-  '/meaning/count': {},
-  '/norm/definition/<langvar_id|uid>': {},
-  '/norm/expr/<langvar_id|uid>': {},
-  '/source': {},
-  '/source/<source_id|source_label>': {},
-  '/source/count': {},
-  '/txt_degr': {}
+  '/expr/<langvar_id>/<expr_txt>': {
+
+  },
+  '/expr/count': {
+    type: 'count'
+  },
+  '/expr/index': {
+
+  },
+  '/langvar': {
+    type: 'result',
+    desc: 'language variety query',
+    reqParams: {
+      expr_txt: {
+        type: 'string[]',
+        desc: 'array of expression texts. Restricts results to language varieties containing a matching expression'
+      },
+      id: {
+        type: 'integer[]',
+        desc: 'array of language variety IDs'
+      },
+      uid: {
+        type: 'uid[]',
+        desc: 'array of language variety uniform identifiers'
+      },
+      include: {
+        type: 'string[]',
+        options: ['denotation_count', 'expr_count', 'langvar_char', 'langvar_cldr_char']
+      }
+    },
+    resFields: {
+      id: {
+        type: 'integer',
+        desc: 'language variety ID number'
+      },
+      uid: {
+        type: 'uid',
+        desc: 'language variety’s uniform identifier'
+      },
+      langvar_char: {
+        type: 'codepoint_range[]',
+        desc: 'array of code point ranges',
+        include: 'langvar_char'
+      }
+    }
+  },
+  '/langvar/<langvar_id|uid>': {
+    type: 'single',
+    reqParams: {
+      include: {
+        type: 'string[]',
+        options: ['uid']
+      }
+    }
+  },
+  '/langvar/count': {
+    type: 'count'
+  },
+  '/meaning': {
+    type: 'result'
+  },
+  '/meaning/<meaning_id>': {
+    type: 'single',
+  },
+  '/meaning/count': {
+    type: 'count'
+  },
+  '/norm/definition/<langvar_id|uid>': {
+
+  },
+  '/norm/expr/<langvar_id|uid>': {
+
+  },
+  '/source': {
+    type: 'result'
+  },
+  '/source/<source_id|source_label>': {
+    type: 'single'
+  },
+  '/source/count': {
+    type: 'count'
+  },
+  '/txt_degr': {
+
+  }
 };
 
-Handlebars.registerHelper('withLookup', function(obj, value, options) {
-  return options.fn(obj[value]);
-});
+initData();
+
+function initData() {
+  for (var i in commonParams) {
+    if (i === 'default') continue;
+
+    for (var j in commonParams[i]) {
+      if (commonParams.default[j])
+        commonParams[i][j] = $.extend(true, $.extend(true, {}, commonParams.default[j]), commonParams[i][j]);
+
+      for (var k in commonParams[i][j]) {
+        var source = commonParams[i][j][k].inherit;
+        if (source) commonParams[i][j][k] = commonParams[source][j][k];
+      }
+    }
+  }
+
+  for (var i in queries) {
+    var type = queries[i].type;
+    if (type && commonParams[type])
+      queries[i] = $.extend(true, $.extend(true, {}, commonParams[type]), queries[i]);
+  }
+}
 
 $(document).ready(function () {
   var select = $('#query');
@@ -99,12 +289,12 @@ function changeQuery(e) {
     reqParams.html('no parameters');
   }
 
-  var resParams = $('#resParams');
+  var resFields = $('#resFields');
 
-  if (info.resParams) {
-    resParams.html(Handlebars.templates.resParam({ params: Object.keys(info.resParams).sort(), info: info.resParams }));
+  if (info.resFields) {
+    resFields.html(Handlebars.templates.resField({ params: Object.keys(info.resFields).sort(), info: info.resFields }));
   }
   else {
-    resParams.html('no parameters');
+    resFields.html('no parameters');
   }
 }

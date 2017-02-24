@@ -1,3 +1,20 @@
+{{#*inline "reqItem"}}
+<label><span class="param">{{name}}</span><input type="text" length="20" name="{{name}}"></label>
+{{/inline}}
+
 {{#each params}}
-<label><span class="param">{{this}}</span><input type="text" length="20" name="{{this}}"></label>
+{{#with (lookup ../info @this)}}
+{{#unless global}}
+{{> reqItem name=../this}}
+{{/unless}}
+{{/with}}
+{{/each}}
+
+<h3>Global</h3>
+{{#each params}}
+{{#with (lookup ../info @this)}}
+{{#if global}}
+{{> reqItem name=../this}}
+{{/if}}
+{{/with}}
 {{/each}}
