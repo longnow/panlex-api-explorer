@@ -76,13 +76,16 @@ td
   &:hover
     background-color highlight
     text-decoration underline
-  .active
+  &.active
     background-color highlight
 
 .typeDescription
   span, p
     display inline-block
     width 45em
+
+#description, #reqParams
+  margin-bottom 1em
 
 #query
   padding-left (queryListWidth + 1)
@@ -94,9 +97,6 @@ td
   a
     font-family monospace
     font-size 97%
-
-#reqParams
-  margin-bottom 1em
 
 #resFields
   td, th

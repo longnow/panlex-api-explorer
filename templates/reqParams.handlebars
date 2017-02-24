@@ -8,23 +8,21 @@
 {{/inline}}
 
 {{#if urlParams}}
-<h2>URL parameters<button id="submit">Send Request</button></h2>
-<table>
-<tr><th class="name">name</th><th class="input">value</th><th class="desc">description</th></tr>
-{{#each urlParams as |param i|}}
-  <tr>
-  <td class="name">{{param.name}}</td>
-  <td class="input"><input type="text" name="url_{{i}}"></td>
-  <td class="desc">{{{param.attr.desc}}}</td>
-  </tr>
-{{/each}}
-</table>
-<h2>Request parameters</h2>
-{{else}}
-<h2>Request parameters<button id="submit">Send Request</button></h2>
+  <h2>URL parameters</h2>
+  <table>
+  <tr><th class="name">name</th><th class="input">value</th><th class="desc">description</th></tr>
+  {{#each urlParams as |param i|}}
+    <tr>
+    <td class="name">{{param.name}}</td>
+    <td class="input"><input type="text" name="url_{{i}}"></td>
+    <td class="desc">{{{param.attr.desc}}}</td>
+    </tr>
+  {{/each}}
+  </table>
 {{/if}}
 
 {{#if params}}
+  <h2>Request parameters</h2>
   <table>
   <tr><th class="name">name</th><th class="type">type</th><th class="input">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted params}}
@@ -43,6 +41,4 @@
     {{/if}}
   {{/eachSorted}}
   </table>
-{{else}}
-  <span class="notfound">no parameters</span>
 {{/if}}

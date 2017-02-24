@@ -474,7 +474,7 @@ function clickQuery(e) {
 function setQuery(url) {
   var info = queries[url];
 
-  $('#description').html(Handlebars.templates.description({ desc: info.desc }));
+  $('#description').html(Handlebars.templates.description({ url: url, desc: info.desc }));
 
   var reqUrlParams = url.match(/<[^>]+>/g);
   if (reqUrlParams) {
