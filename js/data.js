@@ -261,7 +261,7 @@ var queries = {
       }
     },
     reqParamsRestrictions: [
-      { type: 'atLeastOne', not: true, value: ['include'] }
+      { type: 'atLeastOne', not: true, value: ['include'], context: 'If you pass <code>after</code> or <code>offset</code>' }
     ],
     resFields: {
       expr: {
@@ -377,7 +377,7 @@ var queries = {
       }
     },
     reqParamsRestrictions: [
-      { type: 'atLeastOne', value: ['expr','id','langvar','meaning','source','uid'] }
+      { type: 'atLeastOne', value: ['expr','id','langvar','meaning','source','uid'], context: 'If you pass <code>after</code> or <code>offset</code>' }
     ],
     resFields: {
       denotation_class: {
@@ -525,7 +525,7 @@ var queries = {
       }
     },
     reqParamsRestrictions: [
-      { type: 'atLeastOne', not: true, value: ['include','mutable'] },
+      { type: 'atLeastOne', not: true, value: ['include','mutable'], context: 'If you pass <code>after</code> or <code>offset</code>' },
       { type: 'atLeastOne', value: ['trans_expr', 'trans_txt', 'trans_txt_degr'], context: 'If you are translating' },
       { type: 'comment', value: 'The <code>trans_distance</code> and <code>trans_quality_min</code> parameters are only relevant if you have specified one of the translation parameters in the previous item.' },
       { type: 'comment', value: 'The <code>interm1_*</code> and <code>tran_quality_algo</code> parameters are only relevant if <code>trans_distance</code> is 2.' }
@@ -822,7 +822,7 @@ var queries = {
       }
     },
     reqParamsRestrictions: [
-      { type: 'atLeastOne', value: ['expr','meaning','source'] }
+      { type: 'atLeastOne', value: ['expr','meaning','source'], context: 'If you pass <code>after</code> or <code>offset</code>' }
     ],
     resFields: {
       definition: {
