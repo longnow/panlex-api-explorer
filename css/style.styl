@@ -53,6 +53,15 @@ th
 ul
   margin-bottom 1.25em
 
+.accordion-toggle
+  text-decoration none
+  &:hover
+    text-decoration underline
+  &:after
+    content "hide"
+  &.collapsed:after
+    content "show"
+
 .desc
   width 60%
   font-size 94%

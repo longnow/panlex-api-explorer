@@ -320,7 +320,7 @@ function receiveResult(body) {
           url: this.url,
           method: this.method,
           body: this.method === 'POST' ? canonicalJson(body, null, 2) : null,
-          status: jqXHR.status,
+          status: jqXHR.status !== 200 ? jqXHR.status : null,
           response: canonicalJson(response, null, 2)
         }));
       } catch (e) {

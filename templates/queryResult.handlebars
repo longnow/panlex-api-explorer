@@ -1,8 +1,16 @@
 <p>
 Request: {{method}} <code>{{url}}</code>
 {{#if body}}
-<br>Body:<pre>{{body}}</pre>
+  <br>Parameters:
+  <a class="accordion-toggle" data-toggle="collapse" href="#bodyParams" aria-expanded="true" aria-controls="bodyParams"></a>
+  <div id="bodyParams" class="collapse in"><pre>{{body}}</pre></div>
 {{/if}}
 </p>
-<p>Response status: {{status}}<br></p>
-<pre>{{response}}</pre>
+<p>
+{{#if status}}
+  Response status: {{status}}
+{{else}}
+  Response:
+{{/if}}
+</p>
+<div><pre>{{response}}</pre></div>
