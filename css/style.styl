@@ -1,6 +1,6 @@
 cellBorder = 1px solid lightgray
 highlight = lightblue
-queryListWidth = 12rem
+queryListWidth = 23rem
 
 body
   margin 1.5em
@@ -10,18 +10,19 @@ code
   font-family monospace
 
 h1, h2, h3
-  margin 0 0 2ex 0
+  margin 0 0 1.5ex 0
   font-style bold
 
 h1
-  font-size 130%
+  font-size 145%
   background highlight
+  padding 4px
 
 h2
-  font-size 120%
+  font-size 135%
 
 h3
-  font-size 100%
+  font-size 110%
 
 input[type="text"]
   font-family monospace
@@ -70,7 +71,6 @@ td
   display block
   color blue
   text-decoration none
-  margin-bottom 0.75ex
 
 .queryLink
   &:hover
@@ -97,11 +97,11 @@ td
 #queryList
   position absolute
   width queryListWidth
-  padding 0.75ex
+  padding 1ex
   border cellBorder
   a
     font-family monospace
-    font-size 97%
+    font-size 95%
 
 #resFields
   td, th
@@ -109,4 +109,3 @@ td
 
 #submit
   float right
-  font-size 13px

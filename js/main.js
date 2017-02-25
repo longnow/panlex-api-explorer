@@ -133,7 +133,7 @@ function submitRequest(e) {
   if (!p) return;
 
   var options = {
-    url: endpoint+currentUrl,
+    url: endpoint + currentUrl,
     dataType: 'json'
   };
 

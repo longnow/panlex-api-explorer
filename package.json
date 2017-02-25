@@ -4,7 +4,7 @@
   "description": "PanLex API Explorer",
   "main": "index.js",
   "scripts": {
-    "compile": "handlebars templates/*.handlebars -f templates.js && stylus -c style.styl",
+    "compile": "handlebars templates/*.handlebars -f js/templates.js && stylus -c css/style.styl",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

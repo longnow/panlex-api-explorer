@@ -1,0 +1,22 @@
+{
+  "vars": {},
+  "css": [
+    "print.less",
+    "type.less",
+    "code.less",
+    "grid.less",
+    "tables.less",
+    "forms.less",
+    "buttons.less",
+    "alerts.less",
+    "component-animations.less",
+    "tooltip.less"
+  ],
+  "js": [
+    "alert.js",
+    "tooltip.js",
+    "collapse.js",
+    "transition.js"
+  ],
+  "customizerUrl": "http://getbootstrap.com/customize/?id=4a0b8e13d66d6c58b2ad62abd6922d1b"
+}
