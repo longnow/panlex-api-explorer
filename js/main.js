@@ -199,7 +199,7 @@ function initHelpers() {
   });
 
   Handlebars.registerHelper('urlToId', function (url) {
-    return url.replace(/[/<>\|]/g, '');
+    return url.replace(/[/<>|_]/g, '');
   });
 }
 
@@ -212,9 +212,11 @@ function clickQuery(e) {
 function setQuery(url) {
   var info = queries[url];
 
-  $('#description').html(Handlebars.templates.description({ url: url, desc: info.desc }));
+  $('#summary').html(Handlebars.templates.summary({ url: url, summary: info.summary }));
 
   $('#error').empty();
+
+  $('#description').html(Handlebars.templates.description({ desc: info.desc }));
 
   var reqUrlParams = url.match(/<[^>]+>/g);
   if (reqUrlParams) {

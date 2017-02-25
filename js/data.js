@@ -2,13 +2,13 @@ var endpoint = 'https://api.panlex.org/v2';
 
 var urlParams = {
   id: {
-    desc: 'ID number.'
+    desc: 'ID.'
   },
   'id|label': {
-    desc: 'Source ID number or label.'
+    desc: 'Source ID or label.'
   },
   'id|uid': {
-    desc: 'Language variety ID number or uniform identifier.'
+    desc: 'Language variety ID or uniform identifier.'
   },
   text: {
     desc: 'Expression text.'
@@ -50,6 +50,19 @@ var objectTypes = {
   expression: {
     desc: 'Object representing an expression.',
     inherit: '/expr'
+  },
+  norm: {
+    desc: 'Normalization object mapping an expression or definition text (as a key) to a value. When <code>degrade</code> is <code>false</code>, the value is a single score object. When <code>degrade</code> is <code>true</code>, the value is an array of score objects for all items sharing the key’s degraded text, sorted from highest to lowest score. Score objects contain the following fields:',
+    fields: {
+      score: {
+        type: 'integer',
+        desc: 'The expression or definition’s normalization score. This is the sum of the quality ratings of the sources of the expression’s denotations or the definition’s meanings. (Multiple sources from the same source group are counted as a single attestation for this purpose.) Thus, the more sources attest the existence of an expression, the higher its score, but the score is weighted by source quality. If no expression or definition exists with the corresponding text, the score will be zero.'
+      },
+      txt: {
+        type: 'string',
+        desc: 'Text of the expression or definition whose degraded text matches the key. Only included when <code>degrade</code> is <code>true</code>.'
+      }
+    }
   },
   prop: {
     desc: 'Two-element array representing a property. The first element is the attribute expression ID. The second element is the property string.'
@@ -197,7 +210,7 @@ var queryDefaults = {
 var queries = {
   '/definition': {
     type: 'result',
-    desc: 'definition query',
+    summary: 'definition query',
     reqParams: {
       expr: {
         type: 'integer[]',
@@ -250,7 +263,7 @@ var queries = {
     resFields: {
       expr: {
         type: 'integer',
-        desc: 'ID number of the expression with which the definition shares a meaning.',
+        desc: 'ID of the expression with which the definition shares a meaning.',
         restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'] }
       },
       expr_langvar: {
@@ -279,11 +292,11 @@ var queries = {
       },
       langvar: {
         type: 'integer',
-        desc: 'ID number of the language variety in which the definition is written.'
+        desc: 'ID of the language variety in which the definition is written.'
       },
       meaning: {
         type: 'integer',
-        desc: 'ID number of the meaning to which the definition belongs.'
+        desc: 'ID of the meaning to which the definition belongs.'
       },
       txt: {
         type: 'string',
@@ -303,7 +316,7 @@ var queries = {
 
   '/definition/<id>': {
     type: 'single',
-    desc: 'single definition query',
+    summary: 'single definition query',
     reqParams: {
       include: {
         inherit: '/definition'
@@ -313,7 +326,7 @@ var queries = {
 
   '/definition/count': {
     type: 'count',
-    desc: 'definition count query',
+    summary: 'definition count query',
     reqParams: {
       inherit: '/definition',
       filterNot: { values: ['include'] }
@@ -322,7 +335,7 @@ var queries = {
 
   '/denotation': {
     type: 'result',
-    desc: 'denotation query',
+    summary: 'denotation query',
     reqParams: {
       denotation_class: {
         type: 'class_query[]',
@@ -392,7 +405,7 @@ var queries = {
 
   '/denotation/<id>': {
     type: 'single',
-    desc: 'single denotation query',
+    summary: 'single denotation query',
     reqParams: {
       include: {
         inherit: '/denotation'
@@ -402,7 +415,7 @@ var queries = {
 
   '/denotation/count': {
     type: 'count',
-    desc: 'denotation count query',
+    summary: 'denotation count query',
     reqParams: {
       inherit: '/definition',
       filterNot: { values: ['include'] }
@@ -411,7 +424,7 @@ var queries = {
 
   '/expr': {
     type: 'result',
-    desc: 'expression or translation query',
+    summary: 'expression or translation query',
     reqParams: {
       id: {
         type: 'integer[]',
@@ -522,7 +535,7 @@ var queries = {
       },
       trans_expr: {
         type: 'integer',
-        desc: 'ID number of expression from which the expression was translated.',
+        desc: 'ID of expression from which the expression was translated.',
         restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'] }
       },
       trans_langvar: {
@@ -573,7 +586,7 @@ var queries = {
 
   '/expr/<id>': {
     type: 'single',
-    desc: 'single expression query, with ID',
+    summary: 'single expression query, with ID',
     reqParams: {
       include: {
         inherit: '/expr',
@@ -584,7 +597,7 @@ var queries = {
 
   '/expr/<id|uid>/<text>': {
     type: 'single',
-    desc: 'single expression query, with language variety and text',
+    summary: 'single expression query, with language variety and text',
     reqParams: {
       include: {
         inherit: '/denotation',
@@ -595,7 +608,7 @@ var queries = {
 
   '/expr/count': {
     type: 'count',
-    desc: 'expression count query',
+    summary: 'expression count query',
     reqParams: {
       inherit: '/expr',
       filterNot: { values: ['include'] }
@@ -604,8 +617,8 @@ var queries = {
 
   '/expr/index': {
     type: 'other',
-    desc: 'expression index query',
-    summary: 'This query produces an alphabetically sorted index summarizing chunks of expressions in the specified language varieties, or in all varieties in PanLex. Expressions are first sorted by their degraded expression text, then divided into chunks of size <code>step</code>. The result is returned as the <code>index</code> array (see below).',
+    summary: 'expression index query',
+    desc: 'Produces an alphabetically sorted index summarizing chunks of expressions in the specified language varieties, or in all varieties in PanLex. Expressions are first sorted by their degraded expression text, then divided into chunks of size <code>step</code>. The result is a list of chunks with a starting and ending expression.',
     reqParams: {
       langvar: {
         type: 'integer[]',
@@ -634,7 +647,7 @@ var queries = {
 
   '/langvar': {
     type: 'result',
-    desc: 'language variety query',
+    summary: 'language variety query',
     reqParams: {
       expr_txt: {
         type: 'string[]',
@@ -755,7 +768,7 @@ var queries = {
 
   '/langvar/<id|uid>': {
     type: 'single',
-    desc: 'single language variety query',
+    summary: 'single language variety query',
     reqParams: {
       include: {
         inherit: '/langvar'
@@ -765,7 +778,7 @@ var queries = {
 
   '/langvar/count': {
     type: 'count',
-    desc: 'language variety count query',
+    summary: 'language variety count query',
     reqParams: {
       inherit: '/langvar',
       filterNot: { values: ['include'] }
@@ -774,7 +787,7 @@ var queries = {
 
   '/meaning': {
     type: 'result',
-    desc: 'meaning query',
+    summary: 'meaning query',
     reqParams: {
       expr: {
         type: 'integer[]',
@@ -840,7 +853,7 @@ var queries = {
 
   '/meaning/<id>': {
     type: 'single',
-    desc: 'single meaning variety query',
+    summary: 'single meaning variety query',
     reqParams: {
       include: {
         inherit: '/meaning'
@@ -850,7 +863,7 @@ var queries = {
 
   '/meaning/count': {
     type: 'count',
-    desc: 'meaning count query',
+    summary: 'meaning count query',
     reqParams: {
       inherit: '/meaning',
       filterNot: { values: ['include'] }
@@ -859,29 +872,59 @@ var queries = {
 
   '/norm/definition/<id|uid>': {
     type: 'other',
-    desc: 'definition normalization query',
+    summary: 'definition normalization query',
+    desc: 'Returns normalization scores and normalized texts for a set of definition texts in a language variety.',
     reqParams: {
-
+      degrade: {
+        type: 'boolean',
+        desc: 'Whether to compare the degraded text of each value in <code>txt</code> against the degraded text of existing definitions in PanLex. Default: <code>false</code>.'
+      },
+      grp: {
+        type: 'integer[]',
+        desc: 'Source group IDs. Meanings from these source groups will be ignored when calculating scores. Default: <code>[]</code>.'
+      },
+      txt: {
+        type: 'string[]',
+        desc: 'Definition texts to normalize.'
+      }
     },
-    resFields: {
-
+    resFieldsRoot: {
+      norm: {
+        type: 'norm',
+        desc: 'Normalization object (see below).'
+      }
     }
   },
 
   '/norm/expr/<id|uid>': {
     type: 'other',
-    desc: 'expression normalization query',
+    summary: 'expression normalization query',
+    desc: 'Returns normalization scores and normalized texts for a set of expression texts in a language variety.',
     reqParams: {
-
+      degrade: {
+        type: 'boolean',
+        desc: 'Whether to compare the degraded text of each value in <code>txt</code> against the degraded text of existing expressions in PanLex. Default: <code>false</code>.'
+      },
+      grp: {
+        type: 'integer[]',
+        desc: 'Source group IDs. Meanings from these source groups will be ignored when calculating scores. Default: <code>[]</code>.'
+      },
+      txt: {
+        type: 'string[]',
+        desc: 'Expression texts to normalize.'
+      }
     },
-    resFields: {
-
+    resFieldsRoot: {
+      norm: {
+        type: 'norm',
+        desc: 'Normalization object (see below).'
+      }
     }
   },
 
   '/source': {
     type: 'result',
-    desc: 'source query',
+    summary: 'source query',
     reqParams: {
       expr: {
         type: 'integer[]',
@@ -1013,7 +1056,7 @@ var queries = {
 
   '/source/<id|label>': {
     type: 'single',
-    desc: 'single source query',
+    summary: 'single source query',
     reqParams: {
       include: {
         inherit: '/source'
@@ -1023,7 +1066,7 @@ var queries = {
 
   '/source/count': {
     type: 'count',
-    desc: 'source count query',
+    summary: 'source count query',
     reqParams: {
       inherit: '/source',
       filterNot: { values: ['include'] }
@@ -1032,12 +1075,19 @@ var queries = {
 
   '/txt_degr': {
     type: 'other',
-    desc: 'text degradation query',
+    summary: 'text degradation query',
+    desc: 'Returns degraded texts for arbitrary input strings.',
     reqParams: {
-
+      txt: {
+        type: 'string[]',
+        desc: 'Strings to degrade.'
+      }
     },
-    resFields: {
-
+    resFieldsRoot: {
+      txt_degr: {
+        type: 'object',
+        desc: 'Maps each input text (as a key) to its degraded text.'
+      }
     }
   }
 };

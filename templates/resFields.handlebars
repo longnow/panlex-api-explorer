@@ -15,7 +15,7 @@
 {{#if fields}}
   <h3>Result Object</h3>
   <table class="table">
-  <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
+  <tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
   {{#eachSorted fields}}
     {{> resItem}}
   {{/eachSorted}}
@@ -28,7 +28,7 @@
 
 <h3>Root</h3>
 <table class="table">
-<tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
+<tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
 {{#eachSorted fieldsRoot}}
   {{> resItem}}
 {{/eachSorted}}
