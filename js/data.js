@@ -34,10 +34,21 @@ var objectTypes = {
       }
     }
   },
+  class: {
+    desc: 'Two-element array representing a classification. The first element is the superclass expression ID (<code>null</code> if none). The second element is the class expression ID.'
+  },
+  class_query: {
+    desc: 'Two-element array representing a classification query. The first element is a superclass expression ID (<code>null</code> if none). The second element is a class expression ID (<code>null</code> to match all expressions).'
+  },
   codepoint_range: {
-    name: 'Code-point range',
-    desc: 'Two-element array representing a range of permissible Unicode characters for a language variety. The array takes the form <code>[first, last]</code>, where <code>first</code> is the numeric value of the first code-point in the range and <code>last</code> is the value of the last code-point in the range.',
+    desc: 'Two-element array representing a range of permissible Unicode characters for a language variety. The first element is the numeric value of the first code-point in the range and the second element is the numeric value of the last code-point in the range.',
     example: 'For English (language variety <em>eng-000</em>), the first code point object is <code>[32, 33]</code>. This includes the range from U+0020 (SPACE) to U+0021 (EXCLAMATION MARK). Note that JSON numeric values are always decimal.'
+  },
+  prop: {
+    desc: 'Two-element array representing a property. The first element is the attribute expression ID. The second element is the property string.'
+  },
+  prop_query: {
+    desc: 'Two-element array representing a property query. The first element is an attribute expression ID. The second element is a property string (<code>null</code> to match all strings).'
   }
 }
 
@@ -236,8 +247,17 @@ var queries = {
   '/denotation': {
     type: 'result',
     desc: 'denotation query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+      denotation_class: {
+        type: 'class_query[]'
+      },
+      denotation_prop: {
+        type: 'prop_query[]'
+      }
+    },
+    resFields: {
+
+    }
   },
 
   '/denotation/<id>': {

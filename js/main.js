@@ -59,7 +59,7 @@ function initData() {
     }
   }
 
-  // populate (1) from queryDefaults, (2) resTypes, (3) include desc
+  // populate (1) from queryDefaults, (2) reqTypes and resTypes, (3) include desc
   for (var i in queries) {
     var queryType = queries[i].type;
 
@@ -67,21 +67,25 @@ function initData() {
     if (queryType && queryDefaults[queryType])
       queries[i] = $.extend(true, $.extend(true, {}, queryDefaults[queryType]), queries[i]);
 
-    // make list of response object types requiring documentation
-    if (queries[i].resFields) {
+    // make list of request parameter and response object types requiring documentation
+    ['reqParams', 'resFields'].forEach(function (j) {
       var types = {};
 
-      for (var j in queries[i].resFields) {
-        var type = queries[i].resFields[j].type;
+      for (var k in queries[i][j]) {
+        var type = queries[i][j][k].type;
         if (type) {
           type = type.replace(/\[\]$/, '');
           if (objectTypes[type]) types[type] = true;
         }
       }
 
-      types = Object.keys(types).sort();
-      if (types.length) queries[i].resTypes = types;
-    }
+      types = Object.keys(types);
+
+      if (types.length) {
+        var key = j.replace(/[A-Z].+$/, 'Types');
+        queries[i][key] = types.sort();
+      }
+    });
 
     // populate include desc (deleting param if invalid)
     if (queries[i].reqParams.include) {
@@ -166,16 +170,30 @@ function setQuery(url) {
     });
   }
 
-  $('#reqParams').html(Handlebars.templates.reqParams({ params: info.reqParams, urlParams: reqUrlParams }));
+  var types;
+
+  if (info.reqTypes) {
+    types = {};
+    info.reqTypes.forEach(function (type) { types[type] = objectTypes[type] });
+  }
+
+  $('#reqParams').html(Handlebars.templates.reqParams({
+    params: info.reqParams,
+    urlParams: reqUrlParams,
+    types: types
+  }));
+
   $('#submit').on('click', submitRequest);
 
-  var types;
   if (info.resTypes) {
     types = {};
     info.resTypes.forEach(function (type) { types[type] = objectTypes[type] });
   }
 
-  $('#resFields').html(Handlebars.templates.resFields({ fields: info.resFields, types: types }));
+  $('#resFields').html(Handlebars.templates.resFields({
+    fields: info.resFields,
+    types: types
+  }));
 
   currentUrl = url.replace(/\/<.+$/, '');
 }

@@ -2,7 +2,7 @@
 <tr>
 <td class="name">{{name}}</td>
 <td class="type">{{attr.type}}</td>
-<td class="input"><input type="text" class="form-control" name="{{name}}"></td>
+<td class="reqParam"><input type="text" class="form-control" name="{{name}}"></td>
 <td class="desc">{{{attr.desc}}}</td>
 </tr>
 {{/inline}}
@@ -10,11 +10,11 @@
 {{#if urlParams}}
   <h2>URL parameters</h2>
   <table class="tablesetQuery">
-  <tr><th class="name">name</th><th class="input">value</th><th class="desc">description</th></tr>
+  <tr><th class="name">name</th><th class="reqParam">value</th><th class="desc">description</th></tr>
   {{#each urlParams as |param i|}}
     <tr>
     <td class="name">{{param.name}}</td>
-    <td class="input"><input type="text" class="form-control" name="url_{{i}}" data-name="{{param.name}}"></td>
+    <td class="reqParam"><input type="text" class="form-control" name="url_{{i}}" data-name="{{param.name}}"></td>
     <td class="desc">{{{param.attr.desc}}}</td>
     </tr>
   {{/each}}
@@ -24,7 +24,7 @@
 {{#if params}}
   <h2>Request parameters</h2>
   <table class="tablesetQuery">
-  <tr><th class="name">name</th><th class="type">type</th><th class="input">JSON value</th><th class="desc">description</th></tr>
+  <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted params}}
     {{#unless attr.global}}
       {{> reqItem}}
@@ -32,9 +32,13 @@
   {{/eachSorted}}
   </table>
 
+  {{#if types}}
+    {{> typeDescription}}
+  {{/if}}
+
   <h3>Global</h3>
   <table>
-  <tr><th class="name">name</th><th class="type">type</th><th class="input">JSON value</th><th class="desc">description</th></tr>
+  <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted params}}
     {{#if attr.global}}
       {{> reqItem}}
