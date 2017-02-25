@@ -22,17 +22,30 @@
 </head>
 <body>
 <div id="content">
-<script type="text/javascript">$('#content').hide()</script>
-<h1>PanLex API Explorer</h1>
-<div id="queryList"></div>
-<div id="query">
-<div id="summary"></div>
-<div id="error"></div>
-<div id="description"></div>
-<div id="reqParams"></div>
-<div id="resFields"></div>
+  <script type="text/javascript">$('#content').hide()</script>
+  <h1>PanLex API Explorer</h1>
+  <div id="queryList"></div>
+  <div id="query">
+    <div id="summary"></div>
+    <div id="error"></div>
+    <div id="description"></div>
+    <div id="reqParams"></div>
+    <div id="resFields"></div>
+  </div>
 </div>
+<div id="queryResult" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Query Result</h3>
+      </div>
+      <div id="queryResultBody" class="modal-body">
+        <p>test</p>
+      </div>
+    </div>
+  </div>
 </div>
-<noscript>This page requires JavaScript to function properly.</noscript>
+<noscript>This page requires JavaScript to function.</noscript>
 </body>
 </html>

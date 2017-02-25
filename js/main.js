@@ -261,9 +261,12 @@ function submitRequest(e) {
   var p = getReqParams();
   if (!p) return;
 
+  $('#queryResultBody').html('<p>Running…</p>');
+  $('#queryResult').modal('show');
+
   var options = {
     url: endpoint + currentUrl,
-    dataType: 'json'
+    complete: receiveResult(p.body)
   };
 
   if (p.url.length) {
@@ -275,9 +278,7 @@ function submitRequest(e) {
     options.data = JSON.stringify(p.body);
   }
 
-  $.ajax(options)
-    .done(function (data) {})
-    .fail(function (data) {});
+  $.ajax(options);
 }
 
 function getReqParams() {
@@ -311,3 +312,50 @@ function getReqParams() {
     $('#error').append(Handlebars.templates.error({ param: param, message: message }));
   }
 }
+
+function receiveResult(body) {
+  return function(jqXHR, textStatus) {
+    if (textStatus === 'success' || textStatus === 'error') {
+      try {
+        var response = $.parseJSON(jqXHR.responseText);
+
+        $('#queryResultBody').html(Handlebars.templates.queryResult({
+          url: this.url,
+          method: this.method,
+          body: this.method === 'POST' ? canonicalJson(body, null, 2) : null,
+          status: jqXHR.status,
+          response: canonicalJson(response, null, 2)
+        }));
+      } catch (e) {
+        $('#queryResultBody').html('<p>API response contained invalid JSON</p>');
+      }
+    }
+    else $('#queryResultBody').html('<p>Unexpected error occurred</p>');
+  }
+}
+
+function canonicalJson(object, replacer, space) {
+  return JSON.stringify(copyObjectWithSortedKeys(object), replacer, space)
+}
+
+function copyObjectWithSortedKeys(object) {
+  if (isObject(object)) {
+    var newObj = {}
+    var keysSorted = Object.keys(object).sort()
+    var key
+    for (var i = 0, len = keysSorted.length; i < len; i++) {
+      key = keysSorted[i]
+      newObj[key] = copyObjectWithSortedKeys(object[key])
+    }
+    return newObj
+  } else if (Array.isArray(object)) {
+    return object.map(copyObjectWithSortedKeys)
+  } else {
+    return object
+  }
+}
+
+function isObject(a) {
+  return Object.prototype.toString.call(a) === '[object Object]'
+}
+

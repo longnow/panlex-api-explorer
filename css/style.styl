@@ -1,6 +1,7 @@
 cellBorder = 1px solid lightgray
 highlight = lightblue
 queryListWidth = 23rem
+monospaceSize = 95%
 
 body
   margin 1.5em
@@ -26,6 +27,7 @@ h3
 
 input[type="text"]
   font-family monospace
+  font-size monospaceSize
 
 p
   margin-top 0
@@ -55,12 +57,17 @@ ul
   width 60%
   font-size 94%
 
-.reqParam
-  width 20%
+.json
+  overflow auto
 
 td
   &.name, &.type
     font-family monospace
+    font-size monospaceSize
+
+.modal-body
+  overflow-y auto
+  max-height calc(100vh - 125px)
 
 .notfound
   font-style italic
@@ -69,14 +76,17 @@ td
   display block
   color blue
   text-decoration none
+  font-size monospaceSize
   font-family monospace
-  font-size 95%
   &:hover
     color blue
     background-color highlight
     text-decoration underline
   &.active
     background-color highlight
+
+.reqParam
+  width 20%
 
 .typeDescription
   margin 0 6em
