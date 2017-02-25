@@ -103,7 +103,7 @@ var objectTypes = {
 }
 
 var queryDefaults = {
-  default: {
+  all: {
     reqParamsGlobal: {
       cache: {
         type: 'boolean',

@@ -22,10 +22,10 @@ $(document).ready(function () {
 function initData() {
   // populate queryDefaults
   for (var i in queryDefaults) {
-    if (i === 'default') continue;
+    if (i === 'all') continue;
 
-    // apply default values to query types
-    queryDefaults[i] = deepCopyExtend(queryDefaults.default, queryDefaults[i]);
+    // apply "all" values to this query type
+    queryDefaults[i] = deepCopyExtend(queryDefaults.all, queryDefaults[i]);
 
     // apply inherited values
     for (var j in queryDefaults[i]) {
