@@ -261,7 +261,7 @@ var queries = {
       }
     },
     reqParamsRestrictions: [
-      { type: 'atLeastOneNot', value: ['include'] }
+      { type: 'atLeastOne', not: true, value: ['include'] }
     ],
     resFields: {
       expr: {
@@ -332,7 +332,7 @@ var queries = {
     summary: 'definition count query',
     reqParams: {
       inherit: '/definition',
-      filterNot: { values: ['include'] }
+      filter: { not: true, value: ['include'] }
     }
   },
 
@@ -424,7 +424,7 @@ var queries = {
     summary: 'denotation count query',
     reqParams: {
       inherit: '/definition',
-      filterNot: { values: ['include'] }
+      filter: { not: true, value: ['include'] }
     }
   },
 
@@ -525,7 +525,7 @@ var queries = {
       }
     },
     reqParamsRestrictions: [
-      { type: 'atLeastOneNot', value: ['include','mutable'] },
+      { type: 'atLeastOne', not: true, value: ['include','mutable'] },
       { type: 'atLeastOne', value: ['trans_expr', 'trans_txt', 'trans_txt_degr'], context: 'If you are translating' },
       { type: 'comment', value: 'The <code>trans_distance</code> and <code>trans_quality_min</code> parameters are only relevant if you have specified one of the translation parameters in the previous item.' },
       { type: 'comment', value: 'The <code>interm1_*</code> and <code>tran_quality_algo</code> parameters are only relevant if <code>trans_distance</code> is 2.' }
@@ -595,8 +595,7 @@ var queries = {
     summary: 'single expression query, with ID',
     reqParams: {
       include: {
-        inherit: '/expr',
-        filter: { key: 'options', values: ['uid'] }
+        options: ['uid']
       }
     }
   },
@@ -606,8 +605,7 @@ var queries = {
     summary: 'single expression query, with language variety and text',
     reqParams: {
       include: {
-        inherit: '/denotation',
-        filter: { key: 'options', values: ['uid'] }
+        options: ['uid']
       }
     }
   },
@@ -617,7 +615,11 @@ var queries = {
     summary: 'expression count query',
     reqParams: {
       inherit: '/expr',
-      filterNot: { values: ['include'] }
+      filter: { not: true, value: ['include'] }
+    },
+    reqParamsRestrictions: {
+      inherit: '/expr',
+      filter: { not: true, key: 'type', value: ['atLeastOne'] }
     }
   },
 
@@ -787,7 +789,7 @@ var queries = {
     summary: 'language variety count query',
     reqParams: {
       inherit: '/langvar',
-      filterNot: { values: ['include'] }
+      filter: { not: true, value: ['include'] }
     }
   },
 
@@ -872,7 +874,7 @@ var queries = {
     summary: 'meaning count query',
     reqParams: {
       inherit: '/meaning',
-      filterNot: { values: ['include'] }
+      filter: { not: true, value: ['include'] }
     }
   },
 
@@ -1075,7 +1077,7 @@ var queries = {
     summary: 'source count query',
     reqParams: {
       inherit: '/source',
-      filterNot: { values: ['include'] }
+      filter: { not: true, value: ['include'] }
     }
   },
 

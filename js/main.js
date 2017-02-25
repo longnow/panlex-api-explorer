@@ -25,7 +25,7 @@ function initData() {
     if (i === 'default') continue;
 
     // apply default values to query types
-    queryDefaults[i] = $.extend(true, $.extend(true, {}, queryDefaults.default), queryDefaults[i]);
+    queryDefaults[i] = deepCopyExtend(queryDefaults.default, queryDefaults[i]);
 
     // apply inherited values
     for (var j in queryDefaults[i]) {
@@ -36,25 +36,29 @@ function initData() {
     }
   }
 
-  // populate inherited reqParams
+  // populate inherited reqParams and reqParamsRestrictions
   for (var i in queries) {
     var q = queries[i];
 
-    // inherit all params
-    if (q.reqParams.inherit) {
-      var f = getFilter(queries[i].reqParams);
-      q.reqParams = $.extend(true, {}, queries[q.reqParams.inherit].reqParams);
-      if (f) applyFilter(q.reqParams, f);
+    if (q.reqParams.inherit) { // inherit all params
+      var f = q.reqParams.filter;
+      q.reqParams = deepCopy(queries[q.reqParams.inherit].reqParams);
+      if (f) applyObjFilter(q.reqParams, f);
     }
     else {
       for (var j in q.reqParams) {
-        // inherit single param
-        if (q.reqParams[j].inherit) {
-          var f = getFilter(q.reqParams[j]);
-          q.reqParams[j] = $.extend(true, {}, queries[q.reqParams[j].inherit].reqParams[j]);
-          if (f) applyFilter(q.reqParams[j], f);
+        if (q.reqParams[j].inherit) { // inherit single param
+          var f = q.reqParams[j].filter;
+          q.reqParams[j] = deepCopy(queries[q.reqParams[j].inherit].reqParams[j]);
+          if (f) applyObjFilter(q.reqParams[j], f);
         }
       }
+    }
+
+    if (q.reqParamsRestrictions && q.reqParamsRestrictions.inherit) {
+      var f = q.reqParamsRestrictions.filter;
+      q.reqParamsRestrictions = queries[q.reqParamsRestrictions.inherit].reqParamsRestrictions.slice();
+      if (f) applyArrayFilter(q.reqParamsRestrictions, f);
     }
   }
 
@@ -68,9 +72,9 @@ function initData() {
 
     // apply default values to queries
     if (queryType && queryDefaults[queryType])
-      queries[i] = $.extend(true, $.extend(true, {}, queryDefaults[queryType]), queries[i]);
+      queries[i] = deepCopyExtend(queryDefaults[queryType], queries[i]);
 
-    // make list of request parameter and response object types requiring documentation
+    // make set of request parameter and response object types requiring documentation
     ['reqParams', 'resFields', 'resFieldsRoot'].forEach(function (j) {
       var types = {};
 
@@ -78,15 +82,13 @@ function initData() {
         var type = queries[i][j][k].type;
         if (type) {
           type = type.replace(/(?:\[\])+$/, '');
-          if (objectTypes[type]) types[type] = true;
+          if (objectTypes[type]) types[type] = objectTypes[type];
         }
       }
 
-      types = Object.keys(types);
-
-      if (types.length) {
+      if (Object.keys(types).length) {
         var key = j.replace(/Params|Fields/, 'Types');
-        queries[i][key] = types.sort();
+        queries[i][key] = types;
       }
     });
 
@@ -107,17 +109,17 @@ function initData() {
       var desc = [];
 
       queries[i].reqParamsRestrictions.forEach(function (r) {
-        if (r.type === 'atLeastOne' || r.type === 'atLeastOneNot') {
+        if (r.type === 'atLeastOne') {
           var str = (r.context ? r.context + ', you ' : 'You ');
           var conj;
 
-          if (r.type === 'atLeastOne') {
-            str += 'must provide at least one of the following parameters: ';
-            conj = 'or';
-          }
-          else {
+          if (r.not) {
             str += 'must provide at least one parameter other than ';
             conj = 'and';
+          }
+          else {
+            str += 'must provide at least one of the following parameters: ';
+            conj = 'or';
           }
 
           var value = r.value.map(function (p) { return '<code>' + p + '</code>' });
@@ -154,39 +156,43 @@ function initData() {
   }
 }
 
-function getFilter(obj) {
-  if (obj.filter) return { filter: obj.filter };
-  else if (obj.filterNot) return { filterNot: obj.filterNot };
-  else return null;
+function deepCopy(obj) {
+  return $.extend(true, {}, obj);
 }
 
-function applyFilter(obj, f) {
-  var sign;
+function deepCopyExtend(obj1, obj2) {
+  return $.extend(true, deepCopy(obj1), obj2);
+}
 
-  if (f.filter) {
-    f = f.filter;
-    sign = 1;
-  }
-  else if (f.filterNot) {
-    f = f.filterNot;
-    sign = -1;
-  }
-  else return obj;
+function applyObjFilter(obj, f) {
+  var sign =  f.not ? -1 : 1;
 
   var set = {};
-  f.values.forEach(function (i) { set[i] = 1 });
+  f.value.forEach(function (i) { set[i] = 1 });
 
-  if (f.key) {
-    if (obj[f.key])
-      obj[f.key] = obj[f.key].filter(function (i) { return (set[i] || -1)*sign === 1 });
-  }
-  else {
-    for (var i in obj) {
-      if ((set[i] || -1)*sign === -1) delete obj[i];
-    }
+  for (var i in obj) {
+    if ((set[i] || -1)*sign === -1) delete obj[i];
   }
 
   return obj;
+}
+
+function applyArrayFilter(array, f) {
+  var sign =  f.not ? -1 : 1;
+
+  var set = {};
+  f.value.forEach(function (i) { set[i] = 1 });
+
+  if (f.key) {
+    for (var i = 0; i < array.length; i++) {
+      if ((set[array[i][f.key]] || -1)*sign === -1) array.splice(i--, 1);
+    }
+  }
+  else {
+    for (var i = 0; i < array.length; i++) {
+      if ((set[array[i]] || -1)*sign === -1) array.splice(i--, 1);
+    }
+  }
 }
 
 function initHelpers() {
@@ -231,7 +237,7 @@ function setQuery(url) {
     paramsGlobal: info.reqParamsGlobal,
     restriction: info.reqParamsRestrictions,
     urlParams: reqUrlParams,
-    types: getTypes(info.reqTypes)
+    types: info.reqTypes
   }));
 
   $('#submit').on('click', submitRequest);
@@ -239,20 +245,11 @@ function setQuery(url) {
   $('#resFields').html(Handlebars.templates.resFields({
     fields: info.resFields,
     fieldsRoot: info.resFieldsRoot,
-    types: getTypes(info.resTypes),
-    typesRoot: getTypes(info.resTypesRoot)
+    types: info.resTypes,
+    typesRoot: info.resTypesRoot
   }));
 
   currentUrl = url.replace(/\/<.+$/, '');
-}
-
-function getTypes(types) {
-  if (types) {
-    var typeInfo = {};
-    types.forEach(function (type) { typeInfo[type] = objectTypes[type] });
-    return typeInfo;
-  }
-  else return null;
 }
 
 function submitRequest(e) {
