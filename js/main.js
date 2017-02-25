@@ -129,6 +129,8 @@ function setQuery(url) {
 }
 
 function submitRequest(e) {
+  $('#error').empty();
+
   var p = getReqParams();
   if (!p) return;
 
@@ -164,7 +166,7 @@ function getReqParams() {
       if (val.length) {
         p.url[match[1]] = val;
       }
-      else setError(this);
+      else setError(Handlebars.templates.errorRequired({ param: $(this).data('name') }));
     }
     else if (val.length) {
       try {
@@ -178,8 +180,8 @@ function getReqParams() {
 
   return error ? null : p;
 
-  function setError(elt) {
+  function setError(html) {
     error = true;
-    $(elt).addClass('error').one('change', function (e) { $(elt).removeClass('error') });
+    $('#error').append(html);
   }
 }

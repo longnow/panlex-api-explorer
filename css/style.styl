@@ -26,7 +26,6 @@ h3
 
 input[type="text"]
   font-family monospace
-  width 100%
 
 p
   margin-top 0
@@ -40,7 +39,6 @@ td, th
   border-bottom cellBorder
   padding 0.75ex 1.5ex
   vertical-align middle
-  text-align left
   &:first-child
     border-left cellBorder
     padding-left 1em
@@ -52,13 +50,10 @@ th
 
 .desc
   width 60%
-  font-size 92%
-
-.error
-  background-color pink
+  font-size 94%
 
 .input
-  width 17%
+  width 20%
 
 td
   &.name, &.type
@@ -71,9 +66,10 @@ td
   display block
   color blue
   text-decoration none
-
-.queryLink
+  font-family monospace
+  font-size 95%
   &:hover
+    color blue
     background-color highlight
     text-decoration underline
   &.active
@@ -99,9 +95,6 @@ td
   width queryListWidth
   padding 1ex
   border cellBorder
-  a
-    font-family monospace
-    font-size 95%
 
 #resFields
   td, th

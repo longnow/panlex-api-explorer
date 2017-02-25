@@ -13,7 +13,7 @@
 {{#if fields}}
   <h2>Response fields</h2>
   <h3>Object</h3>
-  <table>
+  <table class="table">
   <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
   {{#eachSorted fields}}
     {{#unless attr.root}}
@@ -28,7 +28,7 @@
       <div class="typeDescription">
       <p>{{{attr.desc}}}</p>
       {{#if attr.fields}}
-        <table>
+        <table class="table">
           <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
           {{#eachSorted attr.fields}}
             <tr><td class="name">{{name}}</td><td class="type">{{attr.type}}</td><td class="desc">{{attr.desc}}</td></tr>
@@ -44,7 +44,7 @@
   {{/if}}
 
   <h3>Root</h3>
-  <table>
+  <table class="table">
   <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
   {{#eachSorted fields}}
     {{#if attr.root}}
