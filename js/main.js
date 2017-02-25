@@ -106,6 +106,8 @@ function setQuery(url) {
 
   $('#description').html(Handlebars.templates.description({ url: url, desc: info.desc }));
 
+  $('#error').empty();
+
   var reqUrlParams = url.match(/<[^>]+>/g);
   if (reqUrlParams) {
     reqUrlParams = reqUrlParams.map(function (item) {
@@ -159,29 +161,28 @@ function getReqParams() {
 
   $('#reqParams input').each(function () {
     var val = this.value.trim();
-
     var match = this.name.match(/^url_(\d)$/);
 
     if (match) {
-      if (val.length) {
-        p.url[match[1]] = val;
+      if (val.length) p.url[match[1]] = val;
+      else {
+        setError($(this).data('name'), 'is required');
       }
-      else setError(Handlebars.templates.errorRequired({ param: $(this).data('name') }));
     }
     else if (val.length) {
       try {
         val = JSON.parse(val);
         p.body[this.name] = val;
       } catch (e) {
-        setError(this);
+        setError(this.name, 'has invalid JSON');
       }
     }
   });
 
   return error ? null : p;
 
-  function setError(html) {
+  function setError(param, message) {
     error = true;
-    $('#error').append(html);
+    $('#error').append(Handlebars.templates.error({ param: param, message: message }));
   }
 }
