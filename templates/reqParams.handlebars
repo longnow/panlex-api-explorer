@@ -25,7 +25,11 @@
   <h2>Request parameters</h2>
 
   {{#if restriction}}
-    <p>{{{restriction.desc}}}</p>
+    <ul>
+    {{#each restriction}}
+    <li>{{{@this}}}</li>
+    {{/each}}
+    </ul>
   {{/if}}
 
   <table class="tablesetQuery">

@@ -24,12 +24,11 @@ function initData() {
   for (var i in queryDefaults) {
     if (i === 'default') continue;
 
-    for (var j in queryDefaults[i]) {
-      // apply default values to query types
-      if (queryDefaults.default[j])
-        queryDefaults[i][j] = $.extend(true, $.extend(true, {}, queryDefaults.default[j]), queryDefaults[i][j]);
+    // apply default values to query types
+    queryDefaults[i] = $.extend(true, $.extend(true, {}, queryDefaults.default), queryDefaults[i]);
 
-      // apply inherited values
+    // apply inherited values
+    for (var j in queryDefaults[i]) {
       for (var k in queryDefaults[i][j]) {
         var inherit = queryDefaults[i][j][k].inherit;
         if (inherit) queryDefaults[i][j][k] = queryDefaults[inherit][j][k];
@@ -72,13 +71,13 @@ function initData() {
       queries[i] = $.extend(true, $.extend(true, {}, queryDefaults[queryType]), queries[i]);
 
     // make list of request parameter and response object types requiring documentation
-    ['reqParams', 'resFields'].forEach(function (j) {
+    ['reqParams', 'resFields', 'resFieldsRoot'].forEach(function (j) {
       var types = {};
 
       for (var k in queries[i][j]) {
         var type = queries[i][j][k].type;
         if (type) {
-          type = type.replace(/\[\]$/, '');
+          type = type.replace(/(?:\[\])+$/, '');
           if (objectTypes[type]) types[type] = true;
         }
       }
@@ -86,7 +85,7 @@ function initData() {
       types = Object.keys(types);
 
       if (types.length) {
-        var key = j.replace(/[A-Z].+$/, 'Types');
+        var key = j.replace(/Params|Fields/, 'Types');
         queries[i][key] = types.sort();
       }
     });
@@ -105,14 +104,40 @@ function initData() {
 
     // populate restriction desc
     if (queries[i].reqParamsRestriction) {
-      var obj = queries[i].reqParamsRestriction;
-      obj.desc = (obj.context ? obj.context + ', you ' : 'You ');
+      var desc = [];
 
-      if (obj.atLeastOne) {
-        obj.desc += 'must provide at least one of the following parameters: '
-          + obj.atLeastOne.map(function (p) { return '<code>' + p + '</code>' }).join(', ')
-          + '.';
-      }
+      queries[i].reqParamsRestriction.forEach(function (r) {
+        if (r.type === 'atLeastOne' || r.type === 'atLeastOneNot') {
+          var str = (r.context ? r.context + ', you ' : 'You ');
+          var conj;
+
+          if (r.type === 'atLeastOne') {
+            str += 'must provide at least one of the following parameters: ';
+            conj = 'or';
+          }
+          else {
+            str += 'must provide at least one parameter other than ';
+            conj = 'and';
+          }
+
+          var value = r.value.map(function (p) { return '<code>' + p + '</code>' });
+          if (value.length > 2) {
+            value[value.length - 1] = conj + ' ' + value[value.length - 1];
+            str += value.join(', ');
+          }
+          else str += value.join(' ' + conj + ' ');
+
+          desc.push(str + '.');
+        }
+        else if (r.type === 'comment') {
+          desc.push(r.value);
+        }
+        else if (r.type === 'required') {
+          desc.push('The parameter <code>' + r.value + '</code> is required.');
+        }
+      });
+
+      queries[i].reqParamsRestriction = desc;
     }
   }
 
@@ -199,31 +224,33 @@ function setQuery(url) {
     });
   }
 
-  var types = {};
-  if (info.reqTypes)
-    info.reqTypes.forEach(function (type) { types[type] = objectTypes[type] });
-
   $('#reqParams').html(Handlebars.templates.reqParams({
     params: info.reqParams,
     paramsGlobal: info.reqParamsGlobal,
     restriction: info.reqParamsRestriction,
     urlParams: reqUrlParams,
-    types: types
+    types: getTypes(info.reqTypes)
   }));
 
   $('#submit').on('click', submitRequest);
 
-  types = {};
-  if (info.resTypes)
-    info.resTypes.forEach(function (type) { types[type] = objectTypes[type] });
-
   $('#resFields').html(Handlebars.templates.resFields({
     fields: info.resFields,
     fieldsRoot: info.resFieldsRoot,
-    types: types
+    types: getTypes(info.resTypes),
+    typesRoot: getTypes(info.resTypesRoot)
   }));
 
   currentUrl = url.replace(/\/<.+$/, '');
+}
+
+function getTypes(types) {
+  if (types) {
+    var typeInfo = {};
+    types.forEach(function (type) { typeInfo[type] = objectTypes[type] });
+    return typeInfo;
+  }
+  else return null;
 }
 
 function submitRequest(e) {

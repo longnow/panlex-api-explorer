@@ -47,11 +47,45 @@ var objectTypes = {
     desc: 'Object representing a definition.',
     inherit: '/definition'
   },
+  expression: {
+    desc: 'Object representing an expression.',
+    inherit: '/expr'
+  },
   prop: {
     desc: 'Two-element array representing a property. The first element is the attribute expression ID. The second element is the property string.'
   },
   prop_query: {
     desc: 'Two-element array representing a property query. The first element is an attribute expression ID. The second element is a property string (<code>null</code> to match all strings).'
+  },
+  trans_path: {
+    desc: 'Translation path, consisting of an array of translation hop objects. A translation hop consists of a PanLex meaning with a beginning and end denotation. Expressions tie hops together: one hop’s end denotation has the same expression as the following hop’s beginning denotation. The term “distance-<em>n</em> translation” (where <em>n</em> is typically 1 or 2) refers to a translation with <em>n</em> hops. Each translation hop object has the following fields:',
+    example: 'Here is a <code>trans_path</code> object for a distance-1 translation from <code>eng-000</code> (English) “bat” into <code>spa-000</code> (Spanish) “murciélago”: <code>[ { "meaning": 28118413, "source": 5944, "denotation1": 83715137, "denotation2": 83715210 } ]</code>. Since it is a distance-1 translation, there is only one object in the array. The translation is documented in meaning 28118413, which is in source 5944 (<code>fra-mul:Sérasset</code>). The beginning denotation (of “bat”) is 83715137, and the end denotation (of “murciélago”) is 83715210.',
+    fields: {
+      denotation1: {
+        type: 'integer',
+        desc: 'Beginning denotation ID.'
+      },
+      denotation2: {
+        type: 'integer',
+        desc: 'End denotation ID.'
+      },
+      expr2: {
+        type: 'integer',
+        desc: 'ID of the expression that ties the hop to the next one. Not included for final hops.'
+      },
+      langvar2: {
+        type: 'integer',
+        desc: 'Language variety ID of <code>expr2</code>. Not included for final hops.'
+      },
+      meaning: {
+        type: 'integer',
+        desc: 'Meaning ID.'
+      },
+      source: {
+        type: 'integer',
+        desc: 'Source ID'
+      }
+    }
   }
 }
 
@@ -74,7 +108,7 @@ var queryDefaults = {
     resFieldsRoot: {
       request: {
         type: 'object',
-        desc: 'The request query, if <code>echo</code> was enabled.'
+        desc: 'The request’s query, if <code>echo</code> was enabled.'
       }
     }
   },
@@ -107,7 +141,7 @@ var queryDefaults = {
     resFieldsRoot: {
       result: {
         type: 'object[]',
-        desc: 'Results. Limited to <code>resultMax</code> per query. Use <code>after</code> or <code>offset</code> to get more.'
+        desc: 'Result objects. Limited to <code>resultMax</code> per query. Use <code>after</code> or <code>offset</code> to get more.'
       },
       resultMax: {
         type: 'integer',
@@ -155,7 +189,9 @@ var queryDefaults = {
         desc: 'Additional fields to include in the response.'
       }
     }
-  }
+  },
+
+  other: {}
 };
 
 var queries = {
@@ -377,10 +413,161 @@ var queries = {
     type: 'result',
     desc: 'expression or translation query',
     reqParams: {
-
+      id: {
+        type: 'integer[]',
+        desc: 'Expression IDs.'
+      },
+      include: {
+        options: ['trans_langvar', 'trans_path', 'trans_quality', 'trans_txt', 'trans_txt_degr', 'trans_uid','uid']
+      },
+      interm1_expr_langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs. Restricts results to expressions whose distance-2 intermediate expression is in the specified language varieties.'
+      },
+      interm1_expr_uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers. Restricts results to expressions whose distance-2 intermediate expression is in the specified language varieties. (Only relevant if <code>trans_distance</code> is 2.)'
+      },
+      interm1_grp: {
+        type: 'integer[]',
+        desc: 'Source group IDs. Restricts results to expressions whose distance-2 translation’s ending (“intermediate”) source is one of the specified sources.'
+      },
+      interm1_source: {
+        type: 'integer[]',
+        desc: 'Source IDs. Restricts results to expressions whose distance-2 translation’s ending (“intermediate”) source is one of the specified sources.'
+      },
+      lang_code: {
+        type: 'string[]',
+        desc: 'Three-letter ISO 639 language codes. Restricts results to expressions in varieties of the specified languages.'
+      },
+      langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs. Restricts results to expressions in the specified language varieties.'
+      },
+      mutable: {
+        type: 'boolean',
+        desc: 'Restricts results to expressions from language varieties that are mutable (if <code>true</code>) or immutable (if <code>false</code>).'
+      },
+      range: {
+        type: 'string[]',
+        desc: 'Array of the form <code>[field, start, end]</code>. Restricts results to expressions whose <code>field</code> value is alphabetically between the <code>start</code> and <code>end</code> strings. <code>field</code> may be “txt” or “txt_degr”.'
+      },
+      trans_distance: {
+        type: 'integer',
+        desc: 'Number of translation hops. Pass 1 for one hop (direct or distance-1 translation), 2 for two hops (indirect or distance-2 translation). Default: 1. Note that if you set this to 2, for performance reasons we recommend that you specify the translated expression(s) with <code>trans_expr</code> rather than one of the alternatives.'
+      },
+      trans_grp: {
+        type: 'integer[]',
+        desc: 'Source group IDs. Restricts results to expressions that are translations originating in the specified source groups.'
+      },
+      trans_expr: {
+        type: 'integer[]',
+        desc: 'Expression IDs. Restricts results to expressions that are translations of the specified expressions.'
+      },
+      trans_langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs. Restricts results to expressions that are translations of the specified language varieties’ expressions.'
+      },
+      trans_quality_algo: {
+        type: 'string',
+        desc: 'Translation quality algorithm. Valid values are “geometric” (the default) and “arithmetic”. See description of the <code>trans_quality</code> response field for details.'
+      },
+      trans_quality_min: {
+        type: 'integer',
+        desc: 'Non-negative integer specifying a minimum translation quality. Translations with a lower quality will not be returned. Default: 0, i.e., no minumum.'
+      },
+      trans_source: {
+        type: 'integer[]',
+        desc: 'Source IDs. Restricts results to expressions that are translations originating in the specified sources.'
+      },
+      trans_txt: {
+        type: 'string[]',
+        desc: 'Expression texts. Restricts results to expressions that are translations of expressions with matching texts.'
+      },
+      trans_txt_degr: {
+        type: 'string[]',
+        desc: 'Expression texts. Restricts results to expressions that are translations of expressions with matching texts in their degraded form.'
+      },
+      trans_uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers. Restricts results to expressions that are translations of expressions in the specified language varieties.'
+      },
+      txt: {
+        type: 'string[]',
+        desc: 'Expression texts.'
+      },
+      txt_degr: {
+        type: 'string[]',
+        desc: 'Expression texts to be matched in degraded form.'
+      },
+      uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers. Restricts results to expressions from the specified language varieties.'
+      }
     },
+    reqParamsRestriction: [
+      { type: 'atLeastOneNot', value: ['include','mutable'] },
+      { type: 'atLeastOne', value: ['trans_expr', 'trans_txt', 'trans_txt_degr'], context: 'If you are translating' },
+      { type: 'comment', value: 'The <code>trans_distance</code> and <code>trans_quality_min</code> parameters are only relevant if you have specified one of the translation parameters in the previous item.' },
+      { type: 'comment', value: 'The <code>interm1_*</code> and <code>tran_quality_algo</code> parameters are only relevant if <code>trans_distance</code> is 2.' }
+    ],
     resFields: {
-
+      id: {
+        type: 'integer',
+        desc: 'Expression ID.'
+      },
+      langvar: {
+        type: 'integer',
+        desc: 'Expression’s language variety ID.'
+      },
+      trans_expr: {
+        type: 'integer',
+        desc: 'ID number of expression from which the expression was translated.',
+        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'] }
+      },
+      trans_langvar: {
+        type: 'integer',
+        desc: 'Language variety ID for expression from which the expression was translated.',
+        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_langvar' }
+      },
+      trans_path: {
+        type: 'trans_path[]',
+        desc: 'Translation paths used to produce the translation (see below).',
+        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_path' }
+      },
+      trans_quality: {
+        type: 'integer',
+        desc: 'Translation quality score. For <code>trans_distance</code> 1, it is the sum of the quality value of all sources from distinct source groups attesting the translation. The same algorithm is used for <code>trans_distance</code> 2 when <code>trans_quality_algo</code> is “arithmetic”, combining the sources from both hops for the purpose of the score. When <code>trans_quality_algo</code> is “geometric” (the default), it is the sum, rounded to the nearest integer, of the geometric mean of each distinct translation path’s two quality values. Distinctness in this context is defined by the combination of the intermediate expression linking the two hops and the source groups of the two sources. See <a href="https://dev.panlex.org/translation-evaluation/">translation evaluation</a> for more.',
+        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_quality' }
+      },
+      trans_txt: {
+        type: 'string',
+        desc: 'Text of expression from which the expression was translated.',
+        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt' }
+      },
+      trans_txt_degr: {
+        type: 'string',
+        desc: 'Degraded text of expression from which the expression was translated.',
+        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt_degr' }
+      },
+      trans_uid: {
+        type: 'string',
+        desc: 'Language variety uniform identifier for expression from which the expression was translated.',
+        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_uid' }
+      },
+      txt: {
+        type: 'string',
+        desc: 'Expression text.'
+      },
+      txt_degr: {
+        type: 'string',
+        desc: 'Degraded expression text.'
+      },
+      uid: {
+        type: 'string',
+        desc: 'Expression’s language variety uniform identifier.',
+        restriction: { include: 'uid' }
+      }
     }
   },
 
@@ -416,12 +603,32 @@ var queries = {
   },
 
   '/expr/index': {
+    type: 'other',
     desc: 'expression index query',
+    summary: 'This query produces an alphabetically sorted index summarizing chunks of expressions in the specified language varieties, or in all varieties in PanLex. Expressions are first sorted by their degraded expression text, then divided into chunks of size <code>step</code>. The result is returned as the <code>index</code> array (see below).',
     reqParams: {
-
+      langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs.'
+      },
+      step: {
+        type: 'integer',
+        desc: 'The number of expressions summarized in each index item. Minimum 250.',
+      },
+      uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers.'
+      }
     },
-    resFields: {
-
+    reqParamsRestriction: [
+      { type: 'required', value: 'step' },
+      { type: 'comment', value: 'Because this query can produce large responses, the <code>indent</code> parameter is ignored.' }
+    ],
+    resFieldsRoot: {
+      index: {
+        type: 'expression[][]',
+        desc: 'Array of two-element arrays containing expression objects, representing the first and last expression from each index chunk.'
+      }
     }
   },
 
@@ -593,9 +800,9 @@ var queries = {
         desc: 'Source IDs.'
       }
     },
-    reqParamsRestriction: {
-      atLeastOne: ['expr','meaning','source']
-    },
+    reqParamsRestriction: [
+      { type: 'atLeastOne', value: ['expr','meaning','source'] }
+    ],
     resFields: {
       definition: {
         type: 'definition[]',
@@ -651,6 +858,7 @@ var queries = {
   },
 
   '/norm/definition/<id|uid>': {
+    type: 'other',
     desc: 'definition normalization query',
     reqParams: {
 
@@ -661,6 +869,7 @@ var queries = {
   },
 
   '/norm/expr/<id|uid>': {
+    type: 'other',
     desc: 'expression normalization query',
     reqParams: {
 
@@ -674,10 +883,131 @@ var queries = {
     type: 'result',
     desc: 'source query',
     reqParams: {
-
+      expr: {
+        type: 'integer[]',
+        desc: 'Expression IDs. Restricts results to sources containing all of the specified expressions, whether in the same meaning or not.'
+      },
+      grp: {
+        type: 'integer[]',
+        desc: 'Source group IDs.'
+      },
+      id: {
+        type: 'integer[]',
+        desc: 'Source IDs.'
+      },
+      include: {
+        options: ['langvar','langvar_attested','meaning_count','usr']
+      },
+      label: {
+        type: 'string[]',
+        desc: 'Source labels.'
+      },
+      langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs. Restricts results to sources with those declared language varieties.'
+      },
+      meaning: {
+        type: 'boolean',
+        desc: 'Restricts results to sources with one or more meanings (if <code>true</code>) or no meanings (if <code>false</code>).'
+      },
+      trans_expr: {
+        type: 'integer[]',
+        desc: 'Expression IDs. Restricts results to sources with at least one meaning that contains all of the specified expressions.'
+      },
+      uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers. Restricts results to sources with those declared language varieties.'
+      },
+      usr: {
+        type: 'string[]',
+        desc: 'PanLem usernames. Restricts results to sources with at least one of the PanLem users as a meaning editor.'
+      }
     },
     resFields: {
-
+      author: {
+        type: 'string',
+        desc: 'Author(s).'
+      },
+      directory: {
+        type: 'string',
+        desc: 'Name of directory in source archive (for internal use).'
+      },
+      grp: {
+        type: 'integer',
+        desc: 'ID of source group to which the source belongs.'
+      },
+      id: {
+        type: 'integer',
+        desc: 'Source ID.'
+      },
+      ip_claim: {
+        type: 'string',
+        desc: 'Summary of intellectual property claim (if known).'
+      },
+      ip_claimant: {
+        type: 'string',
+        desc: 'Intellectual property claimant (if known).'
+      },
+      ip_claimant_email: {
+        type: 'string',
+        desc: 'Intellectual property claimant’s email address (if known).'
+      },
+      isbn: {
+        type: 'string',
+        desc: 'ISBN number.'
+      },
+      label: {
+        type: 'string',
+        desc: 'Source label.'
+      },
+      langvar: {
+        type: 'integer[]',
+        desc: 'IDs of language varieties declared as documented in the source',
+        restriction: { include: 'langvar' }
+      },
+      langvar_attested: {
+        type: 'integer[]',
+        desc: 'IDs of language varieties attested in the source’s denotations.',
+        restriction: { include: 'langvar' }
+      },
+      license: {
+        type: 'string',
+        desc: 'License type. Can be “copyright”, “Creative Commons”, “GNU Free Documentation License”, “GNU General Public License”, “GNU Lesser General Public License”, “MIT License”, “other”, “PanLex Use Permission”, “public domain”, “request”, or “unknown”.'
+      },
+      meaning_count: {
+        type: 'integer',
+        desc: 'Number of meanings in the source.',
+        restriction: { include: 'langvar' }
+      },
+      note: {
+        type: 'string',
+        desc: 'Miscellaneous notes.'
+      },
+      quality: {
+        type: 'integer',
+        desc: 'Quality rating assigned by PanLex editor (0 = lowest, 9 = highest).'
+      },
+      reg_date: {
+        type: 'string',
+        desc: 'Date added to PanLex.'
+      },
+      title: {
+        type: 'string',
+        desc: 'Title.'
+      },
+      url: {
+        type: 'string',
+        desc: 'URL.'
+      },
+      usr: {
+        type: 'integer[]',
+        desc: 'Meaning editors’ PanLem usernames.',
+        restriction: { include: 'langvar' }
+      },
+      year: {
+        type: 'integer',
+        desc: 'Year of publication.'
+      }
     }
   },
 
@@ -701,6 +1031,7 @@ var queries = {
   },
 
   '/txt_degr': {
+    type: 'other',
     desc: 'text degradation query',
     reqParams: {
 
