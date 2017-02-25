@@ -260,6 +260,9 @@ var queries = {
         desc: 'Language variety uniform identifiers. Restricts results to definitions in the specified language varieties.'
       }
     },
+    reqParamsRestrictions: [
+      { type: 'atLeastOneNot', value: ['include'] }
+    ],
     resFields: {
       expr: {
         type: 'integer',
@@ -373,6 +376,9 @@ var queries = {
         desc: 'Language variety uniform identifiers. Restricts results to denotations of expressions in the specified language varieties.'
       }
     },
+    reqParamsRestrictions: [
+      { type: 'atLeastOne', value: ['expr','id','langvar','meaning','source','uid'] }
+    ],
     resFields: {
       denotation_class: {
         type: 'class[]',
@@ -518,7 +524,7 @@ var queries = {
         desc: 'Language variety uniform identifiers. Restricts results to expressions from the specified language varieties.'
       }
     },
-    reqParamsRestriction: [
+    reqParamsRestrictions: [
       { type: 'atLeastOneNot', value: ['include','mutable'] },
       { type: 'atLeastOne', value: ['trans_expr', 'trans_txt', 'trans_txt_degr'], context: 'If you are translating' },
       { type: 'comment', value: 'The <code>trans_distance</code> and <code>trans_quality_min</code> parameters are only relevant if you have specified one of the translation parameters in the previous item.' },
@@ -633,7 +639,7 @@ var queries = {
         desc: 'Language variety uniform identifiers.'
       }
     },
-    reqParamsRestriction: [
+    reqParamsRestrictions: [
       { type: 'required', value: 'step' },
       { type: 'comment', value: 'Because this query can produce large responses, the <code>indent</code> parameter is ignored.' }
     ],
@@ -813,7 +819,7 @@ var queries = {
         desc: 'Source IDs.'
       }
     },
-    reqParamsRestriction: [
+    reqParamsRestrictions: [
       { type: 'atLeastOne', value: ['expr','meaning','source'] }
     ],
     resFields: {

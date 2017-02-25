@@ -103,10 +103,10 @@ function initData() {
     }
 
     // populate restriction desc
-    if (queries[i].reqParamsRestriction) {
+    if (queries[i].reqParamsRestrictions) {
       var desc = [];
 
-      queries[i].reqParamsRestriction.forEach(function (r) {
+      queries[i].reqParamsRestrictions.forEach(function (r) {
         if (r.type === 'atLeastOne' || r.type === 'atLeastOneNot') {
           var str = (r.context ? r.context + ', you ' : 'You ');
           var conj;
@@ -137,7 +137,7 @@ function initData() {
         }
       });
 
-      queries[i].reqParamsRestriction = desc;
+      queries[i].reqParamsRestrictions = desc;
     }
   }
 
@@ -229,7 +229,7 @@ function setQuery(url) {
   $('#reqParams').html(Handlebars.templates.reqParams({
     params: info.reqParams,
     paramsGlobal: info.reqParamsGlobal,
-    restriction: info.reqParamsRestriction,
+    restriction: info.reqParamsRestrictions,
     urlParams: reqUrlParams,
     types: getTypes(info.reqTypes)
   }));
