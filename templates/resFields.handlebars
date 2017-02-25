@@ -1,6 +1,6 @@
 {{#*inline "resItem"}}
 <tr>
-{{#if attr.include}}
+{{#if attr.restriction}}
   <td class="name">({{name}})</td>
 {{else}}
   <td class="name">{{name}}</td>
@@ -16,9 +16,7 @@
   <table class="table">
   <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
   {{#eachSorted fields}}
-    {{#unless attr.root}}
-      {{> resItem}}
-    {{/unless}}
+    {{> resItem}}
   {{/eachSorted}}
   </table>
 
@@ -29,10 +27,8 @@
   <h3>Root</h3>
   <table class="table">
   <tr><th class="name">key</th><th class="type">type</th><th class="desc">description</th></tr>
-  {{#eachSorted fields}}
-    {{#if attr.root}}
-      {{> resItem}}
-    {{/if}}
+  {{#eachSorted fieldsRoot}}
+    {{> resItem}}
   {{/eachSorted}}
   </table>
 {{/if}}

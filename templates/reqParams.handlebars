@@ -31,9 +31,7 @@
   <table class="tablesetQuery">
   <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted params}}
-    {{#unless attr.global}}
-      {{> reqItem}}
-    {{/unless}}
+    {{> reqItem}}
   {{/eachSorted}}
   </table>
 
@@ -44,10 +42,8 @@
   <h3>Global</h3>
   <table>
   <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
-  {{#eachSorted params}}
-    {{#if attr.global}}
-      {{> reqItem}}
-    {{/if}}
+  {{#eachSorted paramsGlobal}}
+    {{> reqItem}}
   {{/eachSorted}}
   </table>
 {{/if}}

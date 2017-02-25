@@ -59,7 +59,11 @@ function initData() {
     }
   }
 
-  // populate (1) from queryDefaults, (2) reqTypes and resTypes, (3) include desc, (4) restriction desc
+  // populate query fields:
+  // - from queryDefaults
+  // - reqTypes and resTypes
+  // - include desc
+  // - restriction desc
   for (var i in queries) {
     var queryType = queries[i].type;
 
@@ -108,6 +112,18 @@ function initData() {
         obj.desc += 'must provide at least one of the following parameters: '
           + obj.atLeastOne.map(function (p) { return '<code>' + p + '</code>' }).join(', ')
           + '.';
+      }
+    }
+  }
+
+  // populate inherited objectTypes
+  for (var i in objectTypes) {
+    if (objectTypes[i].inherit) {
+      var ourFields = objectTypes[i].fields = {};
+      var theirFields = queries[objectTypes[i].inherit].resFields;
+
+      for (var j in theirFields) {
+        if (!theirFields[j].restriction) ourFields[j] = theirFields[j];
       }
     }
   }
@@ -189,6 +205,7 @@ function setQuery(url) {
 
   $('#reqParams').html(Handlebars.templates.reqParams({
     params: info.reqParams,
+    paramsGlobal: info.reqParamsGlobal,
     restriction: info.reqParamsRestriction,
     urlParams: reqUrlParams,
     types: types
@@ -202,6 +219,7 @@ function setQuery(url) {
 
   $('#resFields').html(Handlebars.templates.resFields({
     fields: info.resFields,
+    fieldsRoot: info.resFieldsRoot,
     types: types
   }));
 

@@ -17,7 +17,6 @@ var urlParams = {
 
 var objectTypes = {
   cldr_char: {
-    name: 'CLDR character',
     desc: 'Object representing an <a href="http://cldr.unicode.org/translation/characters#TOC-Exemplar-Characters">exemplar character</a> for a language variety, as defined by the Unicode Common Locale Data Repository.',
     fields: {
       category: {
@@ -44,6 +43,10 @@ var objectTypes = {
     desc: 'Two-element array representing a range of permissible Unicode characters for a language variety. The first element is the numeric value of the first code-point in the range and the second element is the numeric value of the last code-point in the range.',
     example: 'For English (language variety <em>eng-000</em>), the first code point object is <code>[32, 33]</code>. This includes the range from U+0020 (SPACE) to U+0021 (EXCLAMATION MARK). Note that JSON numeric values are always decimal.'
   },
+  definition: {
+    desc: 'Object representing a definition.',
+    inherit: '/definition'
+  },
   prop: {
     desc: 'Two-element array representing a property. The first element is the attribute expression ID. The second element is the property string.'
   },
@@ -54,79 +57,69 @@ var objectTypes = {
 
 var queryDefaults = {
   default: {
-    reqParams: {
+    reqParamsGlobal: {
       cache: {
         type: 'boolean',
-        desc: 'Whether to return cached responses. Default <code>true</code>. Set to <code>false</code> if you want to ensure that your response contains the latest data from the database. Cached responses will be no more than 24 hours old.',
-        global: true
+        desc: 'Whether to return cached responses. Default <code>true</code>. Set to <code>false</code> if you want to ensure that your response contains the latest data from the database. Cached responses will be no more than 24 hours old.'
       },
       echo: {
         type: 'boolean',
-        desc: 'Whether to pass the query back in the response as <code>request</code>, which is an object with the keys <code>url</code> and <code>query</code>. Default <code>false</code>.',
-        global: true
+        desc: 'Whether to pass the query back in the response as <code>request</code>, which is an object with the keys <code>url</code> and <code>query</code>. Default <code>false</code>.'
       },
       indent: {
         type: 'boolean',
-        desc: 'Whether to pretty-print the JSON response. Default <code>false</code>.',
-        global: true
-      },
+        desc: 'Whether to pretty-print the JSON response. Default <code>false</code>.'
+      }
     },
-    resFields: {
+    resFieldsRoot: {
       request: {
         type: 'object',
-        desc: 'The request query, if <code>echo</code> was enabled.',
-        root: true
+        desc: 'The request query, if <code>echo</code> was enabled.'
       }
     }
   },
 
   result: {
     reqParams: {
-      after: {
-        type: 'scalar[]',
-        desc: 'Integers or strings containing values of <code>sort</code> fields. Records will be returned that occur immediately after the indicated value(s) in the sort order. Can be used as an alternative to <code>offset</code>.',
-        global: true
-      },
       include: {
         type: 'string[]',
         desc: 'Additional fields to include in the response.'
+      }
+    },
+    reqParamsGlobal: {
+      after: {
+        type: 'scalar[]',
+        desc: 'Integers or strings containing values of <code>sort</code> fields. Records will be returned that occur immediately after the indicated value(s) in the sort order. Can be used as an alternative to <code>offset</code>.'
       },
       limit: {
         type: 'integer',
-        desc: 'Maximum number of records to return. Default: <code>resultMax</code>, i.e., the maximum.',
-        global: true
+        desc: 'Maximum number of records to return. Default: <code>resultMax</code>, i.e., the maximum.'
       },
       offset: {
         type: 'integer',
-        desc: 'How many records to omit from the beginning of the returned records. Default: 0. Cannot be greater than 250000.',
-        global: true
+        desc: 'How many records to omit from the beginning of the returned records. Default: 0. Cannot be greater than 250000.'
       },
       sort: {
         type: 'string[]',
-        desc: 'Fields to sort the result by. Sort strings take the format <em>&lt;field&gt;</em> or <em>&lt;field&gt; asc</em> for ascending order, <em>&lt;field&gt; desc</em> for descending order. You may also sort by <code>include</code> fields if they are present and do not return an array. If you sort by the special field <code>random</code>, the result will be returned in random order. Default: <code>id asc</code>.',
-        global: true
+        desc: 'Fields to sort the result by. Sort strings take the format <em>&lt;field&gt;</em> or <em>&lt;field&gt; asc</em> for ascending order, <em>&lt;field&gt; desc</em> for descending order. You may also sort by <code>include</code> fields if they are present and do not return an array. If you sort by the special field <code>random</code>, the result will be returned in random order. Default: <code>id asc</code>.'
       }
     },
-    resFields: {
+    resFieldsRoot: {
       result: {
         type: 'object[]',
-        desc: 'Results. Limited to <code>resultMax</code> per query. Use <code>after</code> or <code>offset</code> to get more.',
-        root: true
+        desc: 'Results. Limited to <code>resultMax</code> per query. Use <code>after</code> or <code>offset</code> to get more.'
       },
       resultMax: {
         type: 'integer',
-        desc: 'Maximum number of <code>result</code> objects that will be returned in a single query (currently 2000).',
-        root: true
+        desc: 'Maximum number of <code>result</code> objects that will be returned in a single query (currently 2000).'
       },
       resultNum: {
         type: 'integer',
-        desc: 'Number of objects returned in <code>result</code>.',
-        root: true
+        desc: 'Number of objects returned in <code>result</code>.'
       },
       resultType: {
         type: 'string',
-        desc: 'Type of objects in <code>result</code>.',
-        root: true
+        desc: 'Type of objects in <code>result</code>.'
       }
     }
   },
@@ -143,16 +136,14 @@ var queryDefaults = {
         inherit: 'result'
       }
     },
-    resFields: {
+    resFieldsRoot: {
       count: {
         type: 'integer',
-        desc: 'Number of results found.',
-        root: true
+        desc: 'Number of results found.'
       },
       countType: {
         type: 'string',
-        desc: 'Type of objects counted in <code>count</code>.',
-        root: true
+        desc: 'Type of objects counted in <code>count</code>.'
       }
     }
   },
@@ -221,7 +212,56 @@ var queries = {
       }
     },
     resFields: {
-
+      expr: {
+        type: 'integer',
+        desc: 'ID number of the expression with which the definition shares a meaning.',
+        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'] }
+      },
+      expr_langvar: {
+        type: 'integer',
+        desc: 'Language variety ID of the expression whose meaning is defined.',
+        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_langvar' }
+      },
+      expr_txt: {
+        type: 'string',
+        desc: 'Text of the expression whose meaning is defined.',
+        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_txt' }
+      },
+      expr_txt_degr: {
+        type: 'string',
+        desc: 'Degraded ext of the expression whose meaning is defined.',
+        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_txt_degr' }
+      },
+      expr_uid: {
+        type: 'integer',
+        desc: 'Language variety uniform identifier of the expression whose meaning is defined.',
+        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_uid' }
+      },
+      id: {
+        type: 'integer',
+        desc: 'Definition ID.'
+      },
+      langvar: {
+        type: 'integer',
+        desc: 'ID number of the language variety in which the definition is written.'
+      },
+      meaning: {
+        type: 'integer',
+        desc: 'ID number of the meaning to which the definition belongs.'
+      },
+      txt: {
+        type: 'string',
+        desc: 'Text of the definition.'
+      },
+      txt_degr: {
+        type: 'string',
+        desc: 'Degraded text of the definition.'
+      },
+      uid: {
+        type: 'string',
+        desc: 'Uniform identifier of the language variety in which the definition is written.',
+        restriction: { include: 'uid' }
+      }
     }
   },
 
@@ -288,12 +328,12 @@ var queries = {
       denotation_class: {
         type: 'class[]',
         desc: 'Denotation classifications.',
-        include: 'denotation_class'
+        restriction: { include: 'denotation_class' }
       },
       denotation_prop: {
         type: 'prop[]',
         desc: 'Denotation properties.',
-        include: 'denotation_prop'
+        restriction: { include: 'denotation_prop' }
       },
       expr: {
         type: 'integer',
@@ -445,12 +485,12 @@ var queries = {
       denotation_count: {
         type: 'integer',
         desc: 'Number of denotations in the language variety.',
-        include: 'denotation_count'
+        restriction: { include: 'denotation_count' }
       },
       expr_count: {
         type: 'integer',
         desc: 'Number of expressions in the language variety.',
-        include: 'expr_count'
+        restriction: { include: 'expr_count' }
       },
       id: {
         type: 'integer',
@@ -462,13 +502,13 @@ var queries = {
       },
       langvar_char: {
         type: 'codepoint_range[]',
-        desc: 'Code-point ranges.',
-        include: 'langvar_char'
+        desc: 'Code-point ranges (see below).',
+        restriction: { include: 'langvar_char' }
       },
       langvar_cldr_char: {
         type: 'cldr_char[]',
-        desc: 'CLDR character objects.',
-        include: 'langvar_cldr_char'
+        desc: 'CLDR character objects (see below).',
+        restriction: { include: 'langvar_cldr_char' }
       },
       mutable: {
         type: 'boolean',
@@ -493,7 +533,7 @@ var queries = {
       script_expr_txt: {
         type: 'string',
         desc: 'Text of the <code>script_expr</code> expression.',
-        include: 'script_expr_txt'
+        restriction: { include: 'script_expr_txt' }
       },
       uid: {
         type: 'string',
@@ -557,7 +597,37 @@ var queries = {
       atLeastOne: ['expr','meaning','source']
     },
     resFields: {
-
+      definition: {
+        type: 'definition[]',
+        desc: 'The meaning’s definitions.',
+        restriction: { include: 'definition' }
+      },
+      denotation: {
+        type: 'integer[]',
+        desc: 'IDs of denotations of the meaning.'
+      },
+      expr: {
+        type: 'integer[]',
+        desc: 'IDs of expressions with the meaning.'
+      },
+      id: {
+        type: 'integer',
+        desc: 'Meaning ID.'
+      },
+      meaning_class: {
+        type: 'class[]',
+        desc: 'Meaning classifications.',
+        restriction: { include: 'meaning_class' }
+      },
+      meaning_prop: {
+        type: 'prop[]',
+        desc: 'Meaning properties.',
+        restriction: { include: 'meaning_class' }
+      },
+      source: {
+        type: 'integer',
+        desc: 'Source ID.'
+      }
     }
   },
 
