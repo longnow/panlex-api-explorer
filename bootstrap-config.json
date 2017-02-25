@@ -9,6 +9,7 @@
     "forms.less",
     "buttons.less",
     "alerts.less",
+    "close.less",
     "component-animations.less",
     "tooltip.less"
   ],
@@ -18,5 +19,5 @@
     "collapse.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=4a0b8e13d66d6c58b2ad62abd6922d1b"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=2ce8b8dc580a8638ebc35d40603c0960"
 }
