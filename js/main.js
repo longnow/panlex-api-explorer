@@ -59,7 +59,7 @@ function initData() {
     }
   }
 
-  // populate (1) from queryDefaults, (2) reqTypes and resTypes, (3) include desc
+  // populate (1) from queryDefaults, (2) reqTypes and resTypes, (3) include desc, (4) restriction desc
   for (var i in queries) {
     var queryType = queries[i].type;
 
@@ -89,13 +89,26 @@ function initData() {
 
     // populate include desc (deleting param if invalid)
     if (queries[i].reqParams.include) {
-      if (queries[i].reqParams.include.options) {
-        queries[i].reqParams.include.desc += ' Possible values: ' +
-          queries[i].reqParams.include.options.map(function (opt) {
-            return '<code>' + opt + '</code>'
-          }).join(', ') + '.';
+      var obj = queries[i].reqParams.include;
+
+      if (obj.options) {
+        obj.desc += ' Possible values: '
+          + obj.options.map(function (p) { return '<code>' + p + '</code>' }).join(', ')
+          + '.';
       }
       else delete queries[i].reqParams.include;
+    }
+
+    // populate restriction desc
+    if (queries[i].reqParamsRestriction) {
+      var obj = queries[i].reqParamsRestriction;
+      obj.desc = (obj.context ? obj.context + ', you ' : 'You ');
+
+      if (obj.atLeastOne) {
+        obj.desc += 'must provide at least one of the following parameters: '
+          + obj.atLeastOne.map(function (p) { return '<code>' + p + '</code>' }).join(', ')
+          + '.';
+      }
     }
   }
 }
@@ -170,25 +183,22 @@ function setQuery(url) {
     });
   }
 
-  var types;
-
-  if (info.reqTypes) {
-    types = {};
+  var types = {};
+  if (info.reqTypes)
     info.reqTypes.forEach(function (type) { types[type] = objectTypes[type] });
-  }
 
   $('#reqParams').html(Handlebars.templates.reqParams({
     params: info.reqParams,
+    restriction: info.reqParamsRestriction,
     urlParams: reqUrlParams,
     types: types
   }));
 
   $('#submit').on('click', submitRequest);
 
-  if (info.resTypes) {
-    types = {};
+  types = {};
+  if (info.resTypes)
     info.resTypes.forEach(function (type) { types[type] = objectTypes[type] });
-  }
 
   $('#resFields').html(Handlebars.templates.resFields({
     fields: info.resFields,

@@ -249,14 +249,68 @@ var queries = {
     desc: 'denotation query',
     reqParams: {
       denotation_class: {
-        type: 'class_query[]'
+        type: 'class_query[]',
+        desc: 'Denotation classification query (see below).'
       },
       denotation_prop: {
-        type: 'prop_query[]'
+        type: 'prop_query[]',
+        desc: 'Denotation property query (see below).'
+      },
+      expr: {
+        type: 'integer[]',
+        desc: 'Expression IDs.'
+      },
+      id: {
+        type: 'integer[]',
+        desc: 'Denotation IDs.'
+      },
+      include: {
+        options: ['denotation_class', 'denotation_prop']
+      },
+      langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs. Restricts results to denotations of expressions in the specified language varieties.'
+      },
+      meaning: {
+        type: 'integer[]',
+        desc: 'Meaning IDs.'
+      },
+      source: {
+        type: 'integer[]',
+        desc: 'Source IDs.'
+      },
+      uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers. Restricts results to denotations of expressions in the specified language varieties.'
       }
     },
     resFields: {
-
+      denotation_class: {
+        type: 'class[]',
+        desc: 'Denotation classifications.',
+        include: 'denotation_class'
+      },
+      denotation_prop: {
+        type: 'prop[]',
+        desc: 'Denotation properties.',
+        include: 'denotation_prop'
+      },
+      expr: {
+        type: 'integer',
+        desc: 'Expression ID.'
+      },
+      id: {
+        type: 'integer',
+        desc: 'Denotation ID.'
+      },
+      meaning: {
+        type: 'integer',
+        desc: 'Meaning ID.'
+      },
+      source: {
+        type: 'integer',
+        desc: 'Source ID.'
+      }
     }
   },
 
@@ -282,8 +336,12 @@ var queries = {
   '/expr': {
     type: 'result',
     desc: 'expression or translation query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+
+    },
+    resFields: {
+
+    }
   },
 
   '/expr/<id>': {
@@ -319,8 +377,12 @@ var queries = {
 
   '/expr/index': {
     desc: 'expression index query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+
+    },
+    resFields: {
+
+    }
   },
 
   '/langvar': {
@@ -392,7 +454,7 @@ var queries = {
       },
       id: {
         type: 'integer',
-        desc: 'Language variety ID number.'
+        desc: 'Language variety ID.'
       },
       lang_code: {
         type: 'string',
@@ -466,8 +528,37 @@ var queries = {
   '/meaning': {
     type: 'result',
     desc: 'meaning query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+      expr: {
+        type: 'integer[]',
+        desc: 'Expression IDs. Restricts results to meanings containing all of the specified expressions.'
+      },
+      id: {
+        type: 'integer[]',
+        desc: 'Meaning IDs'
+      },
+      include: {
+        options: ['definition','meaning_class','meaning_prop']
+      },
+      meaning_class: {
+        type: 'class_query[]',
+        desc: 'Meaning classification query (see below).'
+      },
+      meaning_prop: {
+        type: 'prop_query',
+        desc: 'Meaning property query (see below).'
+      },
+      source: {
+        type: 'integer[]',
+        desc: 'Source IDs.'
+      }
+    },
+    reqParamsRestriction: {
+      atLeastOne: ['expr','meaning','source']
+    },
+    resFields: {
+
+    }
   },
 
   '/meaning/<id>': {
@@ -491,21 +582,33 @@ var queries = {
 
   '/norm/definition/<id|uid>': {
     desc: 'definition normalization query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+
+    },
+    resFields: {
+
+    }
   },
 
   '/norm/expr/<id|uid>': {
     desc: 'expression normalization query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+
+    },
+    resFields: {
+
+    }
   },
 
   '/source': {
     type: 'result',
     desc: 'source query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+
+    },
+    resFields: {
+
+    }
   },
 
   '/source/<id|label>': {
@@ -529,7 +632,11 @@ var queries = {
 
   '/txt_degr': {
     desc: 'text degradation query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+
+    },
+    resFields: {
+
+    }
   }
 };
