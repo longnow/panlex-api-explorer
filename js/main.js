@@ -103,18 +103,28 @@ function getFilter(obj) {
 }
 
 function applyFilter(obj, f) {
+  var sign;
+
   if (f.filter) {
-    var set = {};
-    f.filter.forEach(function (i) { set[i] = true });
-    for (var i in obj) {
-      if (set[i]) delete obj[i];
-    }
+    f = f.filter;
+    sign = 1;
   }
   else if (f.filterNot) {
-    var set = {};
-    f.filterNot.forEach(function (i) { set[i] = true });
+    f = f.filterNot;
+    sign = -1;
+  }
+  else return obj;
+
+  var set = {};
+  f.values.forEach(function (i) { set[i] = 1 });
+
+  if (f.key) {
+    if (obj[f.key])
+      obj[f.key] = obj[f.key].filter(function (i) { return (set[i] || -1)*sign === 1 });
+  }
+  else {
     for (var i in obj) {
-      if (!set[i]) delete obj[i];
+      if ((set[i] || -1)*sign === -1) delete obj[i];
     }
   }
 

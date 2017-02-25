@@ -229,7 +229,7 @@ var queries = {
     desc: 'definition count query',
     reqParams: {
       inherit: '/definition',
-      filterNot: ['include']
+      filterNot: { values: ['include'] }
     }
   },
 
@@ -255,7 +255,7 @@ var queries = {
     desc: 'denotation count query',
     reqParams: {
       inherit: '/definition',
-      filterNot: ['include']
+      filterNot: { values: ['include'] }
     }
   },
 
@@ -272,7 +272,7 @@ var queries = {
     reqParams: {
       include: {
         inherit: '/expr',
-        filter: ['uid']
+        filter: { key: 'options', values: ['uid'] }
       }
     }
   },
@@ -283,7 +283,7 @@ var queries = {
     reqParams: {
       include: {
         inherit: '/denotation',
-        filter: ['uid']
+        filter: { key: 'options', values: ['uid'] }
       }
     }
   },
@@ -293,7 +293,7 @@ var queries = {
     desc: 'expression count query',
     reqParams: {
       inherit: '/expr',
-      filterNot: ['include']
+      filterNot: { values: ['include'] }
     }
   },
 
@@ -429,8 +429,7 @@ var queries = {
     desc: 'single language variety query',
     reqParams: {
       include: {
-        inherit: '/langvar',
-        filter: ['uid']
+        inherit: '/langvar'
       }
     }
   },
@@ -440,7 +439,7 @@ var queries = {
     desc: 'language variety count query',
     reqParams: {
       inherit: '/langvar',
-      filterNot: ['include']
+      filterNot: { values: ['include'] }
     }
   },
 
@@ -466,7 +465,7 @@ var queries = {
     desc: 'meaning count query',
     reqParams: {
       inherit: '/meaning',
-      filterNot: ['include']
+      filterNot: { values: ['include'] }
     }
   },
 
@@ -504,7 +503,7 @@ var queries = {
     desc: 'source count query',
     reqParams: {
       inherit: '/source',
-      filterNot: ['include']
+      filterNot: { values: ['include'] }
     }
   },
 
