@@ -269,6 +269,7 @@ function submitRequest(e) {
   if (p.url.length) {
     options.method = 'GET';
     options.url += '/' + p.url.join('/');
+    options.data = p.body;
   }
   else {
     options.method = 'POST';
