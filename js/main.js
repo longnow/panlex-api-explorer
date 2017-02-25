@@ -20,10 +20,10 @@ $(document).ready(function () {
 });
 
 function initData() {
+  // populate queryDefaults
   for (var i in queryDefaults) {
     if (i === 'default') continue;
 
-    // populate queryDefaults
     for (var j in queryDefaults[i]) {
       // apply default values to query types
       if (queryDefaults.default[j])
@@ -31,19 +31,31 @@ function initData() {
 
       // apply inherited values
       for (var k in queryDefaults[i][j]) {
-        var source = queryDefaults[i][j][k].inherit;
-        if (source) queryDefaults[i][j][k] = queryDefaults[source][j][k];
+        var inherit = queryDefaults[i][j][k].inherit;
+        if (inherit) queryDefaults[i][j][k] = queryDefaults[inherit][j][k];
       }
     }
   }
 
-  // populate count query reqParams from corresponding result query's
+  // populate inherited reqParams
   for (var i in queries) {
     var q = queries[i];
-    if (q.type === 'count') {
-      var resultQuery = queries[i.replace(/\/count$/, '')];
-      q.reqParams = $.extend(true, $.extend(true, {}, resultQuery.reqParams), q.reqParams);
-      delete q.reqParams.include;
+
+    // inherit all params
+    if (q.reqParams.inherit) {
+      var f = getFilter(queries[i].reqParams);
+      q.reqParams = $.extend(true, {}, queries[q.reqParams.inherit].reqParams);
+      if (f) applyFilter(q.reqParams, f);
+    }
+    else {
+      for (var j in q.reqParams) {
+        // inherit single param
+        if (q.reqParams[j].inherit) {
+          var f = getFilter(q.reqParams[j]);
+          q.reqParams[j] = $.extend(true, {}, queries[q.reqParams[j].inherit].reqParams[j]);
+          if (f) applyFilter(q.reqParams[j], f);
+        }
+      }
     }
   }
 
@@ -71,14 +83,42 @@ function initData() {
       if (types.length) queries[i].resTypes = types;
     }
 
-    // generate include desc
-    if (queryType === 'result' && queries[i].reqParams.include && queries[i].reqParams.include.options) {
-      queries[i].reqParams.include.desc += ' Possible values: ' +
-        queries[i].reqParams.include.options.map(function (opt) {
-          return '<code>' + opt + '</code>'
-        }).join(', ') + '.';
+    // populate include desc (deleting param if invalid)
+    if (queries[i].reqParams.include) {
+      if (queries[i].reqParams.include.options) {
+        queries[i].reqParams.include.desc += ' Possible values: ' +
+          queries[i].reqParams.include.options.map(function (opt) {
+            return '<code>' + opt + '</code>'
+          }).join(', ') + '.';
+      }
+      else delete queries[i].reqParams.include;
     }
   }
+}
+
+function getFilter(obj) {
+  if (obj.filter) return { filter: obj.filter };
+  else if (obj.filterNot) return { filterNot: obj.filterNot };
+  else return null;
+}
+
+function applyFilter(obj, f) {
+  if (f.filter) {
+    var set = {};
+    f.filter.forEach(function (i) { set[i] = true });
+    for (var i in obj) {
+      if (set[i]) delete obj[i];
+    }
+  }
+  else if (f.filterNot) {
+    var set = {};
+    f.filterNot.forEach(function (i) { set[i] = true });
+    for (var i in obj) {
+      if (!set[i]) delete obj[i];
+    }
+  }
+
+  return obj;
 }
 
 function initHelpers() {

@@ -78,8 +78,7 @@ var queryDefaults = {
       },
       include: {
         type: 'string[]',
-        desc: 'Additional fields to include in the response.',
-        global: true
+        desc: 'Additional fields to include in the response.'
       },
       limit: {
         type: 'integer',
@@ -145,6 +144,15 @@ var queryDefaults = {
         root: true
       }
     }
+  },
+
+  single: {
+    reqParams: {
+      include: {
+        type: 'string[]',
+        desc: 'Additional fields to include in the response.'
+      }
+    }
   }
 };
 
@@ -152,18 +160,77 @@ var queries = {
   '/definition': {
     type: 'result',
     desc: 'definition query',
-    reqParams: {},
-    resFields: {}
+    reqParams: {
+      expr: {
+        type: 'integer[]',
+        desc: 'Expression IDs. Restricts results to definitions of meanings of the specified expressions.'
+      },
+      expr_langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs. Restricts results to definitions of meanings of expressions in the specified language varieties.'
+      },
+      expr_txt: {
+        type: 'string[]',
+        desc: 'Expression texts. Restricts results to definitions of meanings of expressions with matching texts.'
+      },
+      expr_txt_degr: {
+        type: 'string[]',
+        desc: 'Expression texts. Restricts results to definitions of meanings of expressions with matching texts in degraded form.'
+      },
+      expr_uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers. Restricts results to definitions of meanings of expressions in the specified language varieties.'
+      },
+      id: {
+        type: 'integer[]',
+        desc: 'Definition IDs.'
+      },
+      include: {
+        options: ['expr_langvar', 'expr_txt', 'expr_txt_degr', 'expr_uid', 'uid']
+      },
+      langvar: {
+        type: 'integer[]',
+        desc: 'Language variety IDs. Restricts results to definitions in the specified language varieties.'
+      },
+      meaning: {
+        type: 'integer[]',
+        desc: 'Meaning IDs. Restricts results to definitions of the specified meanings.'
+      },
+      txt: {
+        type: 'string[]',
+        desc: 'Definition texts.'
+      },
+      txt_degr: {
+        type: 'string[]',
+        desc: 'Definition texts to be matched in degraded form.'
+      },
+      uid: {
+        type: 'string[]',
+        desc: 'Language variety uniform identifiers. Restricts results to definitions in the specified language varieties.'
+      }
+    },
+    resFields: {
+
+    }
   },
 
   '/definition/<id>': {
     type: 'single',
-    desc: 'single definition query'
+    desc: 'single definition query',
+    reqParams: {
+      include: {
+        inherit: '/definition'
+      }
+    }
   },
 
   '/definition/count': {
     type: 'count',
-    desc: 'definition count query'
+    desc: 'definition count query',
+    reqParams: {
+      inherit: '/definition',
+      filterNot: ['include']
+    }
   },
 
   '/denotation': {
@@ -175,12 +242,21 @@ var queries = {
 
   '/denotation/<id>': {
     type: 'single',
-    desc: 'single denotation query'
+    desc: 'single denotation query',
+    reqParams: {
+      include: {
+        inherit: '/denotation'
+      }
+    }
   },
 
   '/denotation/count': {
     type: 'count',
-    desc: 'denotation count query'
+    desc: 'denotation count query',
+    reqParams: {
+      inherit: '/definition',
+      filterNot: ['include']
+    }
   },
 
   '/expr': {
@@ -195,20 +271,30 @@ var queries = {
     desc: 'single expression query, with ID',
     reqParams: {
       include: {
-        type: 'string[]',
-        options: ['uid']
+        inherit: '/expr',
+        filter: ['uid']
       }
     }
   },
 
   '/expr/<id|uid>/<text>': {
     type: 'single',
-    desc: 'single expression query, with language variety and text'
+    desc: 'single expression query, with language variety and text',
+    reqParams: {
+      include: {
+        inherit: '/denotation',
+        filter: ['uid']
+      }
+    }
   },
 
   '/expr/count': {
     type: 'count',
-    desc: 'expression count query'
+    desc: 'expression count query',
+    reqParams: {
+      inherit: '/expr',
+      filterNot: ['include']
+    }
   },
 
   '/expr/index': {
@@ -343,15 +429,19 @@ var queries = {
     desc: 'single language variety query',
     reqParams: {
       include: {
-        type: 'string[]',
-        options: ['uid']
+        inherit: '/langvar',
+        filter: ['uid']
       }
     }
   },
 
   '/langvar/count': {
     type: 'count',
-    desc: 'language variety count query'
+    desc: 'language variety count query',
+    reqParams: {
+      inherit: '/langvar',
+      filterNot: ['include']
+    }
   },
 
   '/meaning': {
@@ -363,20 +453,33 @@ var queries = {
 
   '/meaning/<id>': {
     type: 'single',
-    desc: 'single meaning variety query'
+    desc: 'single meaning variety query',
+    reqParams: {
+      include: {
+        inherit: '/meaning'
+      }
+    }
   },
 
   '/meaning/count': {
     type: 'count',
-    desc: 'meaning count query'
+    desc: 'meaning count query',
+    reqParams: {
+      inherit: '/meaning',
+      filterNot: ['include']
+    }
   },
 
   '/norm/definition/<id|uid>': {
-    desc: 'definition normalization query'
+    desc: 'definition normalization query',
+    reqParams: {},
+    resFields: {}
   },
 
   '/norm/expr/<id|uid>': {
-    desc: 'expression normalization query'
+    desc: 'expression normalization query',
+    reqParams: {},
+    resFields: {}
   },
 
   '/source': {
@@ -388,15 +491,26 @@ var queries = {
 
   '/source/<id|label>': {
     type: 'single',
-    desc: 'single source query'
+    desc: 'single source query',
+    reqParams: {
+      include: {
+        inherit: '/source'
+      }
+    }
   },
 
   '/source/count': {
     type: 'count',
-    desc: 'source count query'
+    desc: 'source count query',
+    reqParams: {
+      inherit: '/source',
+      filterNot: ['include']
+    }
   },
 
   '/txt_degr': {
-    desc: 'text degradation query'
+    desc: 'text degradation query',
+    reqParams: {},
+    resFields: {}
   }
 };
