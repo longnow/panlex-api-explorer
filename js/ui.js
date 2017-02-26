@@ -83,12 +83,11 @@ function submitRequest(e) {
   var options = {
     url: endpoint + currentUrl,
     method: queries[currentQuery].method,
+    data: p.body,
     complete: displayResponse(p.body)
   };
 
   if (p.url.length) options.url += '/' + p.url.join('/');
-
-  options.data = options.method === 'GET' ? p.body : JSON.stringify(p.body);
 
   var templateParams = {
     method: options.method,
@@ -96,10 +95,13 @@ function submitRequest(e) {
   };
 
   if (options.method === 'GET') {
-    var queryParams = $.param(p.body);
+    var queryParams = $.param(options.data);
     if (queryParams.length) templateParams.url += '?' + queryParams;
   }
-  else templateParams.body = canonicalJson(p.body, null, 2);
+  else {
+    templateParams.body = canonicalJson(options.data, null, 2);
+    options.data = JSON.stringify(options.data);
+  }
 
   $('#queryRequest').html(Handlebars.templates.queryRequest(templateParams));
   $('#queryResponse').html('<p>Running…</p>');
