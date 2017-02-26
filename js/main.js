@@ -259,12 +259,9 @@ function submitRequest(e) {
   var p = getReqParams();
   if (!p) return;
 
-  $('#queryResultBody').html('<p>Running…</p>');
-  $('#queryResult').modal('show');
-
   var options = {
     url: endpoint + currentUrl,
-    complete: receiveResult(p.body)
+    complete: receiveResponse(p.body)
   };
 
   if (p.url.length) {
@@ -276,6 +273,21 @@ function submitRequest(e) {
     options.method = 'POST';
     options.data = JSON.stringify(p.body);
   }
+
+  var templateParams = {
+    method: options.method,
+    url: options.url
+  };
+
+  if (options.method === 'GET') {
+    var queryParams = $.param(p.body);
+    if (queryParams.length) templateParams.url += '?' + queryParams;
+  }
+  else templateParams.body = canonicalJson(p.body, null, 2);
+
+  $('#queryRequest').html(Handlebars.templates.queryRequest(templateParams));
+  $('#queryResponse').html('<p>Running…</p>');
+  $('#queryModal').modal('show');
 
   $.ajax(options);
 }
@@ -312,16 +324,13 @@ function getReqParams() {
   }
 }
 
-function receiveResult(body) {
+function receiveResponse(body) {
   return function(jqXHR, textStatus) {
     if (textStatus === 'success' || textStatus === 'error') {
       try {
         var response = $.parseJSON(jqXHR.responseText);
 
-        $('#queryResultBody').html(Handlebars.templates.queryResult({
-          url: this.url,
-          method: this.method,
-          body: this.method === 'POST' ? canonicalJson(body, null, 2) : null,
+        $('#queryResponse').html(Handlebars.templates.queryResponse({
           status: jqXHR.status !== 200 ? jqXHR.status : null,
           response: canonicalJson(response, null, 2)
         }));
