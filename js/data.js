@@ -1,5 +1,3 @@
-var endpoint = 'https://api.panlex.org/v2';
-
 var urlParams = {
   id: {
     desc: 'ID.'

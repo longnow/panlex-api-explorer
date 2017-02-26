@@ -1,6 +1,7 @@
 initData();
 initHelpers();
 
+var endpoint = 'https://api.panlex.org/v2';
 var currentUrl;
 
 $(document).ready(function () {
