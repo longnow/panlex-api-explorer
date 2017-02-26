@@ -1146,13 +1146,11 @@ for (var i in queries) {
 // - include desc
 // - restriction desc
 for (var i in queries) {
-  var queryType = queries[i].type;
+  // apply default values for the query's type
+  if (queryDefaults[queries[i].type])
+    queries[i] = deepCopyExtend(queryDefaults[queries[i].type], queries[i]);
 
-  // apply default values to queries
-  if (queryType && queryDefaults[queryType])
-    queries[i] = deepCopyExtend(queryDefaults[queryType], queries[i]);
-
-  // make set of request parameter and response object types requiring documentation
+  // identify request parameter and response object types that are documented
   ['reqParams', 'resFields', 'resFieldsRoot'].forEach(function (j) {
     var types = {};
 
@@ -1188,7 +1186,7 @@ for (var i in queries) {
 
     queries[i].reqParamsRestrictions.forEach(function (r) {
       if (r.type === 'atLeastOne') {
-        var str = (r.context ? r.context + ', you ' : 'You ');
+        var str = r.context ? r.context + ', you ' : 'You ';
         var conj;
 
         if (r.not) {
@@ -1224,11 +1222,11 @@ for (var i in queries) {
 // populate inherited objectTypes
 for (var i in objectTypes) {
   if (objectTypes[i].inherit) {
-    var ourFields = objectTypes[i].fields = {};
+    var fields = objectTypes[i].fields = {};
     var theirFields = queries[objectTypes[i].inherit].resFields;
 
     for (var j in theirFields) {
-      if (!theirFields[j].restriction) ourFields[j] = theirFields[j];
+      if (!theirFields[j].restriction) fields[j] = theirFields[j];
     }
   }
 }
