@@ -42,12 +42,19 @@ var objectTypes = {
     example: 'For English (language variety <em>eng-000</em>), the first code point object is <code>[32, 33]</code>. This includes the range from U+0020 (SPACE) to U+0021 (EXCLAMATION MARK). Note that JSON numeric values are always decimal.'
   },
   definition: {
-    desc: 'Object representing a definition.',
     inherit: '/definition'
   },
+  denotation: {
+    inherit: '/denotation'
+  },
   expression: {
-    desc: 'Object representing an expression.',
     inherit: '/expr'
+  },
+  langvar: {
+    inherit: '/langvar'
+  },
+  meaning: {
+    inherit: '/meaning'
   },
   norm: {
     desc: 'Normalization object mapping an expression or definition text (as a key) to a value. When <code>degrade</code> is <code>false</code>, the value is a single score object. When <code>degrade</code> is <code>true</code>, the value is an array of score objects for all items sharing the key’s degraded text, sorted from highest to lowest score. Score objects contain the following fields:',
@@ -67,6 +74,9 @@ var objectTypes = {
   },
   prop_query: {
     desc: 'Two-element array representing a property query. The first element is an attribute expression ID. The second element is a property string (<code>null</code> to match all strings).'
+  },
+  source: {
+    inherit: '/source'
   },
   trans_path: {
     desc: 'Translation path, consisting of an array of translation hop objects. A translation hop consists of a PanLex meaning with a beginning and end denotation. Expressions tie hops together: one hop’s end denotation has the same expression as the following hop’s beginning denotation. The term “distance-<em>n</em> translation” (where <em>n</em> is typically 1 or 2) refers to a translation with <em>n</em> hops. Each translation hop object has the following fields:',
@@ -102,6 +112,7 @@ var objectTypes = {
 
 var queryDefaults = {
   all: {
+    method: 'POST',
     reqParamsGlobal: {
       cache: {
         type: 'boolean',
@@ -194,6 +205,7 @@ var queryDefaults = {
   },
 
   single: {
+    method: 'GET',
     reqParams: {
       include: {
         type: 'string[]',
@@ -322,6 +334,12 @@ var queries = {
       include: {
         inherit: '/definition'
       }
+    },
+    resFieldsRoot: {
+      definition: {
+        type: 'definition',
+        desc: 'Definition object.'
+      }
     }
   },
 
@@ -413,6 +431,12 @@ var queries = {
     reqParams: {
       include: {
         inherit: '/denotation'
+      }
+    },
+    resFieldsRoot: {
+      denotation: {
+        type: 'denotation',
+        desc: 'Denotation object.'
       }
     }
   },
@@ -595,6 +619,12 @@ var queries = {
       include: {
         options: ['uid']
       }
+    },
+    resFieldsRoot: {
+      expression: {
+        type: 'expression',
+        desc: 'Expression object.'
+      }
     }
   },
 
@@ -604,6 +634,12 @@ var queries = {
     reqParams: {
       include: {
         options: ['uid']
+      }
+    },
+    resFieldsRoot: {
+      expression: {
+        type: 'expression',
+        desc: 'Expression object.'
       }
     }
   },
@@ -779,6 +815,12 @@ var queries = {
       include: {
         inherit: '/langvar'
       }
+    },
+    resFieldsRoot: {
+      langvar: {
+        type: 'langvar',
+        desc: 'Language variety object.'
+      }
     }
   },
 
@@ -864,6 +906,12 @@ var queries = {
       include: {
         inherit: '/meaning'
       }
+    },
+    resFieldsRoot: {
+      meaning: {
+        type: 'meaning',
+        desc: 'Meaning object.'
+      }
     }
   },
 
@@ -895,6 +943,10 @@ var queries = {
       }
     },
     resFieldsRoot: {
+      langvar: {
+        type: 'langvar',
+        desc: 'Language variety object.'
+      },
       norm: {
         type: 'norm',
         desc: 'Normalization object (see below).'
@@ -921,6 +973,10 @@ var queries = {
       }
     },
     resFieldsRoot: {
+      langvar: {
+        type: 'langvar',
+        desc: 'Language variety object.'
+      },
       norm: {
         type: 'norm',
         desc: 'Normalization object (see below).'
@@ -1066,6 +1122,12 @@ var queries = {
     reqParams: {
       include: {
         inherit: '/source'
+      }
+    },
+    resFieldsRoot: {
+      source: {
+        type: 'source',
+        desc: 'Source object.'
       }
     }
   },

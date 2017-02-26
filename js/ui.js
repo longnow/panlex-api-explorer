@@ -1,5 +1,5 @@
 var endpoint = 'https://api.panlex.org/v2';
-var currentUrl;
+var currentQuery, currentUrl;
 
 initHelpers();
 
@@ -69,6 +69,7 @@ function setQuery(url) {
     typesRoot: info.resTypesRoot
   }));
 
+  currentQuery = url;
   currentUrl = url.replace(/\/<.+$/, '');
   $('#submit').on('click', submitRequest);
 }
@@ -84,9 +85,10 @@ function submitRequest(e) {
     complete: displayResponse(p.body)
   };
 
-  if (p.url.length) {
+  if (p.url.length) options.url += '/' + p.url.join('/');
+
+  if (queries[currentQuery].method === 'GET') {
     options.method = 'GET';
-    options.url += '/' + p.url.join('/');
     options.data = p.body;
   }
   else {
