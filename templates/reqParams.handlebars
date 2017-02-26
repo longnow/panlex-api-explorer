@@ -9,7 +9,7 @@
 
 {{#if urlParams}}
   <h2>URL parameters</h2>
-  <table class="tablesetQuery">
+  <table class="table">
   <tr><th class="name">name</th><th class="reqParam">value</th><th class="desc">description</th></tr>
   {{#each urlParams as |param i|}}
     <tr>
@@ -32,7 +32,7 @@
     </ul>
   {{/if}}
 
-  <table class="tablesetQuery">
+  <table class="table">
   <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted params}}
     {{> reqItem}}
@@ -44,7 +44,7 @@
   {{/if}}
 
   <h3>Global</h3>
-  <table>
+  <table class="table">
   <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
   {{#eachSorted paramsGlobal}}
     {{> reqItem}}

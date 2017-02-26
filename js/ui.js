@@ -43,11 +43,7 @@ function setQuery(url) {
   var info = queries[url];
 
   $('#summary').html(Handlebars.templates.summary({ url: url, summary: info.summary }));
-
-  $('#submit').on('click', submitRequest);
-
   $('#error').empty();
-
   $('#description').html(Handlebars.templates.description({ desc: info.desc }));
 
   var reqUrlParams = url.match(/<[^>]+>/g);
@@ -74,6 +70,7 @@ function setQuery(url) {
   }));
 
   currentUrl = url.replace(/\/<.+$/, '');
+  $('#submit').on('click', submitRequest);
 }
 
 function submitRequest(e) {
@@ -84,7 +81,7 @@ function submitRequest(e) {
 
   var options = {
     url: endpoint + currentUrl,
-    complete: receiveResponse(p.body)
+    complete: displayResponse(p.body)
   };
 
   if (p.url.length) {
@@ -125,9 +122,7 @@ function getReqParams() {
 
     if (match) {
       if (val.length) p.url[match[1]] = val;
-      else {
-        setError($(this).data('name'), 'is required');
-      }
+      else setError($(this).data('name'), 'is required');
     }
     else if (val.length) {
       try {
@@ -147,7 +142,7 @@ function getReqParams() {
   }
 }
 
-function receiveResponse(body) {
+function displayResponse(body) {
   return function(jqXHR, textStatus) {
     if (textStatus === 'success' || textStatus === 'error') {
       try {
@@ -158,10 +153,10 @@ function receiveResponse(body) {
           response: canonicalJson(response, null, 2)
         }));
       } catch (e) {
-        $('#queryResultBody').html('<p>API response contained invalid JSON</p>');
+        $('#queryResponse').html('<p>API response contained invalid JSON</p>');
       }
     }
-    else $('#queryResultBody').html('<p>Unexpected error occurred</p>');
+    else $('#queryResponse').html('<p>Unexpected error occurred</p>');
   }
 }
 
