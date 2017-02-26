@@ -236,7 +236,7 @@ function setQuery(url) {
   $('#reqParams').html(Handlebars.templates.reqParams({
     params: info.reqParams,
     paramsGlobal: info.reqParamsGlobal,
-    restriction: info.reqParamsRestrictions,
+    restrictions: info.reqParamsRestrictions,
     urlParams: reqUrlParams,
     types: info.reqTypes
   }));

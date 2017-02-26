@@ -24,10 +24,10 @@
 {{#if params}}
   <h2>Request parameters</h2>
 
-  {{#if restriction}}
+  {{#if restrictions}}
     <ul>
-    {{#each restriction}}
-    <li>{{{@this}}}</li>
+    {{#each restrictions}}
+      <li>{{{@this}}}</li>
     {{/each}}
     </ul>
   {{/if}}
