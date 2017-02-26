@@ -1181,42 +1181,45 @@ for (var i in queries) {
   }
 
   // populate restriction desc
-  if (queries[i].reqParamsRestrictions) {
-    var desc = [];
 
-    queries[i].reqParamsRestrictions.forEach(function (r) {
-      if (r.type === 'atLeastOne') {
-        var str = r.context ? r.context + ', you ' : 'You ';
-        var conj;
+  queries[i].reqParamsRestrictions = queries[i].reqParamsRestrictions || [];
 
-        if (r.not) {
-          str += 'must provide at least one parameter other than ';
-          conj = 'and';
-        }
-        else {
-          str += 'must provide at least one of the following parameters: ';
-          conj = 'or';
-        }
+  queries[i].reqParamsRestrictions.unshift({ type: 'comment', value: 'For arbitrary-length array parameters, if there is just one element, you may pass it directly (<code>"a"</code> instead of <code>["a"]</code>).' });
 
-        var value = r.value.map(function (p) { return '<code>' + p + '</code>' });
-        if (value.length > 2) {
-          value[value.length - 1] = conj + ' ' + value[value.length - 1];
-          str += value.join(', ');
-        }
-        else str += value.join(' ' + conj + ' ');
+  var desc = [];
 
-        desc.push(str + '.');
+  queries[i].reqParamsRestrictions.forEach(function (r) {
+    if (r.type === 'atLeastOne') {
+      var str = r.context ? r.context + ', you ' : 'You ';
+      var conj;
+
+      if (r.not) {
+        str += 'must provide at least one parameter other than ';
+        conj = 'and';
       }
-      else if (r.type === 'comment') {
-        desc.push(r.value);
+      else {
+        str += 'must provide at least one of the following parameters: ';
+        conj = 'or';
       }
-      else if (r.type === 'required') {
-        desc.push('The parameter <code>' + r.value + '</code> is required.');
-      }
-    });
 
-    queries[i].reqParamsRestrictions = desc;
-  }
+      var value = r.value.map(function (p) { return '<code>' + p + '</code>' });
+      if (value.length > 2) {
+        value[value.length - 1] = conj + ' ' + value[value.length - 1];
+        str += value.join(', ');
+      }
+      else str += value.join(' ' + conj + ' ');
+
+      desc.push(str + '.');
+    }
+    else if (r.type === 'comment') {
+      desc.push(r.value);
+    }
+    else if (r.type === 'required') {
+      desc.push('The parameter <code>' + r.value + '</code> is required.');
+    }
+  });
+
+  queries[i].reqParamsRestrictions = desc;
 }
 
 // populate inherited objectTypes
