@@ -84,7 +84,7 @@ function submitRequest(e) {
     url: endpoint + currentUrl,
     method: queries[currentQuery].method,
     data: p.body,
-    complete: displayResponse(p.body)
+    complete: displayResponse
   };
 
   if (p.url.length) options.url += '/' + p.url.join('/');
@@ -140,22 +140,20 @@ function getReqParams() {
   }
 }
 
-function displayResponse(body) {
-  return function(jqXHR, textStatus) {
-    if (textStatus === 'success' || textStatus === 'error') {
-      try {
-        var response = $.parseJSON(jqXHR.responseText);
+function displayResponse(jqXHR, textStatus) {
+  if (textStatus === 'success' || textStatus === 'error') {
+    try {
+      var response = $.parseJSON(jqXHR.responseText);
 
-        $('#queryResponse').html(Handlebars.templates.queryResponse({
-          status: jqXHR.status !== 200 ? jqXHR.status : null,
-          response: canonicalJson(response, null, 2)
-        }));
-      } catch (e) {
-        $('#queryResponse').html('<p>API response contained invalid JSON</p>');
-      }
+      $('#queryResponse').html(Handlebars.templates.queryResponse({
+        status: jqXHR.status !== 200 ? jqXHR.status : null,
+        response: canonicalJson(response, null, 2)
+      }));
+    } catch (e) {
+      $('#queryResponse').html('<p>API response contained invalid JSON</p>');
     }
-    else $('#queryResponse').html('<p>Unexpected error occurred</p>');
   }
+  else $('#queryResponse').html('<p>Unexpected error occurred</p>');
 }
 
 // based on https://www.npmjs.com/package/canonical-json
