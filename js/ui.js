@@ -82,19 +82,13 @@ function submitRequest(e) {
 
   var options = {
     url: endpoint + currentUrl,
+    method: queries[currentQuery].method,
     complete: displayResponse(p.body)
   };
 
   if (p.url.length) options.url += '/' + p.url.join('/');
 
-  if (queries[currentQuery].method === 'GET') {
-    options.method = 'GET';
-    options.data = p.body;
-  }
-  else {
-    options.method = 'POST';
-    options.data = JSON.stringify(p.body);
-  }
+  options.data = options.method === 'GET' ? p.body : JSON.stringify(p.body);
 
   var templateParams = {
     method: options.method,
