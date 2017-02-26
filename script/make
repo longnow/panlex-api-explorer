@@ -4,10 +4,11 @@ set -e
 
 mkdir -p assets
 
-handlebars -p templates/partials/*.handlebars > templates.js
-handlebars templates/*.handlebars >> templates.js
+templates() {
+  handlebars -p templates/partials/*.handlebars
+  handlebars templates/*.handlebars
+}
 
-uglifyjs --source-map assets/main.min.js.map -c -m -- bootstrap/bootstrap.min.js templates.js js/data.js js/main.js > assets/main.min.js
-rm -f templates.js
+uglifyjs --source-map assets/main.min.js.map -c -m -- bootstrap/bootstrap.min.js <(templates) js/data.js js/main.js > assets/main.min.js
 
 stylus -c --include-css -o assets/style.css style.styl
