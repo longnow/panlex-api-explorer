@@ -221,6 +221,8 @@ function setQuery(url) {
 
   $('#summary').html(Handlebars.templates.summary({ url: url, summary: info.summary }));
 
+  $('#submit').on('click', submitRequest);
+
   $('#error').empty();
 
   $('#description').html(Handlebars.templates.description({ desc: info.desc }));
@@ -240,8 +242,6 @@ function setQuery(url) {
     urlParams: reqUrlParams,
     types: info.reqTypes
   }));
-
-  $('#submit').on('click', submitRequest);
 
   $('#resFields').html(Handlebars.templates.resFields({
     fields: info.resFields,
