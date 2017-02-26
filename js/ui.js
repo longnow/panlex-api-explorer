@@ -160,6 +160,7 @@ function displayResponse(body) {
   }
 }
 
+// based on https://www.npmjs.com/package/canonical-json
 function canonicalJson(object, replacer, space) {
   return JSON.stringify(copyObjectWithSortedKeys(object), replacer, space)
 }
