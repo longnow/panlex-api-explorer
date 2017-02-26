@@ -9,6 +9,6 @@ templates() {
   handlebars templates/*.handlebars
 }
 
-uglifyjs --source-map assets/main.min.js.map -c -m -- bootstrap/bootstrap.min.js <(templates) js/data.js js/main.js > assets/main.min.js
+uglifyjs --source-map assets/main.min.js.map -c -m -- bootstrap/bootstrap.min.js <(templates) js/data.js js/ui.js > assets/main.min.js
 
 stylus -c --include-css -o assets/style.css style.styl
