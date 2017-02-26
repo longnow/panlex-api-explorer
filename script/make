@@ -1,14 +1,13 @@
 #!/bin/bash
 
-set -e
-
-mkdir -p assets
+mkdir -p assets || exit
 
 templates() {
-  handlebars -p templates/partials/*.handlebars
-  handlebars templates/*.handlebars
+  handlebars -p templates/partials/*.handlebars || exit
+  handlebars templates/*.handlebars || exit
 }
 
-uglifyjs --source-map assets/main.min.js.map -c -m -- bootstrap/bootstrap.min.js <(templates) js/data.js js/ui.js > assets/main.min.js
+uglifyjs --source-map assets/main.min.js.map -c -m -- bootstrap/bootstrap.min.js <(templates) js/data.js js/ui.js 2>&1 > assets/main.min.js | grep -v '^WARN: Side effects in initialization'
+[[ $? != 1 ]] && exit # if grep exits 1, we have no (relevant) errors
 
-cat bootstrap/bootstrap.min.css bootstrap/bootstrap-theme.min.css <(cat style.styl | stylus) | cleancss -O1 specialComments:0 -o assets/style.css --source-map
+cat bootstrap/bootstrap.min.css bootstrap/bootstrap-theme.min.css <(cat style.styl | stylus) | cleancss -O1 specialComments:0 -o assets/style.css --source-map || exit
