@@ -7,7 +7,7 @@ mkdir -p assets
 handlebars -p templates/partials/*.handlebars > templates.js
 handlebars templates/*.handlebars >> templates.js
 
-uglifyjs --source-map assets/main.min.js.map -c -m bootstrap/bootstrap.min.js templates.js js/data.js js/main.js > assets/main.min.js
+uglifyjs --source-map assets/main.min.js.map -c -m -- bootstrap/bootstrap.min.js templates.js js/data.js js/main.js > assets/main.min.js
 rm -f templates.js
 
 stylus -c --include-css -o assets/style.css style.styl
