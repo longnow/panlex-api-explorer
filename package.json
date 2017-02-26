@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "chokidar": "^1.6.1",
+    "clean-css-cli": "^4.0.8",
     "handlebars": "^4.0.6",
     "stylus": "^0.54.5",
     "uglify-js": "^2.7.5"
