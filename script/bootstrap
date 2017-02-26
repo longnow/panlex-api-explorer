@@ -1,8 +1,5 @@
 #!/bin/sh
 
 dir=${1:-~/Downloads/bootstrap}
-
-cp -f $dir/css/bootstrap*.min.css css
-cp -f $dir/js/bootstrap.min.js js
-cp -f $dir/config.json bootstrap-config.json
-chmod -R -x css/* js/* bootstrap-config.json
+cp -f $dir/css/bootstrap*.min.css $dir/js/bootstrap.min.js $dir/config.json bootstrap
+chmod -R -x bootstrap/* bootstrap-config.json

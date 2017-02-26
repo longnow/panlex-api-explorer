@@ -4,7 +4,9 @@
   "description": "PanLex API Explorer",
   "main": "index.js",
   "scripts": {
-    "compile": "handlebars -m -p templates/partials/*.handlebars > js/templates.js && handlebars -m templates/*.handlebars >> js/templates.js && stylus -c css/style.styl",
+    "bootstrap": "script/bootstrap",
+    "make": "script/make",
+    "watch": "script/watch.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,7 +16,9 @@
     "url": "https://github.com/longnow/panlex-api-explorer.git"
   },
   "dependencies": {
+    "chokidar": "^1.6.1",
     "handlebars": "^4.0.6",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "uglify-js": "^2.7.5"
   }
 }
