@@ -391,16 +391,18 @@
     "alerts.less",
     "close.less",
     "component-animations.less",
+    "dropdowns.less",
     "popovers.less",
     "modals.less"
   ],
   "js": [
     "alert.js",
+    "dropdown.js",
     "modal.js",
     "tooltip.js",
     "popover.js",
     "collapse.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=982d05e5f833999656b5ca2b019c3901"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=cfc16b1a9521130ecf0e02e1e47b94f6"
 }
