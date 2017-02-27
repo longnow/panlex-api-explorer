@@ -277,27 +277,27 @@ var queries = {
       expr: {
         type: 'integer',
         desc: 'ID of the expression with which the definition shares a meaning.',
-        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'] }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'] }
       },
       expr_langvar: {
         type: 'integer',
         desc: 'Language variety ID of the expression whose meaning is defined.',
-        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_langvar' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_langvar' }
       },
       expr_txt: {
         type: 'string',
         desc: 'Text of the expression whose meaning is defined.',
-        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_txt' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_txt' }
       },
       expr_txt_degr: {
         type: 'string',
         desc: 'Degraded ext of the expression whose meaning is defined.',
-        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_txt_degr' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_txt_degr' }
       },
       expr_uid: {
         type: 'integer',
         desc: 'Language variety uniform identifier of the expression whose meaning is defined.',
-        restriction: { params: ['expr','expr_langvar','expt_txt','expr_txt_degr'], include: 'expr_uid' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_uid' }
       },
       id: {
         type: 'integer',
@@ -322,7 +322,7 @@ var queries = {
       uid: {
         type: 'string',
         desc: 'Uniform identifier of the language variety in which the definition is written.',
-        restriction: { include: 'uid' }
+        onlyWhen: { include: 'uid' }
       }
     }
   },
@@ -399,12 +399,12 @@ var queries = {
       denotation_class: {
         type: 'class[]',
         desc: 'Denotation classifications.',
-        restriction: { include: 'denotation_class' }
+        onlyWhen: { include: 'denotation_class' }
       },
       denotation_prop: {
         type: 'prop[]',
         desc: 'Denotation properties.',
-        restriction: { include: 'denotation_prop' }
+        onlyWhen: { include: 'denotation_prop' }
       },
       expr: {
         type: 'integer',
@@ -564,37 +564,37 @@ var queries = {
       trans_expr: {
         type: 'integer',
         desc: 'ID of expression from which the expression was translated.',
-        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'] }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'] }
       },
       trans_langvar: {
         type: 'integer',
         desc: 'Language variety ID for expression from which the expression was translated.',
-        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_langvar' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_langvar' }
       },
       trans_path: {
         type: 'trans_path[]',
         desc: 'Translation paths used to produce the translation (see below).',
-        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_path' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_path' }
       },
       trans_quality: {
         type: 'integer',
         desc: 'Translation quality score. For <code>trans_distance</code> 1, it is the sum of the quality value of all sources from distinct source groups attesting the translation. The same algorithm is used for <code>trans_distance</code> 2 when <code>trans_quality_algo</code> is “arithmetic”, combining the sources from both hops for the purpose of the score. When <code>trans_quality_algo</code> is “geometric” (the default), it is the sum, rounded to the nearest integer, of the geometric mean of each distinct translation path’s two quality values. Distinctness in this context is defined by the combination of the intermediate expression linking the two hops and the source groups of the two sources. See <a href="https://dev.panlex.org/translation-evaluation/">translation evaluation</a> for more.',
-        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_quality' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_quality' }
       },
       trans_txt: {
         type: 'string',
         desc: 'Text of expression from which the expression was translated.',
-        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt' }
       },
       trans_txt_degr: {
         type: 'string',
         desc: 'Degraded text of expression from which the expression was translated.',
-        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt_degr' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt_degr' }
       },
       trans_uid: {
         type: 'string',
         desc: 'Language variety uniform identifier for expression from which the expression was translated.',
-        restriction: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_uid' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_uid' }
       },
       txt: {
         type: 'string',
@@ -607,7 +607,7 @@ var queries = {
       uid: {
         type: 'string',
         desc: 'Expression’s language variety uniform identifier.',
-        restriction: { include: 'uid' }
+        onlyWhen: { include: 'uid' }
       }
     }
   },
@@ -747,12 +747,12 @@ var queries = {
       denotation_count: {
         type: 'integer',
         desc: 'Number of denotations in the language variety.',
-        restriction: { include: 'denotation_count' }
+        onlyWhen: { include: 'denotation_count' }
       },
       expr_count: {
         type: 'integer',
         desc: 'Number of expressions in the language variety.',
-        restriction: { include: 'expr_count' }
+        onlyWhen: { include: 'expr_count' }
       },
       id: {
         type: 'integer',
@@ -765,12 +765,12 @@ var queries = {
       langvar_char: {
         type: 'codepoint_range[]',
         desc: 'Code-point ranges (see below).',
-        restriction: { include: 'langvar_char' }
+        onlyWhen: { include: 'langvar_char' }
       },
       langvar_cldr_char: {
         type: 'cldr_char[]',
         desc: 'CLDR character objects (see below).',
-        restriction: { include: 'langvar_cldr_char' }
+        onlyWhen: { include: 'langvar_cldr_char' }
       },
       mutable: {
         type: 'boolean',
@@ -795,7 +795,7 @@ var queries = {
       script_expr_txt: {
         type: 'string',
         desc: 'Text of the <code>script_expr</code> expression.',
-        restriction: { include: 'script_expr_txt' }
+        onlyWhen: { include: 'script_expr_txt' }
       },
       uid: {
         type: 'string',
@@ -868,7 +868,7 @@ var queries = {
       definition: {
         type: 'definition[]',
         desc: 'The meaning’s definitions.',
-        restriction: { include: 'definition' }
+        onlyWhen: { include: 'definition' }
       },
       denotation: {
         type: 'integer[]',
@@ -885,12 +885,12 @@ var queries = {
       meaning_class: {
         type: 'class[]',
         desc: 'Meaning classifications.',
-        restriction: { include: 'meaning_class' }
+        onlyWhen: { include: 'meaning_class' }
       },
       meaning_prop: {
         type: 'prop[]',
         desc: 'Meaning properties.',
-        restriction: { include: 'meaning_class' }
+        onlyWhen: { include: 'meaning_class' }
       },
       source: {
         type: 'integer',
@@ -1068,12 +1068,12 @@ var queries = {
       langvar: {
         type: 'integer[]',
         desc: 'IDs of language varieties declared as documented in the source',
-        restriction: { include: 'langvar' }
+        onlyWhen: { include: 'langvar' }
       },
       langvar_attested: {
         type: 'integer[]',
         desc: 'IDs of language varieties attested in the source’s denotations.',
-        restriction: { include: 'langvar' }
+        onlyWhen: { include: 'langvar' }
       },
       license: {
         type: 'string',
@@ -1082,7 +1082,7 @@ var queries = {
       meaning_count: {
         type: 'integer',
         desc: 'Number of meanings in the source.',
-        restriction: { include: 'langvar' }
+        onlyWhen: { include: 'langvar' }
       },
       note: {
         type: 'string',
@@ -1107,7 +1107,7 @@ var queries = {
       usr: {
         type: 'integer[]',
         desc: 'Meaning editors’ PanLem usernames.',
-        restriction: { include: 'langvar' }
+        onlyWhen: { include: 'langvar' }
       },
       year: {
         type: 'integer',
@@ -1204,9 +1204,10 @@ for (var i in queries) {
 
 // populate query fields:
 // - from queryDefaults
-// - reqTypes and resTypes
-// - include desc
-// - restriction desc
+// - types
+// - resFields onlyWhen desc
+// - reqParams include desc
+// - reqParamsRestrictions desc
 for (var i in queries) {
   // apply default values for the query's type
   if (queryDefaults[queries[i].type])
@@ -1222,63 +1223,21 @@ for (var i in queries) {
         var baseType = type.replace(/(?:\[\])+$/, '');
         if (objectTypes[baseType]) types[type] = baseType;
       }
+
+      // populate resFields onlyWhen desc
+      if (j === 'resFields') resFieldsOnlyWhenDesc(queries[i].resFields[k].onlyWhen);
     }
   });
 
   if (Object.keys(types).length) queries[i].types = types;
 
-  // populate include desc (deleting param if invalid)
-  if (queries[i].reqParams.include) {
-    var obj = queries[i].reqParams.include;
+  // populate reqParams include desc
+  reqParamsIncludeDesc(queries[i].reqParams.include);
 
-    if (obj.options) {
-      obj.desc += ' Possible values: '
-        + obj.options.map(function (p) { return '<code>' + p + '</code>' }).join(', ')
-        + '.';
-    }
-    else delete queries[i].reqParams.include;
-  }
-
-  // populate restriction desc
-
+  // populate reqParamsRestrictions and its desc
   queries[i].reqParamsRestrictions = queries[i].reqParamsRestrictions || [];
-
   queries[i].reqParamsRestrictions.unshift({ type: 'comment', value: 'For arbitrary-length array parameters, if there is just one element, you may pass it directly (<code>"a"</code> instead of <code>["a"]</code>).' });
-
-  var desc = [];
-
-  queries[i].reqParamsRestrictions.forEach(function (r) {
-    if (r.type === 'atLeastOne') {
-      var str = r.context ? r.context + ', you ' : 'You ';
-      var conj;
-
-      if (r.not) {
-        str += 'must provide at least one parameter other than ';
-        conj = 'and';
-      }
-      else {
-        str += 'must provide at least one of the following parameters: ';
-        conj = 'or';
-      }
-
-      var value = r.value.map(function (p) { return '<code>' + p + '</code>' });
-      if (value.length > 2) {
-        value[value.length - 1] = conj + ' ' + value[value.length - 1];
-        str += value.join(', ');
-      }
-      else str += value.join(' ' + conj + ' ');
-
-      desc.push(str + '.');
-    }
-    else if (r.type === 'comment') {
-      desc.push(r.value);
-    }
-    else if (r.type === 'required') {
-      desc.push('The parameter <code>' + r.value + '</code> is required.');
-    }
-  });
-
-  queries[i].reqParamsRestrictions = desc;
+  reqParamsRestrictionsDesc(queries[i].reqParamsRestrictions);
 }
 
 // populate objectTypes
@@ -1290,7 +1249,7 @@ for (var i in objectTypes) {
     var theirFields = queries[objectTypes[i].inherit].resFields;
 
     for (var j in theirFields) {
-      if (!theirFields[j].restriction) fields[j] = theirFields[j];
+      if (!theirFields[j].onlyWhen) fields[j] = theirFields[j];
     }
   }
 }
@@ -1332,4 +1291,61 @@ function applyArrayFilter(array, f) {
       if ((set[array[i]] || -1)*sign === -1) array.splice(i--, 1);
     }
   }
+}
+
+function resFieldsOnlyWhenDesc(onlyWhen) {
+  if (!onlyWhen) return;
+
+  var desc = [];
+
+  if (onlyWhen.include) desc.push('<code>' + onlyWhen.include + '</code> in the <code>include</code> parameter');
+
+  if (onlyWhen.params) {
+    var params = onlyWhen.params.map(function (p) { return '<code>' + p + '</code>' });
+    params[params.length - 1] = 'and ' + params[params.length - 1];
+    desc.push('one of the following parameters: ' + params.join(', '));
+  }
+
+  onlyWhen.desc = 'Only returned when you pass ' + desc.join(', and when you pass ') + '.';
+}
+
+function reqParamsIncludeDesc(include) {
+  if (!include || !include.options) return;
+
+  include.desc += ' Possible values: '
+    + include.options.map(function (p) { return '<code>' + p + '</code>' }).join(', ')
+    + '.';
+}
+
+function reqParamsRestrictionsDesc(restrictions) {
+  restrictions.forEach(function (r) {
+    if (r.type === 'atLeastOne') {
+      var str = r.context ? r.context + ', you ' : 'You ';
+      var conj;
+
+      if (r.not) {
+        str += 'must provide at least one parameter other than ';
+        conj = 'and';
+      }
+      else {
+        str += 'must provide at least one of the following parameters: ';
+        conj = 'or';
+      }
+
+      var value = r.value.map(function (p) { return '<code>' + p + '</code>' });
+      if (value.length > 2) {
+        value[value.length - 1] = conj + ' ' + value[value.length - 1];
+        str += value.join(', ');
+      }
+      else str += value.join(' ' + conj + ' ');
+
+      r.desc = str + '.';
+    }
+    else if (r.type === 'comment') {
+      r.desc = r.value;
+    }
+    else if (r.type === 'required') {
+      r.desc = 'The parameter <code>' + r.value + '</code> is required.';
+    }
+  });
 }

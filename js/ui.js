@@ -71,9 +71,18 @@ function setQuery(url) {
   $('.typeInfo').popover({
     content: typeDescription,
     html: true,
-    placement: 'top',
-    trigger: 'click focus'
+    placement: 'top'
+  })
+  .on('show.bs.popover', hideOpenPopovers)
+  .on('inserted.bs.popover', function() {
+    $('.popover').has('table').addClass('popover-lg');
   });
+
+  $('.onlyWhenInfo').popover({
+    html: true,
+    placement: 'top'
+  })
+  .on('show.bs.popover', hideOpenPopovers);
 
   currentQuery = url;
   currentUrl = url.replace(/\/<.+$/, '');
@@ -83,6 +92,10 @@ function setQuery(url) {
 function typeDescription() {
   var type = $(this).data('type');
   return Handlebars.templates.typeDescription(objectTypes[type]);
+}
+
+function hideOpenPopovers(e) {
+  $('.glyphicon-info-sign').not(this).popover('hide');
 }
 
 function submitRequest(e) {

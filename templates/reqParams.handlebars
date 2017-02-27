@@ -28,13 +28,11 @@
 
 <h2>Request parameters</h2>
 
-{{#if restrictions}}
-  <ul>
-  {{#each restrictions}}
-    <li>{{{@this}}}</li>
-  {{/each}}
-  </ul>
-{{/if}}
+<ul>
+{{#each restrictions}}
+  <li>{{{this.desc}}}</li>
+{{/each}}
+</ul>
 
 {{#if params}}
   {{> reqTable params=params}}
