@@ -27,7 +27,7 @@ function hashChange() {
 
 function setQuery(url) {
   var q = queries[url];
-  if (window.location.hash !== q.hash) window.location.hash = q.hash;
+  if (window.location.hash.replace(/^#/, '') !== q.hash) window.location.hash = q.hash;
   if (currentUrl === url) return;
 
   $('#summary').html(Handlebars.templates.summary({ url: url, summary: q.summary, queries: queries }));
