@@ -1204,6 +1204,7 @@ for (var i in queries) {
 
 // populate query fields:
 // - from queryDefaults
+// - htmlId
 // - types
 // - resFields onlyWhen desc
 // - reqParams include desc
@@ -1212,6 +1213,8 @@ for (var i in queries) {
   // apply default values for the query's type
   if (queryDefaults[queries[i].type])
     queries[i] = deepCopyExtend(queryDefaults[queries[i].type], queries[i]);
+
+  queries[i].htmlId = urlToHtmlId(i);
 
   var types = {};
 
@@ -1252,6 +1255,10 @@ for (var i in objectTypes) {
       if (!theirFields[j].onlyWhen) fields[j] = theirFields[j];
     }
   }
+}
+
+function urlToHtmlId(url) {
+  return url.replace(/[/<>|_]/g, '');
 }
 
 function deepCopy(obj) {

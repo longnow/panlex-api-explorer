@@ -74,6 +74,9 @@ ul
   width 60%
   font-size 95%
 
+.dropdown
+  display inline-block
+
 .glyphicon-info-sign
   margin-left 0.5ex
   vertical-align middle
@@ -122,14 +125,14 @@ td
   > div
     margin-bottom 1em
 
-#queryTypes
+#queryModal pre
+  prewrap()
+
+#queryTypesDesktop
   position absolute
   width queryTypesWidth
   padding 1ex
   border cellBorder
-
-#queryModal pre
-  prewrap()
 
 #resFields
   td, th
@@ -140,3 +143,18 @@ td
 
 #summary
   font-size 120%
+
+#summaryMobile
+  display none
+
+// media queries
+
+@media (max-width 768px)
+  .desc
+    width 40%
+  #queryInfo
+    padding-left 0
+  #queryTypesDesktop, #summaryDesktop
+    display none
+  #summaryMobile
+    display block

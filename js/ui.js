@@ -4,8 +4,8 @@ var currentQuery, currentUrl;
 initHelpers();
 
 $(document).ready(function () {
-  $('#queryTypes').html(Handlebars.templates.queryTypes({ queries: queries }));
-  $('.queryLink').on('click', clickQuery);
+  $('#queryTypesDesktop').html(Handlebars.templates.queryTypesDesktop({ queries: queries }));
+  $('.queryLink').on('click', clickQueryLink);
 
   var queryLink;
   var hash = window.location.hash.replace(/^#/, '');
@@ -27,24 +27,28 @@ function initHelpers() {
     });
     return ret;
   });
-
-  Handlebars.registerHelper('urlToId', function (url) {
-    return url.replace(/[/<>|_]/g, '');
-  });
 }
 
-function clickQuery(e) {
+function clickQueryLink(e) {
   $('.queryLink').removeClass('active');
   setQuery($(this).addClass('active').data('url'));
-  window.location.hash = this.id.replace(/^queryLink-/, '');
+}
+
+function clickQueryMenuItem(e) {
+  var queryLink = $('#' + $(this).data('html-id'));
+  queryLink.trigger('click');
 }
 
 function setQuery(url) {
-  var info = queries[url];
+  var q = queries[url];
+  window.location.hash = q.htmlId;
 
-  $('#summary').html(Handlebars.templates.summary({ url: url, summary: info.summary }));
+  $('#summary').html(Handlebars.templates.summary({ url: url, summary: q.summary, queries: queries }));
+  $('#queryTypesMobile a').on('click', clickQueryMenuItem);
+
   $('#error').empty();
-  $('#description').html(Handlebars.templates.description({ desc: info.desc }));
+
+  $('#description').html(Handlebars.templates.description({ desc: q.desc }));
 
   var reqUrlParams = url.match(/<[^>]+>/g);
   if (reqUrlParams) {
@@ -55,17 +59,17 @@ function setQuery(url) {
   }
 
   $('#reqParams').html(Handlebars.templates.reqParams({
-    params: info.reqParams,
-    paramsGlobal: info.reqParamsGlobal,
-    restrictions: info.reqParamsRestrictions,
+    params: q.reqParams,
+    paramsGlobal: q.reqParamsGlobal,
+    restrictions: q.reqParamsRestrictions,
     urlParams: reqUrlParams,
-    types: info.types
+    types: q.types
   }));
 
   $('#resFields').html(Handlebars.templates.resFields({
-    fields: info.resFields,
-    fieldsRoot: info.resFieldsRoot,
-    types: info.types
+    fields: q.resFields,
+    fieldsRoot: q.resFieldsRoot,
+    types: q.types
   }));
 
   $('.typeInfo').popover({
