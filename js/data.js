@@ -550,7 +550,7 @@ var queries = {
       { type: 'atLeastOne', not: true, value: ['include','mutable'], context: 'If you pass <code>after</code> or <code>offset</code>' },
       { type: 'atLeastOne', value: ['trans_expr', 'trans_txt', 'trans_txt_degr'], context: 'If you are translating' },
       { type: 'comment', value: 'The <code>trans_distance</code> and <code>trans_quality_min</code> parameters are only relevant if you have specified one of the translation parameters in the previous item.' },
-      { type: 'comment', value: 'The <code>interm1_*</code> and <code>tran_quality_algo</code> parameters are only relevant if <code>trans_distance</code> is 2.' }
+      { type: 'comment', value: 'The <code>interm1_*</code> and <code>trans_quality_algo</code> parameters are only relevant if <code>trans_distance</code> is 2.' }
     ],
     resFields: {
       id: {
@@ -1202,9 +1202,11 @@ for (var i in queries) {
   }
 }
 
+var hashToUrl = {};
+
 // populate query fields:
 // - from queryDefaults
-// - htmlId
+// - hash (and hashToUrl)
 // - types
 // - resFields onlyWhen desc
 // - reqParams include desc
@@ -1214,7 +1216,8 @@ for (var i in queries) {
   if (queryDefaults[queries[i].type])
     queries[i] = deepCopyExtend(queryDefaults[queries[i].type], queries[i]);
 
-  queries[i].htmlId = urlToHtmlId(i);
+  queries[i].hash = urlToHash(i);
+  hashToUrl[queries[i].hash] = i;
 
   var types = {};
 
@@ -1257,7 +1260,7 @@ for (var i in objectTypes) {
   }
 }
 
-function urlToHtmlId(url) {
+function urlToHash(url) {
   return url.replace(/[/<>|_]/g, '');
 }
 

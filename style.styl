@@ -1,6 +1,5 @@
 cellBorder = 1px solid lightgray
 highlight = lightblue
-queryTypesWidth = 23rem
 
 monospace()
   font-family monospace
@@ -84,8 +83,11 @@ ul
 .dropdown
   display inline-block
 
-.dropdown-menu a
-  monospace()
+.dropdown-menu
+  max-height 80vh
+  overflow-y auto
+  a
+    monospace()
 
 .glyphicon-info-sign
   margin-left 0.5ex
@@ -129,19 +131,12 @@ td
 // individual elements
 
 #queryInfo
-  padding-left (queryTypesWidth + 1.5)
   margin-bottom 2.5em
   > div
     margin-bottom 1em
 
 #queryModal pre
   prewrap()
-
-#queryTypesDesktop
-  position absolute
-  width queryTypesWidth
-  padding 1ex
-  border cellBorder
 
 #resFields
   td, th
@@ -154,11 +149,8 @@ td
   font-size 120%
   z-index -1
 
-#summaryDesktop
+#summaryDropdown
   display inline
-
-#summaryMobile
-  display none
 
 // media queries
 
@@ -166,7 +158,7 @@ td
   .desc
     width 45%
 
-  .modal-body
+  .dropdown-menu, .modal-body
     max-height 75vh
 
   td, th
@@ -186,12 +178,6 @@ td
   #queryInfo
     padding-left 0
 
-  #queryTypesDesktop, #summaryDesktop
-    display none
-
-  #summaryMobile
-    display inline
-
 @media (max-height 400px)
-  .modal-body
+  .dropdown-menu, .modal-body
     max-height 60vh

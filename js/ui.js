@@ -4,17 +4,8 @@ var currentQuery, currentUrl;
 initHelpers();
 
 $(document).ready(function () {
-  $('#queryTypesDesktop').html(Handlebars.templates.queryTypesDesktop({ queries: queries }));
-  $('.queryLink').on('click', clickQueryLink);
-
-  var queryLink;
   var hash = window.location.hash.replace(/^#/, '');
-  if (hash.length && hash.match(/^[a-z]+$/)) {
-    var elt = $('#queryLink-'+hash);
-    if (elt.length) queryLink = elt;
-  }
-  if (!queryLink) queryLink = $('#queryLink-langvar');
-  queryLink.trigger('click');
+  setQuery(hashToUrl[hash] || '/langvar');
 
   $('#content').show();
 });
@@ -29,22 +20,12 @@ function initHelpers() {
   });
 }
 
-function clickQueryLink(e) {
-  $('.queryLink').removeClass('active');
-  setQuery($(this).addClass('active').data('url'));
-}
-
-function clickQueryMenuItem(e) {
-  var queryLink = $('#' + $(this).data('html-id'));
-  queryLink.trigger('click');
-}
-
 function setQuery(url) {
   var q = queries[url];
-  window.location.hash = q.htmlId;
+  window.location.hash = q.hash;
 
   $('#summary').html(Handlebars.templates.summary({ url: url, summary: q.summary, queries: queries }));
-  $('#queryTypesMobile a').on('click', clickQueryMenuItem);
+  $('#queryTypes a').on('click', function() { setQuery($(this).data('url')) });
 
   $('#error').empty();
 

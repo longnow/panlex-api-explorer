@@ -1,14 +1,11 @@
 <button id="submit" type="button" class="btn btn-default">Run Query</button>
-<div id="summaryDesktop">
-  <code>{{url}}</code>
-</div>
-<div id="summaryMobile" class="dropdown">
+<div id="summaryDropdown" class="dropdown">
   <span id="summaryMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   <code>{{url}}</code><span class="caret"></span>
   </span>
-  <ul id="queryTypesMobile" class="dropdown-menu" aria-labelledby="summaryMenu">
+  <ul id="queryTypes" class="dropdown-menu" aria-labelledby="summaryMenu">
   {{#eachSorted queries}}
-    <li><a href="javascript:void(0)" data-html-id="queryLink-{{{attr.htmlId}}}">{{name}}</a></li>
+    <li><a href="javascript:void(0)" data-url="{{name}}">{{name}}</a></li>
   {{/eachSorted}}
   </ul>
 </div>
