@@ -1302,7 +1302,7 @@ function resFieldsOnlyWhenDesc(onlyWhen) {
 
   if (onlyWhen.params) {
     var params = onlyWhen.params.map(function (p) { return '<code>' + p + '</code>' });
-    params[params.length - 1] = 'and ' + params[params.length - 1];
+    params[params.length - 1] = 'or ' + params[params.length - 1];
     desc.push('one of the following parameters: ' + params.join(', '));
   }
 

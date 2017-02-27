@@ -71,7 +71,7 @@ function setQuery(url) {
   $('.typeInfo').popover({
     content: typeDescription,
     html: true,
-    placement: 'top'
+    placement: 'auto right'
   })
   .on('show.bs.popover', hideOpenPopovers)
   .on('inserted.bs.popover', function() {
@@ -80,7 +80,7 @@ function setQuery(url) {
 
   $('.onlyWhenInfo').popover({
     html: true,
-    placement: 'top'
+    placement: 'auto right'
   })
   .on('show.bs.popover', hideOpenPopovers);
 
