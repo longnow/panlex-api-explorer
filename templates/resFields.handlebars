@@ -1,39 +1,26 @@
-{{#*inline "resItem"}}
-<tr>
-{{#if attr.restriction}}
-  <td class="name">({{name}})</td>
-{{else}}
-  <td class="name">{{name}}</td>
-{{/if}}
-<td class="type">{{attr.type}}</td>
-<td class="desc">{{{attr.desc}}}</td>
-</tr>
+{{#*inline "resTable"}}
+<table class="table">
+<tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
+{{#eachSorted fields}}
+  <tr>
+  {{#if attr.restriction}}
+    <td class="name">({{name}})</td>
+  {{else}}
+    <td class="name">{{name}}</td>
+  {{/if}}
+  <td class="type">{{attr.type}}</td>
+  <td class="desc">{{{attr.desc}}}</td>
+  </tr>
+{{/eachSorted}}
+</table>
 {{/inline}}
 
 <h2>Response fields</h2>
 
 {{#if fields}}
   <h3>Result Object</h3>
-  <table class="table">
-  <tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
-  {{#eachSorted fields}}
-    {{> resItem}}
-  {{/eachSorted}}
-  </table>
-
-  {{#if types}}
-    {{> typeDescription}}
-  {{/if}}
+  {{> resTable fields=fields}}
 {{/if}}
 
 <h3>Root</h3>
-<table class="table">
-<tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
-{{#eachSorted fieldsRoot}}
-  {{> resItem}}
-{{/eachSorted}}
-</table>
-
-{{#if typesRoot}}
-  {{> typeDescription types=typesRoot}}
-{{/if}}
+{{> resTable fields=fieldsRoot}}

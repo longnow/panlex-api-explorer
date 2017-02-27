@@ -1,10 +1,15 @@
-{{#*inline "reqItem"}}
-<tr>
-<td class="name">{{name}}</td>
-<td class="type">{{attr.type}}</td>
-<td class="reqParam"><input type="text" class="form-control" name="{{name}}"></td>
-<td class="desc">{{{attr.desc}}}</td>
-</tr>
+{{#*inline "reqTable"}}
+<table class="table">
+<tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
+{{#eachSorted params}}
+  <tr>
+  <td class="name">{{name}}</td>
+  <td class="type">{{attr.type}}{{> typeInfoIcon type=(lookup ../types attr.type)}}</td>
+  <td class="reqParam"><input type="text" class="form-control" name="{{name}}"></td>
+  <td class="desc">{{{attr.desc}}}</td>
+  </tr>
+{{/eachSorted}}
+</table>
 {{/inline}}
 
 {{#if urlParams}}
@@ -21,33 +26,21 @@
   </table>
 {{/if}}
 
+<h2>Request parameters</h2>
+
+{{#if restrictions}}
+  <ul>
+  {{#each restrictions}}
+    <li>{{{@this}}}</li>
+  {{/each}}
+  </ul>
+{{/if}}
+
 {{#if params}}
-  <h2>Request parameters</h2>
+  {{> reqTable params=params}}
+{{/if}}
 
-  {{#if restrictions}}
-    <ul>
-    {{#each restrictions}}
-      <li>{{{@this}}}</li>
-    {{/each}}
-    </ul>
-  {{/if}}
-
-  <table class="table">
-  <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
-  {{#eachSorted params}}
-    {{> reqItem}}
-  {{/eachSorted}}
-  </table>
-
-  {{#if types}}
-    {{> typeDescription}}
-  {{/if}}
-
+{{#if paramsGlobal}}
   <h3>Global</h3>
-  <table class="table">
-  <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
-  {{#eachSorted paramsGlobal}}
-    {{> reqItem}}
-  {{/eachSorted}}
-  </table>
+  {{> reqTable params=paramsGlobal}}
 {{/if}}

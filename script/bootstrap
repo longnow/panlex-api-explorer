@@ -2,4 +2,5 @@
 
 dir=${1:-~/Downloads/bootstrap}
 cp -f $dir/css/bootstrap*.min.css $dir/js/bootstrap.min.js $dir/config.json bootstrap
-chmod -R -x bootstrap/*
+cp -rf $dir/fonts assets
+chmod -R -x bootstrap/* assets/fonts/*

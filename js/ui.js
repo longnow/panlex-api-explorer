@@ -59,14 +59,13 @@ function setQuery(url) {
     paramsGlobal: info.reqParamsGlobal,
     restrictions: info.reqParamsRestrictions,
     urlParams: reqUrlParams,
-    types: info.reqTypes
+    types: info.types
   }));
 
   $('#resFields').html(Handlebars.templates.resFields({
     fields: info.resFields,
     fieldsRoot: info.resFieldsRoot,
-    types: info.resTypes,
-    typesRoot: info.resTypesRoot
+    types: info.types
   }));
 
   currentQuery = url;

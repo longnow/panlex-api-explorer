@@ -1212,23 +1212,20 @@ for (var i in queries) {
   if (queryDefaults[queries[i].type])
     queries[i] = deepCopyExtend(queryDefaults[queries[i].type], queries[i]);
 
+  var types = {};
+
   // identify request parameter and response object types that are documented
   ['reqParams', 'resFields', 'resFieldsRoot'].forEach(function (j) {
-    var types = {};
-
     for (var k in queries[i][j]) {
       var type = queries[i][j][k].type;
       if (type) {
-        type = type.replace(/(?:\[\])+$/, '');
-        if (objectTypes[type]) types[type] = objectTypes[type];
+        var baseType = type.replace(/(?:\[\])+$/, '');
+        if (objectTypes[baseType]) types[type] = objectTypes[baseType];
       }
     }
-
-    if (Object.keys(types).length) {
-      var key = j.replace(/Params|Fields/, 'Types');
-      queries[i][key] = types;
-    }
   });
+
+  if (Object.keys(types).length) queries[i].types = types;
 
   // populate include desc (deleting param if invalid)
   if (queries[i].reqParams.include) {
@@ -1284,8 +1281,10 @@ for (var i in queries) {
   queries[i].reqParamsRestrictions = desc;
 }
 
-// populate inherited objectTypes
+// populate objectTypes
 for (var i in objectTypes) {
+  objectTypes[i].name = i;
+
   if (objectTypes[i].inherit) {
     var fields = objectTypes[i].fields = {};
     var theirFields = queries[objectTypes[i].inherit].resFields;

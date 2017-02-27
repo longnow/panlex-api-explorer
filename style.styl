@@ -6,6 +6,11 @@ monospace()
   font-family monospace
   font-size 95%
 
+prewrap()
+  word-wrap break-word
+  white-space -moz-pre-wrap
+  white-space pre-wrap
+
 // global element styles
 
 body
@@ -41,7 +46,7 @@ td, th
   border-top cellBorder
   border-bottom cellBorder
   padding 0.75ex 1.5ex
-  vertical-align middle
+  vertical-align middle !important
   &:first-child
     border-left cellBorder
     padding-left 1em
@@ -69,9 +74,16 @@ ul
   width 60%
   font-size 95%
 
+.glyphicon
+  margin-left 0.6ex
+  vertical-align middle
+  &:hover
+    cursor pointer
+
 td
   &.name, &.type
     monospace()
+    white-space nowrap
 
 .modal-body
   overflow-y auto
@@ -110,9 +122,7 @@ td
   border cellBorder
 
 #queryModal pre
-  word-wrap break-word
-  white-space -moz-pre-wrap
-  white-space pre-wrap
+  prewrap()
 
 #resFields
   td, th
