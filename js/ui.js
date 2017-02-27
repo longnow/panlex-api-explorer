@@ -96,7 +96,8 @@ function submitRequest(e) {
     complete: displayResponse
   };
 
-  if (p.url.length) options.url += '/' + p.url.join('/');
+  if (p.url.length) options.url += '/'
+    + p.url.map(function(item) { return encodeURIComponent(item) }).join('/');
 
   var templateParams = {
     method: options.method,
@@ -150,7 +151,7 @@ function getReqParams() {
 }
 
 function displayResponse(jqXHR, textStatus) {
-  if (textStatus === 'success' || textStatus === 'error') {
+  if (jqXHR.status !== 0 && (textStatus === 'success' || textStatus === 'error')) {
     try {
       var response = $.parseJSON(jqXHR.responseText);
 
