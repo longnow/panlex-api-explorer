@@ -4,8 +4,8 @@ var currentQuery, currentUrl;
 initHelpers();
 
 $(document).ready(function () {
-  var hash = window.location.hash.replace(/^#/, '');
-  setQuery(hashToUrl[hash] || '/langvar');
+  hashChange();
+  $(window).on('hashchange', hashChange);
 
   $('#content').show();
 });
@@ -20,9 +20,15 @@ function initHelpers() {
   });
 }
 
+function hashChange() {
+  var hash = window.location.hash.replace(/^#/, '');
+  setQuery(hashToUrl[hash] || '/langvar');
+}
+
 function setQuery(url) {
   var q = queries[url];
-  window.location.hash = q.hash;
+  if (window.location.hash !== q.hash) window.location.hash = q.hash;
+  if (currentUrl === url) return;
 
   $('#summary').html(Handlebars.templates.summary({ url: url, summary: q.summary, queries: queries }));
   $('#queryTypes a').on('click', function() { setQuery($(this).data('url')) });
