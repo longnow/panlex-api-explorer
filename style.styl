@@ -151,10 +151,27 @@ td
 
 @media (max-width 768px)
   .desc
-    width 40%
+    width 50%
+
+  td, th
+    &.name, &.type
+      white-space normal
+      word-break break-all
+      width 23%
+
+  .popover
+    max-height 50vh
+    max-width 50vw
+    overflow-y auto
+
+  .reqParam
+    width 4%
+
   #queryInfo
     padding-left 0
+
   #queryTypesDesktop, #summaryDesktop
     display none
+
   #summaryMobile
     display block
