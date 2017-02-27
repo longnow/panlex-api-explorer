@@ -149,6 +149,9 @@ td
   font-size 120%
   z-index -1
 
+#summaryDesktop
+  display inline
+
 #summaryMobile
   display none
 
@@ -157,6 +160,9 @@ td
 @media (max-width 768px)
   .desc
     width 50%
+
+  .modal-body
+    max-height 75vh
 
   td, th
     &.name, &.type
