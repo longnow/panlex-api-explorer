@@ -80,7 +80,7 @@ var objectTypes = {
   },
   trans_path: {
     desc: 'Translation path, consisting of an array of translation hop objects. A translation hop consists of a PanLex meaning with a beginning and end denotation. Expressions tie hops together: one hop’s end denotation has the same expression as the following hop’s beginning denotation. The term “distance-<em>n</em> translation” (where <em>n</em> is typically 1 or 2) refers to a translation with <em>n</em> hops. Each translation hop object has the following fields:',
-    example: 'Here is a <code>trans_path</code> object for a distance-1 translation from <code>eng-000</code> (English) “bat” into <code>spa-000</code> (Spanish) “murciélago”: <code>[ { "meaning": 28118413, "source": 5944, "denotation1": 83715137, "denotation2": 83715210 } ]</code>. Since it is a distance-1 translation, there is only one object in the array. The translation is documented in meaning 28118413, which is in source 5944 (<code>fra-mul:Sérasset</code>). The beginning denotation (of “bat”) is 83715137, and the end denotation (of “murciélago”) is 83715210.',
+    example: 'Here is a <code>trans_path</code> array for a distance-1 translation from <code>eng-000</code> (English) “bat” into <code>spa-000</code> (Spanish) “murciélago”: <code>[ { "meaning": 28118413, "source": 5944, "denotation1": 83715137, "denotation2": 83715210 } ]</code>. Since it is a distance-1 translation, there is only one object in the array. The translation is documented in meaning 28118413, which is in source 5944 (<code>fra-mul:Sérasset</code>). The beginning denotation (of “bat”) is 83715137, and the end denotation (of “murciélago”) is 83715210.',
     fields: {
       denotation1: {
         type: 'integer',
