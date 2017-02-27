@@ -1220,7 +1220,7 @@ for (var i in queries) {
       var type = queries[i][j][k].type;
       if (type) {
         var baseType = type.replace(/(?:\[\])+$/, '');
-        if (objectTypes[baseType]) types[type] = objectTypes[baseType];
+        if (objectTypes[baseType]) types[type] = baseType;
       }
     }
   });

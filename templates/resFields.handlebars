@@ -3,12 +3,8 @@
 <tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
 {{#eachSorted fields}}
   <tr>
-  {{#if attr.restriction}}
-    <td class="name">({{name}})</td>
-  {{else}}
-    <td class="name">{{name}}</td>
-  {{/if}}
-  <td class="type">{{attr.type}}</td>
+  <td class="name">{{name}}{{> restrictionInfoIcon restriction=attr.restriction}}</td>
+  <td class="type">{{attr.type}}{{> typeInfoIcon type=(lookup ../types attr.type)}}</td>
   <td class="desc">{{{attr.desc}}}</td>
   </tr>
 {{/eachSorted}}

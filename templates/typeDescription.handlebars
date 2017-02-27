@@ -1,0 +1,14 @@
+<div class="typeDescription">
+<p>{{{desc}}}</p>
+{{#if fields}}
+  <table class="table">
+    <tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
+    {{#eachSorted fields}}
+      <tr><td class="name">{{name}}</td><td class="type">{{attr.type}}</td><td class="desc">{{{attr.desc}}}</td></tr>
+    {{/eachSorted}}
+  </table>
+{{/if}}
+{{#if example}}
+  <p><em>Example:</em> {{{example}}}</p>
+{{/if}}
+</div>

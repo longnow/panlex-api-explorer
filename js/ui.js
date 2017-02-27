@@ -68,9 +68,21 @@ function setQuery(url) {
     types: info.types
   }));
 
+  $('.typeInfo').popover({
+    content: typeDescription,
+    html: true,
+    placement: 'top',
+    trigger: 'click focus'
+  });
+
   currentQuery = url;
   currentUrl = url.replace(/\/<.+$/, '');
   $('#submit').on('click', submitRequest);
+}
+
+function typeDescription() {
+  var type = $(this).data('type');
+  return Handlebars.templates.typeDescription(objectTypes[type]);
 }
 
 function submitRequest(e) {

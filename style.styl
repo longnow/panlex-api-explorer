@@ -19,7 +19,7 @@ body
 
 h1, h2, h3
   margin 0 0 1.5ex 0
-  font-style bold
+  font-weight bold
 
 h1
   font-size 145%
@@ -75,8 +75,9 @@ ul
   font-size 95%
 
 .glyphicon
-  margin-left 0.6ex
+  margin-left 0.5ex
   vertical-align middle
+  top 0
   &:hover
     cursor pointer
 
@@ -88,6 +89,10 @@ td
 .modal-body
   overflow-y auto
   max-height calc(100vh - 125px)
+
+.popover-title code
+  color black
+  background-color inherit
 
 .queryLink
   display block
@@ -103,9 +108,6 @@ td
 
 .reqParam
   width 20%
-
-.typeDescription
-  margin 0 6em
 
 // individual elements
 
