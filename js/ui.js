@@ -101,8 +101,7 @@ function setupDropdown(elt) {
 
 function setupPopover(elt, options) {
   options = $.extend({ html: true, placement: 'auto right' }, options || {});
-  return elt.popover(options)
-  .on('show.bs.popover', hideOpenPopovers);
+  return elt.popover(options).on('show.bs.popover', hideOpenPopovers);
 }
 
 function hideOpenPopovers(e) {
