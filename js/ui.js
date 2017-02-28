@@ -209,9 +209,9 @@ function displayResponse(jqXHR, textStatus) {
 }
 
 function onShowItem(item, type) {
-  var s = uiType[type];
+  var t = uiType[type];
 
-  var bodyTop = item.find(s.bodySelector).offset().top;
+  var bodyTop = item.find(t.bodySelector).offset().top;
 
   if (bodyTop >= 0) {
     item.data('body-top', bodyTop);
@@ -224,17 +224,17 @@ function onHideItem(item) {
 }
 
 function resizeItem(item, type) {
-  var s = uiType[type];
+  var t = uiType[type];
 
   var bodyTop = item.data('body-top');
   if (bodyTop === undefined || bodyTop === null) return;
 
-  var margin = s.marginSize
-    ? s.marginSize
-    : Number(item.find(s.marginSelector).css('margin').replace(/px.*$/, ''));
+  var margin = t.marginSize
+    ? t.marginSize
+    : Number(item.find(t.marginSelector).css('margin').replace(/px.*$/, ''));
 
   var maxBodyHeight = $(window).height() - bodyTop - margin;
-  item.find(s.bodySelector).css('max-height', maxBodyHeight + 'px');
+  item.find(t.bodySelector).css('max-height', maxBodyHeight + 'px');
 }
 
 // based on https://www.npmjs.com/package/canonical-json
