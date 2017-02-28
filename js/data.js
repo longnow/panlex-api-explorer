@@ -1,18 +1,14 @@
 var urlParams = {
   id: {
-    name: 'id',
     desc: 'ID.'
   },
   'id|label': {
-    name: 'id|label',
     desc: 'Source ID or label.'
   },
   'id|uid': {
-    name: 'id|uid',
     desc: 'Language variety ID or uniform identifier.'
   },
   text: {
-    name: 'text',
     desc: 'Expression text.'
   }
 };
@@ -1168,6 +1164,9 @@ var queries = {
     }
   }
 };
+
+// populate urlParams.name
+for (var i in urlParams) urlParams[i].name = i;
 
 // populate queryDefaults
 for (var i in queryDefaults) {
