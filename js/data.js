@@ -1202,11 +1202,8 @@ for (var i in queries) {
   }
 }
 
-var hashToQuery = {};
-
 // populate query fields:
 // - from queryDefaults
-// - hash (and hashToQuery)
 // - types
 // - resFields onlyWhen desc
 // - reqParams include desc
@@ -1215,9 +1212,6 @@ for (var i in queries) {
   // apply default values for the query's type
   if (queryDefaults[queries[i].type])
     queries[i] = deepCopyExtend(queryDefaults[queries[i].type], queries[i]);
-
-  queries[i].hash = queryToHash(i);
-  hashToQuery[queries[i].hash] = i;
 
   var types = {};
 
@@ -1258,10 +1252,6 @@ for (var i in objectTypes) {
       if (!theirFields[j].onlyWhen) fields[j] = theirFields[j];
     }
   }
-}
-
-function queryToHash(url) {
-  return url.replace(/[/<>|_]/g, '');
 }
 
 function deepCopy(obj) {

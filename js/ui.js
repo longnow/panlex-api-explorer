@@ -46,14 +46,18 @@ function initHelpers() {
 }
 
 function hashChange() {
-  var hash = window.location.hash.replace(/^#/, '');
-  setQuery(hashToQuery[hash] || '/langvar');
+  setQuery(getHash() || '/langvar');
+}
+
+function getHash() {
+  return window.location.hash.replace(/^#/, '');
 }
 
 function setQuery(query) {
-  var q = queries[query];
-  if (window.location.hash.replace(/^#/, '') !== q.hash) window.location.hash = q.hash;
+  if (getHash() !== query) window.location.hash = query;
   if (currentQuery === query) return;
+
+  var q = queries[query];
 
   $('#summary').html(Handlebars.templates.summary({ query: query, summary: q.summary, queries: queries }));
   $('#queryTypes a').on('click', function() { setQuery($(this).data('query')) });
