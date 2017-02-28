@@ -22,7 +22,7 @@ function initHelpers() {
 
 function hashChange() {
   var hash = window.location.hash.replace(/^#/, '');
-  setQuery(hashToUrl[hash] || '/langvar');
+  setQuery(hashToQuery[hash] || '/langvar');
 }
 
 function setQuery(query) {
