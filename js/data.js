@@ -495,7 +495,7 @@ var queries = {
       },
       trans_distance: {
         type: 'integer',
-        desc: 'Number of translation hops. Pass 1 for one hop (direct or distance-1 translation), 2 for two hops (indirect or distance-2 translation). Default: 1. Note that if you set this to 2, for performance reasons we recommend that you specify the translated expression(s) with <code>trans_expr</code> rather than one of the alternatives.'
+        desc: 'Number of translation hops. Pass 1 for one hop (direct or distance-1 translation), 2 for two hops (indirect or distance-2 translation). Default: 1. Only relevant if you are translating. Note that if you set this to 2, for performance reasons we recommend that you specify the translated expression(s) with <code>trans_expr</code> rather than one of the alternatives.'
       },
       trans_grp: {
         type: 'integer[]',
@@ -511,11 +511,11 @@ var queries = {
       },
       trans_quality_algo: {
         type: 'string',
-        desc: 'Translation quality algorithm. Valid values are “geometric” (the default) and “arithmetic”. See description of the <code>trans_quality</code> response field for details.'
+        desc: 'Translation quality algorithm. Valid values are “geometric” (the default) and “arithmetic”. Only relevant when <code>trans_distance</code> is 2. See description of the <code>trans_quality</code> response field below for details.'
       },
       trans_quality_min: {
         type: 'integer',
-        desc: 'Non-negative integer specifying a minimum translation quality. Translations with a lower quality will not be returned. Default: 0, i.e., no minumum.'
+        desc: 'Non-negative integer specifying a minimum translation quality. Translations with a lower quality will not be returned. Default: 0, i.e., no minumum. Only relevant if you are translating.'
       },
       trans_source: {
         type: 'integer[]',
