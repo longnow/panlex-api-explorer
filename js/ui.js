@@ -25,19 +25,19 @@ function hashChange() {
   setQuery(hashToUrl[hash] || '/langvar');
 }
 
-function setQuery(url) {
-  var q = queries[url];
+function setQuery(query) {
+  var q = queries[query];
   if (window.location.hash.replace(/^#/, '') !== q.hash) window.location.hash = q.hash;
-  if (currentUrl === url) return;
+  if (currentQuery === query) return;
 
-  $('#summary').html(Handlebars.templates.summary({ url: url, summary: q.summary, queries: queries }));
-  $('#queryTypes a').on('click', function() { setQuery($(this).data('url')) });
+  $('#summary').html(Handlebars.templates.summary({ query: query, summary: q.summary, queries: queries }));
+  $('#queryTypes a').on('click', function() { setQuery($(this).data('query')) });
 
   $('#error').empty();
 
   $('#description').html(Handlebars.templates.description({ desc: q.desc }));
 
-  var reqUrlParams = url.match(/<[^>]+>/g);
+  var reqUrlParams = query.match(/<[^>]+>/g);
   if (reqUrlParams) {
     reqUrlParams = reqUrlParams.map(function (item) {
       var param = item.replace(/[<>]/g, '');
@@ -75,8 +75,8 @@ function setQuery(url) {
   })
   .on('show.bs.popover', hideOpenPopovers);
 
-  currentQuery = url;
-  currentUrl = url.replace(/\/<.+$/, '');
+  currentQuery = query;
+  currentUrl = query.replace(/\/<.+$/, '');
   $('#submit').on('click', submitRequest);
 }
 

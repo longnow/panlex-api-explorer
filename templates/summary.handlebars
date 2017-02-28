@@ -1,11 +1,11 @@
 <button id="submit" type="button" class="btn btn-default">Run Query</button>
 <div id="summaryDropdown" class="dropdown">
   <span id="summaryMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  <code>{{url}}</code><span class="caret"></span>
+  <code>{{query}}</code><span class="caret"></span>
   </span>
   <ul id="queryTypes" class="dropdown-menu" aria-labelledby="summaryMenu">
   {{#eachSorted queries}}
-    <li><a href="javascript:void(0)" data-url="{{name}}">{{name}}</a></li>
+    <li><a href="javascript:void(0)" data-query="{{name}}">{{name}}</a></li>
   {{/eachSorted}}
   </ul>
 </div>
