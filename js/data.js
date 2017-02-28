@@ -19,7 +19,7 @@ var objectTypes = {
     fields: {
       category: {
         type: 'string',
-        desc: 'Character category, typically “pri” (primary/standard), “aux” (auxiliary), or “pun” (punctuation).'
+        desc: 'Character category, typically <code>"pri"</code> (primary/standard), <code>"aux"</code> (auxiliary), or <code>"pun"</code> (punctuation).'
       },
       locale: {
         type: 'string',
@@ -491,7 +491,7 @@ var queries = {
       },
       range: {
         type: 'string[]',
-        desc: 'Array of the form <code>[field, start, end]</code>. Restricts results to expressions whose <code>field</code> value is alphabetically between the <code>start</code> and <code>end</code> strings. <code>field</code> may be “txt” or “txt_degr”.'
+        desc: 'Array of the form <code>[field, start, end]</code>. Restricts results to expressions whose <code>field</code> value is alphabetically between the <code>start</code> and <code>end</code> strings. <code>field</code> may be <code>"txt"</code> or <code>"txt_degr"</code>.'
       },
       trans_distance: {
         type: 'integer',
@@ -511,7 +511,7 @@ var queries = {
       },
       trans_quality_algo: {
         type: 'string',
-        desc: 'Translation quality algorithm. Valid values are “geometric” (the default) and “arithmetic”. Only relevant when <code>trans_distance</code> is 2. See description of the <code>trans_quality</code> response field below for details.'
+        desc: 'Translation quality algorithm. Valid values are <code>"geometric"</code> (the default) and <code>"arithmetic"</code>. Only relevant when <code>trans_distance</code> is 2. See description of the <code>trans_quality</code> response field below for details.'
       },
       trans_quality_min: {
         type: 'integer',
@@ -578,7 +578,7 @@ var queries = {
       },
       trans_quality: {
         type: 'integer',
-        desc: 'Translation quality score. For <code>trans_distance</code> 1, it is the sum of the quality value of all sources from distinct source groups attesting the translation. The same algorithm is used for <code>trans_distance</code> 2 when <code>trans_quality_algo</code> is “arithmetic”, combining the sources from both hops for the purpose of the score. When <code>trans_quality_algo</code> is “geometric” (the default), it is the sum, rounded to the nearest integer, of the geometric mean of each distinct translation path’s two quality values. Distinctness in this context is defined by the combination of the intermediate expression linking the two hops and the source groups of the two sources. See <a href="https://dev.panlex.org/translation-evaluation/">translation evaluation</a> for more.',
+        desc: 'Translation quality score. For <code>trans_distance</code> 1, it is the sum of the quality value of all sources from distinct source groups attesting the translation. The same algorithm is used for <code>trans_distance</code> 2 when <code>trans_quality_algo</code> is <code>"arithmetic"</code>, combining the sources from both hops for the purpose of the score. When <code>trans_quality_algo</code> is <code>"geometric"</code> (the default), it is the sum, rounded to the nearest integer, of the geometric mean of each distinct translation path’s two quality values. Distinctness in this context is defined by the combination of the intermediate expression linking the two hops and the source groups of the two sources. See <a href="https://dev.panlex.org/translation-evaluation/">translation evaluation</a> for more.',
         onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_quality' }
       },
       trans_txt: {
@@ -1077,7 +1077,7 @@ var queries = {
       },
       license: {
         type: 'string',
-        desc: 'License type. Can be “copyright”, “Creative Commons”, “GNU Free Documentation License”, “GNU General Public License”, “GNU Lesser General Public License”, “MIT License”, “other”, “PanLex Use Permission”, “public domain”, “request”, or “unknown”.'
+        desc: 'License type. Can be <code>"copyright"</code>, <code>"Creative Commons"</code>, <code>"GNU Free Documentation License"</code>, <code>"GNU General Public License"</code>, <code>"GNU Lesser General Public License"</code>, <code>"MIT License"</code>, <code>"other"</code>, <code>"PanLex Use Permission"</code>, <code>"public domain"</code>, <code>"request"</code>, or <code>"unknown"</code>.'
       },
       meaning_count: {
         type: 'integer',
