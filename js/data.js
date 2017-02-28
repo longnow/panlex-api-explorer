@@ -1324,11 +1324,11 @@ function reqParamsRestrictionsDesc(restrictions) {
       var conj;
 
       if (r.not) {
-        str += 'must provide at least one parameter other than ';
+        str += 'must pass at least one parameter other than ';
         conj = 'and';
       }
       else {
-        str += 'must provide at least one of the following parameters: ';
+        str += 'must pass at least one of the following parameters: ';
         conj = 'or';
       }
 
