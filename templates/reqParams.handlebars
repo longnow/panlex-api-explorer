@@ -1,4 +1,4 @@
-{{#*inline "reqTable"}}
+{{#*inline "table"}}
 <table class="table">
 <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
 {{#eachSorted params}}
@@ -29,16 +29,16 @@
 <h2>Request parameters</h2>
 
 <ul>
-{{#each restrictions}}
+{{#each reqParamsRestrictions}}
   <li>{{{desc}}}</li>
 {{/each}}
 </ul>
 
-{{#if params}}
-  {{> reqTable params=params}}
+{{#if reqParams}}
+  {{> table params=reqParams}}
 {{/if}}
 
-{{#if paramsGlobal}}
+{{#if reqParamsGlobal}}
   <h3>Global</h3>
-  {{> reqTable params=paramsGlobal}}
+  {{> table params=reqParamsGlobal}}
 {{/if}}

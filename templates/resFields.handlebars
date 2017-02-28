@@ -1,4 +1,4 @@
-{{#*inline "resTable"}}
+{{#*inline "table"}}
 <table class="table">
 <tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
 {{#eachSorted fields}}
@@ -13,10 +13,10 @@
 
 <h2>Response fields</h2>
 
-{{#if fields}}
+{{#if resFields}}
   <h3>Result Object</h3>
-  {{> resTable fields=fields}}
+  {{> table fields=resFields}}
 {{/if}}
 
 <h3>Root</h3>
-{{> resTable fields=fieldsRoot}}
+{{> table fields=resFieldsRoot}}

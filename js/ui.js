@@ -72,21 +72,9 @@ function setQuery(query) {
 
   $('#error').empty();
 
-  $('#description').html(Handlebars.templates.description({ desc: q.desc }));
-
-  $('#reqParams').html(Handlebars.templates.reqParams({
-    params: q.reqParams,
-    paramsGlobal: q.reqParamsGlobal,
-    restrictions: q.reqParamsRestrictions,
-    urlParams: q.urlParams,
-    types: q.types
-  }));
-
-  $('#resFields').html(Handlebars.templates.resFields({
-    fields: q.resFields,
-    fieldsRoot: q.resFieldsRoot,
-    types: q.types
-  }));
+  $('#description').html(Handlebars.templates.description(q));
+  $('#reqParams').html(Handlebars.templates.reqParams(q));
+  $('#resFields').html(Handlebars.templates.resFields(q));
 
   setupPopover($('.typeInfo'), { content: typeDescription })
   .on('inserted.bs.popover', function() {
