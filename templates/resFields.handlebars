@@ -3,9 +3,9 @@
 <tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
 {{#eachSorted fields}}
   <tr>
-  <td class="name">{{name}}{{> onlyWhenInfoIcon field=name onlyWhen=attr.onlyWhen}}</td>
-  <td class="type">{{attr.type}}{{> typeInfoIcon type=(lookup ../types attr.type)}}</td>
-  <td class="desc">{{{attr.desc}}}</td>
+  <td class="name">{{@key}}{{> onlyWhenInfoIcon field=@key onlyWhen=onlyWhen}}</td>
+  <td class="type">{{type}}{{> typeInfoIcon type=(lookup ../types type)}}</td>
+  <td class="desc">{{{desc}}}</td>
   </tr>
 {{/eachSorted}}
 </table>

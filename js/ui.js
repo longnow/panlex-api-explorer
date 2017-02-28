@@ -37,9 +37,12 @@ $(document).ready(function () {
 
 function initHelpers() {
   Handlebars.registerHelper('eachSorted', function (context, options) {
+    var data = Handlebars.createFrame(options.data);
+
     var ret = '';
     Object.keys(context).sort().forEach(function (key) {
-      ret += options.fn({ name: key, attr: context[key] });
+      data.key = key;
+      ret += options.fn(context[key], { data: data });
     });
     return ret;
   });
@@ -75,7 +78,7 @@ function setQuery(query) {
   if (reqUrlParams) {
     reqUrlParams = reqUrlParams.map(function (item) {
       var param = item.replace(/[<>]/g, '');
-      return { name: param, attr: urlParams[param] };
+      return urlParams[param];
     });
   }
 

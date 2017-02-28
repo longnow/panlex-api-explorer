@@ -1,14 +1,18 @@
 var urlParams = {
   id: {
+    name: 'id',
     desc: 'ID.'
   },
   'id|label': {
+    name: 'id|label',
     desc: 'Source ID or label.'
   },
   'id|uid': {
+    name: 'id|uid',
     desc: 'Language variety ID or uniform identifier.'
   },
   text: {
+    name: 'text',
     desc: 'Expression text.'
   }
 };

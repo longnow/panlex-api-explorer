@@ -3,7 +3,7 @@
   <table class="table">
     <tr><th class="name">field</th><th class="type">type</th><th class="desc">description</th></tr>
     {{#eachSorted fields}}
-      <tr><td class="name">{{name}}</td><td class="type">{{attr.type}}</td><td class="desc">{{{attr.desc}}}</td></tr>
+      <tr><td class="name">{{@key}}</td><td class="type">{{type}}</td><td class="desc">{{{desc}}}</td></tr>
     {{/eachSorted}}
   </table>
 {{/if}}

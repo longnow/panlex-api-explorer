@@ -3,10 +3,10 @@
 <tr><th class="name">name</th><th class="type">type</th><th class="reqParam">JSON value</th><th class="desc">description</th></tr>
 {{#eachSorted params}}
   <tr>
-  <td class="name">{{name}}</td>
-  <td class="type">{{attr.type}}{{> typeInfoIcon type=(lookup ../types attr.type)}}</td>
-  <td class="reqParam"><input type="text" class="form-control" name="{{name}}"></td>
-  <td class="desc">{{{attr.desc}}}</td>
+  <td class="name">{{@key}}</td>
+  <td class="type">{{type}}{{> typeInfoIcon type=(lookup ../types type)}}</td>
+  <td class="reqParam"><input type="text" class="form-control" name="{{@key}}"></td>
+  <td class="desc">{{{desc}}}</td>
   </tr>
 {{/eachSorted}}
 </table>
@@ -20,7 +20,7 @@
     <tr>
     <td class="name">{{name}}</td>
     <td class="reqParam"><input type="text" class="form-control" name="url_{{@index}}" data-name="{{name}}"></td>
-    <td class="desc">{{{attr.desc}}}</td>
+    <td class="desc">{{{desc}}}</td>
     </tr>
   {{/each}}
   </table>
@@ -30,7 +30,7 @@
 
 <ul>
 {{#each restrictions}}
-  <li>{{{this.desc}}}</li>
+  <li>{{{desc}}}</li>
 {{/each}}
 </ul>
 
