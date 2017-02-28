@@ -4,11 +4,11 @@ var currentQuery, currentUrl;
 var uiType = {
   modal: {
     bodySelector: '.modal-body',
-    marginSelector: '.modal-dialog'
+    topSelector: '.modal-content'
   },
   dropdown: {
     bodySelector: '.dropdown-menu',
-    marginSize: 20
+    margin: 20
   }
 };
 
@@ -233,9 +233,9 @@ function resizeItem(item, type) {
   var bodyTop = item.data('body-top');
   if (bodyTop === undefined || bodyTop === null) return;
 
-  var margin = t.marginSize
-    ? t.marginSize
-    : Number(item.find(t.marginSelector).css('margin').replace(/px.*$/, ''));
+  var margin = t.margin
+    ? t.margin
+    : item.find(t.topSelector).offset().top;
 
   var maxBodyHeight = $(window).height() - bodyTop - margin;
   item.find(t.bodySelector).css('max-height', maxBodyHeight + 'px');
