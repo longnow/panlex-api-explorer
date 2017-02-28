@@ -1035,7 +1035,7 @@ var queries = {
       },
       directory: {
         type: 'string',
-        desc: 'Name of directory in source archive (for internal use).'
+        desc: 'Name of resource directory in archive (for internal use).'
       },
       grp: {
         type: 'integer',
@@ -1094,7 +1094,7 @@ var queries = {
       },
       reg_date: {
         type: 'string',
-        desc: 'Date added to PanLex.'
+        desc: 'Date added to PanLex, in ISO 8601 format.'
       },
       title: {
         type: 'string',
