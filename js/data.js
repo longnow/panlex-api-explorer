@@ -282,22 +282,22 @@ var queries = {
       expr_langvar: {
         type: 'integer',
         desc: 'Language variety ID of the expression whose meaning is defined.',
-        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_langvar' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: true }
       },
       expr_txt: {
         type: 'string',
         desc: 'Text of the expression whose meaning is defined.',
-        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_txt' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: true }
       },
       expr_txt_degr: {
         type: 'string',
         desc: 'Degraded ext of the expression whose meaning is defined.',
-        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_txt_degr' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: true }
       },
       expr_uid: {
         type: 'integer',
         desc: 'Language variety uniform identifier of the expression whose meaning is defined.',
-        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: 'expr_uid' }
+        onlyWhen: { params: ['expr','expr_langvar','expr_txt','expr_txt_degr'], include: true }
       },
       id: {
         type: 'integer',
@@ -322,7 +322,7 @@ var queries = {
       uid: {
         type: 'string',
         desc: 'Uniform identifier of the language variety in which the definition is written.',
-        onlyWhen: { include: 'uid' }
+        onlyWhen: { include: true }
       }
     }
   },
@@ -399,12 +399,12 @@ var queries = {
       denotation_class: {
         type: 'class[]',
         desc: 'Denotation classifications.',
-        onlyWhen: { include: 'denotation_class' }
+        onlyWhen: { include: true }
       },
       denotation_prop: {
         type: 'prop[]',
         desc: 'Denotation properties.',
-        onlyWhen: { include: 'denotation_prop' }
+        onlyWhen: { include: true }
       },
       expr: {
         type: 'integer',
@@ -569,32 +569,32 @@ var queries = {
       trans_langvar: {
         type: 'integer',
         desc: 'Language variety ID for expression from which the expression was translated.',
-        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_langvar' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: true }
       },
       trans_path: {
         type: 'trans_path[]',
         desc: 'Translation paths used to produce the translation (see below).',
-        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_path' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: true }
       },
       trans_quality: {
         type: 'integer',
         desc: 'Translation quality score. For <code>trans_distance</code> 1, it is the sum of the quality value of all sources from distinct source groups attesting the translation. The same algorithm is used for <code>trans_distance</code> 2 when <code>trans_quality_algo</code> is <code>"arithmetic"</code>, combining the sources from both hops for the purpose of the score. When <code>trans_quality_algo</code> is <code>"geometric"</code> (the default), it is the sum, rounded to the nearest integer, of the geometric mean of each distinct translation path’s two quality values. Distinctness in this context is defined by the combination of the intermediate expression linking the two hops and the source groups of the two sources. See <a href="https://dev.panlex.org/translation-evaluation/">translation evaluation</a> for more.',
-        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_quality' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: true }
       },
       trans_txt: {
         type: 'string',
         desc: 'Text of expression from which the expression was translated.',
-        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: true }
       },
       trans_txt_degr: {
         type: 'string',
         desc: 'Degraded text of expression from which the expression was translated.',
-        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_txt_degr' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: true }
       },
       trans_uid: {
         type: 'string',
         desc: 'Language variety uniform identifier for expression from which the expression was translated.',
-        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: 'trans_uid' }
+        onlyWhen: { params: ['trans_expr', 'trans_txt', 'trans_txt_degr'], include: true }
       },
       txt: {
         type: 'string',
@@ -607,7 +607,7 @@ var queries = {
       uid: {
         type: 'string',
         desc: 'Expression’s language variety uniform identifier.',
-        onlyWhen: { include: 'uid' }
+        onlyWhen: { include: true }
       }
     }
   },
@@ -747,12 +747,12 @@ var queries = {
       denotation_count: {
         type: 'integer',
         desc: 'Number of denotations in the language variety.',
-        onlyWhen: { include: 'denotation_count' }
+        onlyWhen: { include: true }
       },
       expr_count: {
         type: 'integer',
         desc: 'Number of expressions in the language variety.',
-        onlyWhen: { include: 'expr_count' }
+        onlyWhen: { include: true }
       },
       id: {
         type: 'integer',
@@ -765,12 +765,12 @@ var queries = {
       langvar_char: {
         type: 'codepoint_range[]',
         desc: 'Code-point ranges (see below).',
-        onlyWhen: { include: 'langvar_char' }
+        onlyWhen: { include: true }
       },
       langvar_cldr_char: {
         type: 'cldr_char[]',
         desc: 'CLDR character objects (see below).',
-        onlyWhen: { include: 'langvar_cldr_char' }
+        onlyWhen: { include: true }
       },
       mutable: {
         type: 'boolean',
@@ -795,7 +795,7 @@ var queries = {
       script_expr_txt: {
         type: 'string',
         desc: 'Text of the <code>script_expr</code> expression.',
-        onlyWhen: { include: 'script_expr_txt' }
+        onlyWhen: { include: true }
       },
       uid: {
         type: 'string',
@@ -868,7 +868,7 @@ var queries = {
       definition: {
         type: 'definition[]',
         desc: 'The meaning’s definitions.',
-        onlyWhen: { include: 'definition' }
+        onlyWhen: { include: true }
       },
       denotation: {
         type: 'integer[]',
@@ -885,12 +885,12 @@ var queries = {
       meaning_class: {
         type: 'class[]',
         desc: 'Meaning classifications.',
-        onlyWhen: { include: 'meaning_class' }
+        onlyWhen: { include: true }
       },
       meaning_prop: {
         type: 'prop[]',
         desc: 'Meaning properties.',
-        onlyWhen: { include: 'meaning_class' }
+        onlyWhen: { include: true }
       },
       source: {
         type: 'integer',
@@ -1001,7 +1001,7 @@ var queries = {
         desc: 'Source IDs.'
       },
       include: {
-        options: ['langvar','langvar_attested','meaning_count','usr']
+        options: ['denotation_count', 'langvar','langvar_attested','meaning_count','usr']
       },
       label: {
         type: 'string[]',
@@ -1032,6 +1032,11 @@ var queries = {
       author: {
         type: 'string',
         desc: 'Author(s).'
+      },
+      denotation_count: {
+        type: 'integer',
+        desc: 'Number of denotations of the source’s meanings.',
+        onlyWhen: { include: true }
       },
       directory: {
         type: 'string',
@@ -1068,12 +1073,12 @@ var queries = {
       langvar: {
         type: 'integer[]',
         desc: 'IDs of language varieties declared as documented in the source',
-        onlyWhen: { include: 'langvar' }
+        onlyWhen: { include: true }
       },
       langvar_attested: {
         type: 'integer[]',
         desc: 'IDs of language varieties attested in the source’s denotations.',
-        onlyWhen: { include: 'langvar' }
+        onlyWhen: { include: true }
       },
       license: {
         type: 'string',
@@ -1082,7 +1087,7 @@ var queries = {
       meaning_count: {
         type: 'integer',
         desc: 'Number of meanings in the source.',
-        onlyWhen: { include: 'langvar' }
+        onlyWhen: { include: true }
       },
       note: {
         type: 'string',
@@ -1107,7 +1112,7 @@ var queries = {
       usr: {
         type: 'integer[]',
         desc: 'Meaning editors’ PanLem usernames.',
-        onlyWhen: { include: 'langvar' }
+        onlyWhen: { include: true }
       },
       year: {
         type: 'integer',
@@ -1225,7 +1230,7 @@ for (var i in queries) {
       }
 
       // populate resFields onlyWhen desc
-      if (j === 'resFields') resFieldsOnlyWhenDesc(queries[i].resFields[k].onlyWhen);
+      if (j === 'resFields') resFieldsOnlyWhenDesc(queries[i].resFields[k].onlyWhen, k);
     }
   });
 
@@ -1293,12 +1298,15 @@ function applyArrayFilter(array, f) {
   }
 }
 
-function resFieldsOnlyWhenDesc(onlyWhen) {
+function resFieldsOnlyWhenDesc(onlyWhen, field) {
   if (!onlyWhen) return;
 
   var desc = [];
 
-  if (onlyWhen.include) desc.push('<code>' + onlyWhen.include + '</code> in the <code>include</code> parameter');
+  if (onlyWhen.include) {
+    if (onlyWhen.include !== true) field = onlyWhen.include;
+    desc.push('<code>' + field + '</code> in the <code>include</code> parameter');
+  }
 
   if (onlyWhen.params) {
     var params = onlyWhen.params.map(function (p) { return '<code>' + p + '</code>' });
