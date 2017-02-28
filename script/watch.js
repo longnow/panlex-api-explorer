@@ -7,7 +7,7 @@ make();
 
 chokidar.watch(['bootstrap','js','style.styl','templates'])
 .on('change', make)
-.on('error', function (err) { console.log(err) });
+.on('error', function (err) { console.error(err) });
 
 function make() {
   console.log(new Date() + ': make');
@@ -22,6 +22,6 @@ function make() {
   });
 
   proc.on('close', function (code) {
-    if (error) console.log('');
+    if (error) console.log(''); // add newline to make output easier to read
   });
 }
