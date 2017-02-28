@@ -62,13 +62,13 @@ function setQuery(query) {
 
   var q = queries[query];
 
-  $('#summary').html(Handlebars.templates.summary({ query: query, summary: q.summary, queries: queries }));
+  $('#summary').html(Handlebars.templates.summary({
+    query: query,
+    summary: q.summary,
+    queries: queries
+  }));
   $('#queryTypes a').on('click', function() { setQuery($(this).data('query')) });
-
-  var dropdown = $('#summaryDropdown');
-  dropdown
-  .on('shown.bs.dropdown', function() { onShowItem(dropdown, 'dropdown') })
-  .on('hide.bs.dropdown', function() { onHideItem(dropdown) });
+  setupDropdown($('#summaryDropdown'));
 
   $('#error').empty();
 
@@ -96,21 +96,12 @@ function setQuery(query) {
     types: q.types
   }));
 
-  $('.typeInfo').popover({
-    content: typeDescription,
-    html: true,
-    placement: 'auto right'
-  })
-  .on('show.bs.popover', hideOpenPopovers)
+  setupPopover($('.typeInfo'), { content: typeDescription })
   .on('inserted.bs.popover', function() {
     $('.popover').has('table').addClass('popover-lg');
   });
 
-  $('.onlyWhenInfo').popover({
-    html: true,
-    placement: 'auto right'
-  })
-  .on('show.bs.popover', hideOpenPopovers);
+  setupPopover($('.onlyWhenInfo'));
 
   currentQuery = query;
   currentUrl = query.replace(/\/<.+$/, '');
@@ -120,6 +111,18 @@ function setQuery(query) {
 function typeDescription() {
   var type = $(this).data('type');
   return Handlebars.templates.typeDescription(objectTypes[type]);
+}
+
+function setupDropdown(elt) {
+  return elt
+  .on('shown.bs.dropdown', function() { onShowItem(elt, 'dropdown') })
+  .on('hide.bs.dropdown', function() { onHideItem(elt) });
+}
+
+function setupPopover(elt, options) {
+  options = $.extend({ html: true, placement: 'auto right' }, options || {});
+  return elt.popover(options)
+  .on('show.bs.popover', hideOpenPopovers);
 }
 
 function hideOpenPopovers(e) {
