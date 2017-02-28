@@ -74,19 +74,11 @@ function setQuery(query) {
 
   $('#description').html(Handlebars.templates.description({ desc: q.desc }));
 
-  var reqUrlParams = query.match(/<[^>]+>/g);
-  if (reqUrlParams) {
-    reqUrlParams = reqUrlParams.map(function (item) {
-      var param = item.replace(/[<>]/g, '');
-      return urlParams[param];
-    });
-  }
-
   $('#reqParams').html(Handlebars.templates.reqParams({
     params: q.reqParams,
     paramsGlobal: q.reqParamsGlobal,
     restrictions: q.reqParamsRestrictions,
-    urlParams: reqUrlParams,
+    urlParams: q.urlParams,
     types: q.types
   }));
 

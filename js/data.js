@@ -1165,7 +1165,7 @@ var queries = {
   }
 };
 
-// populate urlParams.name
+// populate urlParams
 for (var i in urlParams) urlParams[i].name = i;
 
 // populate queryDefaults
@@ -1216,36 +1216,48 @@ for (var i in queries) {
 // - resFields onlyWhen desc
 // - reqParams include desc
 // - reqParamsRestrictions desc
+// - urlParams
 for (var i in queries) {
   // apply default values for the query's type
   if (queryDefaults[queries[i].type])
     queries[i] = deepCopyExtend(queryDefaults[queries[i].type], queries[i]);
 
+  var q = queries[i];
+
   var types = {};
 
   // identify request parameter and response object types that are documented
   ['reqParams', 'resFields', 'resFieldsRoot'].forEach(function (j) {
-    for (var k in queries[i][j]) {
-      var type = queries[i][j][k].type;
+    for (var k in q[j]) {
+      var type = q[j][k].type;
       if (type) {
         var baseType = type.replace(/(?:\[\])+$/, '');
         if (objectTypes[baseType]) types[type] = baseType;
       }
 
       // populate resFields onlyWhen desc
-      if (j === 'resFields') resFieldsOnlyWhenDesc(queries[i].resFields[k].onlyWhen, k);
+      if (j === 'resFields') resFieldsOnlyWhenDesc(q.resFields[k].onlyWhen, k);
     }
   });
 
-  if (Object.keys(types).length) queries[i].types = types;
+  if (Object.keys(types).length) q.types = types;
 
   // populate reqParams include desc
-  reqParamsIncludeDesc(queries[i].reqParams.include);
+  reqParamsIncludeDesc(q.reqParams.include);
 
   // populate reqParamsRestrictions and its desc
-  queries[i].reqParamsRestrictions = queries[i].reqParamsRestrictions || [];
-  queries[i].reqParamsRestrictions.unshift({ type: 'comment', value: 'For arbitrary-length array parameters, if there is just one element, you may pass it directly (<code>"a"</code> instead of <code>["a"]</code>).' });
-  reqParamsRestrictionsDesc(queries[i].reqParamsRestrictions);
+  q.reqParamsRestrictions = q.reqParamsRestrictions || [];
+  q.reqParamsRestrictions.unshift({ type: 'comment', value: 'For arbitrary-length array parameters, if there is just one element, you may pass it directly (<code>"a"</code> instead of <code>["a"]</code>).' });
+  reqParamsRestrictionsDesc(q.reqParamsRestrictions);
+
+  // populate urlParams
+  var matches = i.match(/<[^>]+>/g);
+  if (matches) {
+    q.urlParams = matches.map(function (item) {
+      var param = item.slice(1, item.length - 1);
+      return urlParams[param];
+    });
+  }
 }
 
 // populate objectTypes
