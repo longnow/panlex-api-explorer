@@ -16,11 +16,11 @@
   <h2>URL parameters</h2>
   <table class="table">
   <tr><th class="name">name</th><th class="reqParam">value</th><th class="desc">description</th></tr>
-  {{#each urlParams as |param i|}}
+  {{#each urlParams}}
     <tr>
-    <td class="name">{{param.name}}</td>
-    <td class="reqParam"><input type="text" class="form-control" name="url_{{i}}" data-name="{{param.name}}"></td>
-    <td class="desc">{{{param.attr.desc}}}</td>
+    <td class="name">{{name}}</td>
+    <td class="reqParam"><input type="text" class="form-control" name="url_{{@index}}" data-name="{{name}}"></td>
+    <td class="desc">{{{attr.desc}}}</td>
     </tr>
   {{/each}}
   </table>
