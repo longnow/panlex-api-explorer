@@ -1,13 +1,38 @@
 var endpoint = 'https://api.panlex.org/v2';
 var currentQuery, currentUrl;
 
+var uiType = {
+  modal: {
+    bodySelector: '.modal-body',
+    marginSelector: '.modal-dialog'
+  },
+  dropdown: {
+    bodySelector: '.dropdown-menu',
+    marginSize: 20
+  }
+};
+
 initHelpers();
 
 $(document).ready(function () {
+  var modal = $('#queryModal');
+  modal
+  .on('shown.bs.modal', function () { onShowItem(modal, 'modal') })
+  .on('hide.bs.modal', function () { onHideItem(modal) } );
+
   hashChange();
-  $(window).on('hashchange', hashChange);
+
+  $(window)
+  .on('hashchange', hashChange)
+  .on('resize', function() {
+    resizeItem(modal, 'modal');
+    resizeItem($('#summaryDropdown'), 'dropdown');
+  });
 
   $('#content').show();
+}).on('keyup', function (e) {
+  // hide popovers with escape key
+  if (e.keyCode === 27 && this.id !== 'queryModal') hideOpenPopovers();
 });
 
 function initHelpers() {
@@ -32,6 +57,11 @@ function setQuery(query) {
 
   $('#summary').html(Handlebars.templates.summary({ query: query, summary: q.summary, queries: queries }));
   $('#queryTypes a').on('click', function() { setQuery($(this).data('query')) });
+
+  var dropdown = $('#summaryDropdown');
+  dropdown
+  .on('shown.bs.dropdown', function() { onShowItem(dropdown, 'dropdown') })
+  .on('hide.bs.dropdown', function() { onHideItem(dropdown) });
 
   $('#error').empty();
 
@@ -157,6 +187,9 @@ function getReqParams() {
 }
 
 function displayResponse(jqXHR, textStatus) {
+  var modal = $('#queryModal');
+  onShowItem(modal, 'modal');
+
   if (jqXHR.status !== 0 && (textStatus === 'success' || textStatus === 'error')) {
     try {
       var response = $.parseJSON(jqXHR.responseText);
@@ -165,11 +198,43 @@ function displayResponse(jqXHR, textStatus) {
         status: jqXHR.status !== 200 ? jqXHR.status : null,
         response: canonicalJson(response, null, 2)
       }));
+
+      modal.modal('handleUpdate');
     } catch (e) {
+      console.log(e);
       $('#queryResponse').html('<p>API response contained invalid JSON</p>');
     }
   }
   else $('#queryResponse').html('<p>Unexpected error occurred</p>');
+}
+
+function onShowItem(item, type) {
+  var s = uiType[type];
+
+  var bodyTop = item.find(s.bodySelector).offset().top;
+
+  if (bodyTop >= 0) {
+    item.data('body-top', bodyTop);
+    resizeItem(item, type);
+  }
+}
+
+function onHideItem(item) {
+  item.data('body-top', null);
+}
+
+function resizeItem(item, type) {
+  var s = uiType[type];
+
+  var bodyTop = item.data('body-top');
+  if (bodyTop === undefined || bodyTop === null) return;
+
+  var margin = s.marginSize
+    ? s.marginSize
+    : Number(item.find(s.marginSelector).css('margin').replace(/px.*$/, ''));
+
+  var maxBodyHeight = $(window).height() - bodyTop - margin;
+  item.find(s.bodySelector).css('max-height', maxBodyHeight + 'px');
 }
 
 // based on https://www.npmjs.com/package/canonical-json

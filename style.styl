@@ -84,7 +84,6 @@ ul
   display inline-block
 
 .dropdown-menu
-  max-height 80vh
   overflow-y auto
   a
     monospace()
@@ -103,7 +102,6 @@ td
 
 .modal-body
   overflow-y auto
-  max-height calc(100vh - 125px)
 
 .popover-lg
   max-height 65vh
@@ -158,9 +156,6 @@ td
   .desc
     width 45%
 
-  .dropdown-menu, .modal-body
-    max-height 75vh
-
   td, th
     &.name, &.type
       white-space normal
@@ -177,7 +172,3 @@ td
 
   #queryInfo
     padding-left 0
-
-@media (max-height 400px)
-  .dropdown-menu, .modal-body
-    max-height 60vh
