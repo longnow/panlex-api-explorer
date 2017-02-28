@@ -1224,7 +1224,7 @@ for (var i in queries) {
 
   var q = queries[i];
 
-  var types = {};
+  q.types = {};
 
   // identify request parameter and response object types that are documented
   ['reqParams', 'resFields', 'resFieldsRoot'].forEach(function (j) {
@@ -1232,15 +1232,13 @@ for (var i in queries) {
       var type = q[j][k].type;
       if (type) {
         var baseType = type.replace(/(?:\[\])+$/, '');
-        if (objectTypes[baseType]) types[type] = baseType;
+        if (objectTypes[baseType]) q.types[type] = baseType;
       }
 
       // populate resFields onlyWhen desc
       if (j === 'resFields') resFieldsOnlyWhenDesc(q.resFields[k].onlyWhen, k);
     }
   });
-
-  if (Object.keys(types).length) q.types = types;
 
   // populate reqParams include desc
   reqParamsIncludeDesc(q.reqParams.include);
