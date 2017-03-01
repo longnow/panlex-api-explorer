@@ -12,7 +12,16 @@ var uiType = {
   }
 };
 
-initHelpers();
+Handlebars.registerHelper('eachSorted', function (context, options) {
+  var data = Handlebars.createFrame(options.data);
+
+  var ret = '';
+  Object.keys(context).sort().forEach(function (key) {
+    data.key = key;
+    ret += options.fn(context[key], { data: data });
+  });
+  return ret;
+});
 
 $(document).ready(function () {
   var modal = $('#queryModal');
@@ -34,19 +43,6 @@ $(document).ready(function () {
   // hide popovers with escape key
   if (e.keyCode === 27 && this.id !== 'queryModal') hideOpenPopovers();
 });
-
-function initHelpers() {
-  Handlebars.registerHelper('eachSorted', function (context, options) {
-    var data = Handlebars.createFrame(options.data);
-
-    var ret = '';
-    Object.keys(context).sort().forEach(function (key) {
-      data.key = key;
-      ret += options.fn(context[key], { data: data });
-    });
-    return ret;
-  });
-}
 
 function hashChange() {
   setQuery(getHash() || '/langvar');
@@ -71,7 +67,6 @@ function setQuery(query) {
   setupDropdown($('#summaryDropdown'));
 
   $('#error').empty();
-
   $('#description').html(Handlebars.templates.description(q));
   $('#reqParams').html(Handlebars.templates.reqParams(q));
   $('#resFields').html(Handlebars.templates.resFields(q));
@@ -85,6 +80,7 @@ function setQuery(query) {
 
   currentQuery = query;
   currentUrl = query.replace(/\/<.+$/, '');
+
   $('#submit').on('click', submitRequest);
 }
 
