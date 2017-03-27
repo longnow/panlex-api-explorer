@@ -710,6 +710,10 @@ var queries = {
         type: 'string[]',
         desc: 'Three-letter ISO 639 language codes.'
       },
+      meaning: {
+        type: 'integer[]',
+        desc: 'Meaning IDs. Restricts results to language varieties with the associated meanings.'
+      },
       mutable: {
         type: 'boolean',
         desc: 'Restricts results to language varieties that are mutable (if <code>true</code>) or immutable (if <code>false</code>).'
@@ -725,6 +729,10 @@ var queries = {
       name_expr_txt_degr: {
         type: 'string[]',
         desc: 'Language variety default name expression texts to be matched in degraded form.'
+      },
+      region_expr: {
+        type: 'integer[]',
+        desc: 'Expression IDs. Restricts results to language varieties with the specified primary regions.'
       },
       script_expr: {
         type: 'integer[]',
@@ -772,6 +780,10 @@ var queries = {
         desc: 'CLDR character objects (see below).',
         onlyWhen: { include: true }
       },
+      meaning: {
+        type: 'integer',
+        desc: 'ID of the <code>art:PanLex</code> meaning associated with the language variety.'
+      },
       mutable: {
         type: 'boolean',
         desc: 'Whether the language variety is mutable.'
@@ -787,6 +799,10 @@ var queries = {
       name_expr_txt_degr: {
         type: 'string',
         desc: 'Language variety default name’s degraded expression text.'
+      },
+      region_expr: {
+        type: 'integer',
+        desc: 'Language variety’s primary region, coded as an expression.'
       },
       script_expr: {
         type: 'integer',
